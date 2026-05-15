@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoulFa 靈魂沙發 · Official Site</title>
+  <meta name="description" content="SoulFa 靈魂沙發 — Taipei-based indie rock trio. Britpop, roots rock, psychedelic, bilingual." />
+  <meta property="og:title" content="SoulFa 靈魂沙發" />
+  <meta property="og:description" content="Taipei indie rock. 沙發上的白日夢、盪在空中、失望的山。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bungee+Inline&family=Rampart+One&display=swap" rel="stylesheet" />
+  <style>
+    /*
+      之後換成你們自己的手寫字體檔（建議 woff2）：
+      @font-face {
+        font-family: 'SoulFa Hand';
+        src: url('SoulFa-Hand.woff2') format('woff2');
+        font-display: swap;
+      }
+      然後把 --font-soulfia 第一個改成 'SoulFa Hand'
+    */
+    :root {
+      --paper: #E6DFD3;
+      --paper-deep: #D9D1C0;
+      --ink: #1F1B16;
+      --ink-soft: #4A423A;
+      --earth: #8B6F47;
+      --moss: #3D4A3A;
+      --wine: #7A2E3B;
+      --mist: #C9C2B3;
+      --cream: #F1ECDF;
+      /* 英文空心塊 → Bungee Inline；中日漢字空心塊 → Rampart One */
+      --font-soulfia: 'Bungee Inline', 'Rampart One', sans-serif;
+      --font-body: var(--font-soulfia);
+      --font-display: var(--font-soulfia);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.85;
+      letter-spacing: 0.03em;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.12;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    h1, h2, h3 { font-family: var(--font-soulfia); font-weight: 400; letter-spacing: 0.04em; margin: 0 0 0.4em; }
+    .en { font-family: var(--font-soulfia); letter-spacing: 0.04em; }
+    .mono { font-family: var(--font-soulfia); font-size: 0.78em; letter-spacing: 0.18em; }
+
+    /* ─── NAV ─── */
+    nav.top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 18px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+      background: rgba(230, 223, 211, 0.7);
+      border-bottom: 1px solid rgba(31, 27, 22, 0.08);
+    }
+    nav.top .logo { font-family: var(--font-display); font-size: 24px; font-weight: 400; letter-spacing: 0.04em; }
+    nav.top .logo span { color: var(--wine); }
+    nav.top ul { list-style: none; display: flex; gap: 28px; margin: 0; padding: 0; font-size: 14px; }
+    nav.top ul a { transition: color 0.2s; position: relative; }
+    nav.top ul a:hover { color: var(--wine); }
+    nav.top ul a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--wine);
+      transform: scaleX(0);
+      transition: transform 0.3s;
+    }
+    nav.top ul a:hover::after { transform: scaleX(1); }
+    @media (max-width: 640px) {
+      nav.top { padding: 14px 20px; }
+      nav.top ul { gap: 16px; font-size: 12px; }
+    }
+
+    /* ─── HERO ─── */
+    section.hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px 60px;
+      overflow: hidden;
+    }
+
+    /* Mountain silhouette */
+    .mountains {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 45%;
+      z-index: 0;
+      opacity: 0.5;
+    }
+    .mountains svg { width: 100%; height: 100%; }
+
+    /* Floating sun */
+    .sun {
+      position: absolute;
+      top: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(139, 111, 71, 0.5), rgba(122, 46, 59, 0.15) 60%, transparent 80%);
+      border-radius: 50%;
+      z-index: 0;
+      filter: blur(8px);
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+    .hero .kicker {
+      font-family: var(--font-soulfia);
+      font-size: 12px;
+      letter-spacing: 0.4em;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 12vw, 144px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+    .hero h1 .amp { color: var(--wine); }
+    .hero .zh {
+      font-family: var(--font-soulfia);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      margin-bottom: 40px;
+      color: var(--ink-soft);
+    }
+    .hero .tagline {
+      max-width: 560px;
+      font-size: 16px;
+      color: var(--ink-soft);
+      margin: 0 auto 48px;
+      font-family: var(--font-body);
+    }
+    .hero .cta-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      letter-spacing: 0.06em;
+      transition: all 0.25s;
+      background: transparent;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .btn:hover { background: var(--ink); color: var(--paper); }
+    .btn.filled { background: var(--ink); color: var(--paper); }
+    .btn.filled:hover { background: var(--wine); border-color: var(--wine); }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-soulfia);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--ink-soft);
+      animation: bob 2.4s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translate(-50%, 0); opacity: 0.6; }
+      50% { transform: translate(-50%, 8px); opacity: 1; }
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 120px 32px;
+      position: relative;
+    }
+    .container { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--font-soulfia);
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--earth);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-label::before {
+      content: '';
+      width: 30px; height: 1px;
+      background: var(--earth);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 48px;
+      max-width: 900px;
+    }
+    .section-title .accent { color: var(--wine); }
+
+    /* ─── ABOUT ─── */
+    .about {
+      background: var(--cream);
+      border-top: 1px solid rgba(31, 27, 22, 0.08);
+      border-bottom: 1px solid rgba(31, 27, 22, 0.08);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    .about p { font-size: 17px; max-width: 480px; }
+    .members {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .member {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px dashed rgba(31, 27, 22, 0.15);
+      transition: padding-left 0.3s;
+      cursor: default;
+    }
+    .member:hover { padding-left: 12px; }
+    .member-num {
+      font-family: var(--font-soulfia);
+      font-size: 12px;
+      color: var(--earth);
+      width: 32px;
+    }
+    .member-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 400;
+    }
+    .member-role {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-left: auto;
+      letter-spacing: 0.1em;
+    }
+    @media (max-width: 720px) {
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* ─── MUSIC ─── */
+    .albums {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+      margin-top: 32px;
+    }
+    .album {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+    .album:hover { transform: translateY(-6px); }
+    .album-cover {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--earth), var(--wine));
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(31, 27, 22, 0.15);
+    }
+    .album-cover.disappointment { background: linear-gradient(180deg, #7a8978, #3D4A3A 60%, #1F1B16); }
+    .album-cover.slumber { background: linear-gradient(135deg, #8B6F47, #2B1F1A); }
+    .album-cover.sofa { background: linear-gradient(135deg, #C4A574, #7A2E3B); }
+    .album-cover.so-far { background: linear-gradient(135deg, #9DB0A5, #4A5A4F); }
+    .album-cover::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/></svg>");
+      mix-blend-mode: overlay;
+    }
+    .album-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+    }
+    .album-meta { font-size: 12px; color: var(--ink-soft); font-family: var(--font-soulfia); letter-spacing: 0.1em; }
+
+    /* ─── GIGS ─── */
+    .gigs { background: var(--paper-deep); }
+    .gig-list { display: flex; flex-direction: column; }
+    .gig {
+      display: grid;
+      grid-template-columns: 120px 1fr 1fr auto;
+      gap: 24px;
+      align-items: center;
+      padding: 28px 0;
+      border-top: 1px solid rgba(31, 27, 22, 0.15);
+      transition: padding-left 0.3s;
+    }
+    .gig:last-child { border-bottom: 1px solid rgba(31, 27, 22, 0.15); }
+    .gig:hover { padding-left: 12px; background: rgba(241, 236, 223, 0.4); }
+    .gig-date { font-family: var(--font-soulfia); font-size: 14px; }
+    .gig-venue { font-family: var(--font-display); font-size: 22px; }
+    .gig-city { font-size: 13px; color: var(--ink-soft); letter-spacing: 0.1em; }
+    .gig-tag {
+      font-family: var(--font-soulfia);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      padding: 4px 10px;
+      border: 1px solid var(--ink-soft);
+      border-radius: 999px;
+      color: var(--ink-soft);
+    }
+    .gig-tag.live { color: var(--wine); border-color: var(--wine); }
+    .gig-tag.past { opacity: 0.4; }
+    @media (max-width: 720px) {
+      .gig { grid-template-columns: 1fr; gap: 4px; padding: 20px 0; }
+      .gig-city, .gig-tag { justify-self: start; }
+    }
+
+    /* ─── MERCH ─── */
+    .merch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+    .merch-card {
+      background: var(--cream);
+      padding: 24px;
+      border: 1px solid rgba(31, 27, 22, 0.1);
+      transition: all 0.3s;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .merch-card:hover { transform: translateY(-4px); border-color: var(--wine); }
+    .merch-img {
+      aspect-ratio: 1;
+      background: var(--mist);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      color: var(--earth);
+    }
+    .merch-name { font-family: var(--font-display); font-size: 20px; }
+    .merch-price { font-family: var(--font-soulfia); font-size: 13px; color: var(--wine); }
+
+    /* ─── SOFA CUSHION (interactive useless) ─── */
+    .sofa-section { background: var(--cream); text-align: center; }
+    .sofa-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+    .sofa-svg { width: 100%; max-width: 480px; margin: 0 auto; }
+    .sofa-svg svg { width: 100%; height: auto; }
+    .cushion {
+      transition: fill 0.3s ease;
+      cursor: pointer;
+    }
+    .color-palette {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid var(--paper);
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .swatch:hover { transform: scale(1.15); }
+    .sofa-hint {
+      font-family: var(--font-body);
+      color: var(--ink-soft);
+      margin-top: 20px;
+      font-size: 15px;
+    }
+
+    /* ─── LYRICS FORTUNE ─── */
+    .fortune {
+      background: linear-gradient(180deg, var(--paper) 0%, var(--paper-deep) 100%);
+      text-align: center;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .fortune-card {
+      max-width: 580px;
+      margin: 32px auto;
+      padding: 56px 40px;
+      background: var(--cream);
+      border: 1px solid rgba(31, 27, 22, 0.15);
+      position: relative;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .fortune-card::before, .fortune-card::after {
+      content: '"';
+      font-family: var(--font-soulfia);
+      font-size: 100px;
+      color: var(--wine);
+      position: absolute;
+      line-height: 1;
+      opacity: 0.5;
+    }
+    .fortune-card::before { top: 12px; left: 20px; }
+    .fortune-card::after { bottom: -30px; right: 20px; }
+    .fortune-text {
+      font-family: var(--font-body);
+      font-size: 24px;
+      line-height: 1.6;
+      color: var(--ink);
+      transition: opacity 0.4s;
+      min-height: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fortune-from {
+      font-family: var(--font-soulfia);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--earth);
+      margin-top: 20px;
+      text-transform: uppercase;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 80px 32px 40px;
+    }
+    .footer-grid {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+    }
+    footer h4 {
+      font-family: var(--font-soulfia);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--mist);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    footer a { display: block; padding: 4px 0; font-size: 14px; color: var(--cream); opacity: 0.7; transition: opacity 0.2s; }
+    footer a:hover { opacity: 1; color: var(--earth); }
+    .footer-name {
+      font-family: var(--font-display);
+      font-size: 42px;
+      margin-bottom: 16px;
+    }
+    .newsletter input {
+      width: 100%;
+      padding: 12px 16px;
+      background: transparent;
+      border: 1px solid var(--ink-soft);
+      color: var(--paper);
+      font-family: var(--font-body);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+    .newsletter input::placeholder { color: var(--mist); opacity: 0.5; }
+    .newsletter button {
+      width: 100%;
+      padding: 12px;
+      background: var(--paper);
+      color: var(--ink);
+      border: none;
+      font-family: var(--font-body);
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .newsletter button:hover { background: var(--earth); color: var(--paper); }
+
+    .footer-bottom {
+      max-width: 1080px;
+      margin: 60px auto 0;
+      padding-top: 28px;
+      border-top: 1px solid var(--ink-soft);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-soulfia);
+      font-size: 11px;
+      color: var(--mist);
+      letter-spacing: 0.1em;
+    }
+    @media (max-width: 720px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .footer-name { font-size: 32px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+
+    /* Fade-in on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top">
+  <div class="logo">SoulFa<span>.</span></div>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#gigs">Gigs</a></li>
+    <li><a href="#merch">Merch</a></li>
+    <li><a href="#fun">沙發</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="sun"></div>
+  <div class="mountains">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="none">
+      <path d="M0,400 L0,260 L180,180 L320,220 L480,140 L640,200 L820,120 L1000,180 L1180,140 L1320,200 L1440,160 L1440,400 Z" fill="#3D4A3A" opacity="0.4"/>
+      <path d="M0,400 L0,320 L160,260 L340,300 L500,240 L680,280 L860,230 L1040,290 L1240,250 L1440,300 L1440,400 Z" fill="#1F1B16" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="kicker">Taipei · Since 2018</div>
+    <h1>SoulFa<span class="amp">.</span></h1>
+    <div class="zh">靈魂沙發</div>
+    <p class="tagline">A daydream on the couch, somewhere between Britpop and a Taiwanese summer afternoon.</p>
+    <div class="cta-row">
+      <a class="btn filled" href="https://open.spotify.com/artist/2eJX9VONHesNkNhdVKuBTY" target="_blank" rel="noopener">Listen on Spotify ↗</a>
+      <a class="btn" href="#gigs">See Gigs</a>
+    </div>
+  </div>
+
+  <div class="scroll-cue">SCROLL ↓ DOWN THE MOUNTAIN</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="about">
+  <div class="container">
+    <div class="section-label">01 — About</div>
+    <h2 class="section-title">Three guys, <span class="accent">one couch</span>,<br/>a lot of unfinished thoughts.</h2>
+    <div class="about-grid">
+      <div class="reveal">
+        <p>SoulFa is a Taipei-based indie rock trio formed in 2018, drawing from 90's Britpop, roots rock, and psychedelic rock. We write in both Mandarin and English, often about the strange feeling of growing up too fast in a city that never sleeps.</p>
+        <p>2025 年底，我們發行了第三張專輯《失望的山》——關於翻過那座山，回頭看看自己的故事。</p>
+      </div>
+      <div class="members reveal">
+        <div class="member">
+          <div class="member-num">01</div>
+          <div class="member-name">Panson 本山</div>
+          <div class="member-role">VOCAL / GUITAR</div>
+        </div>
+        <div class="member">
+          <div class="member-num">02</div>
+          <div class="member-name">Poopoo</div>
+          <div class="member-role">LEAD GUITAR</div>
+        </div>
+        <div class="member">
+          <div class="member-num">03</div>
+          <div class="member-name">Henry 亨利</div>
+          <div class="member-role">BASS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MUSIC -->
+<section id="music">
+  <div class="container">
+    <div class="section-label">02 — Music</div>
+    <h2 class="section-title">Records, <span class="accent">in chronological mountain order.</span></h2>
+    <div class="albums">
+      <a class="album reveal" href="https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI" target="_blank" rel="noopener">
+        <div class="album-cover disappointment"></div>
+        <div class="album-title">失望的山</div>
+        <div class="album-meta">2025 · ALBUM · 10 TRACKS</div>
+      </a>
+      <a class="album reveal" href="https://open.spotify.com/artist/2eJX9VONHesNkNhdVKuBTY" target="_blank" rel="noopener">
+        <div class="album-cover so-far"></div>
+        <div class="album-title">So Far</div>
+        <div class="album-meta">2023 · EP</div>
+      </a>
+      <a class="album reveal" href="https://open.spotify.com/artist/2eJX9VONHesNkNhdVKuBTY" target="_blank" rel="noopener">
+        <div class="album-cover slumber"></div>
+        <div class="album-title">Slumber Days</div>
+        <div class="album-meta">2021 · ALBUM</div>
+      </a>
+      <a class="album reveal" href="https://open.spotify.com/artist/2eJX9VONHesNkNhdVKuBTY" target="_blank" rel="noopener">
+        <div class="album-cover sofa"></div>
+        <div class="album-title">SoulFa</div>
+        <div class="album-meta">2019 · ALBUM · DEBUT</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- GIGS -->
+<section id="gigs" class="gigs">
+  <div class="container">
+    <div class="section-label">03 — Gigs</div>
+    <h2 class="section-title">Where to <span class="accent">find us</span> next.</h2>
+    <div class="gig-list">
+      <!-- Replace these with real gigs -->
+      <div class="gig reveal">
+        <div class="gig-date">2026.06.14</div>
+        <div class="gig-venue">TBA Festival</div>
+        <div class="gig-city">Taipei</div>
+        <div class="gig-tag live">UPCOMING</div>
+      </div>
+      <div class="gig reveal">
+        <div class="gig-date">2026.07.20</div>
+        <div class="gig-venue">Live House (待公布)</div>
+        <div class="gig-city">Kaohsiung</div>
+        <div class="gig-tag">ON SALE SOON</div>
+      </div>
+      <div class="gig reveal">
+        <div class="gig-date">2026.03.13</div>
+        <div class="gig-venue">The Wall · 《失望的山》發片場</div>
+        <div class="gig-city">Taipei</div>
+        <div class="gig-tag past">PAST</div>
+      </div>
+    </div>
+    <p class="mono" style="margin-top:40px; color: var(--ink-soft);">
+      Booking → soulfa666@gmail.com
+    </p>
+  </div>
+</section>
+
+<!-- MERCH -->
+<section id="merch">
+  <div class="container">
+    <div class="section-label">04 — Merch</div>
+    <h2 class="section-title">Wearable, <span class="accent">listenable, holdable.</span></h2>
+    <div class="merch-grid">
+      <a class="merch-card reveal" href="https://www.fight30.com/pages/soulfa" target="_blank" rel="noopener">
+        <div class="merch-img">◐</div>
+        <div class="merch-name">失望的山 黑膠 LP</div>
+        <div class="merch-price">NT$ 1,200</div>
+      </a>
+      <a class="merch-card reveal" href="https://www.fight30.com/pages/soulfa" target="_blank" rel="noopener">
+        <div class="merch-img">▣</div>
+        <div class="merch-name">Tour T-Shirt</div>
+        <div class="merch-price">NT$ 780</div>
+      </a>
+      <a class="merch-card reveal" href="https://www.fight30.com/pages/soulfa" target="_blank" rel="noopener">
+        <div class="merch-img">✶</div>
+        <div class="merch-name">Tote Bag</div>
+        <div class="merch-price">NT$ 480</div>
+      </a>
+      <a class="merch-card reveal" href="https://www.fight30.com/pages/soulfa" target="_blank" rel="noopener">
+        <div class="merch-img">♪</div>
+        <div class="merch-name">More on fight30 ↗</div>
+        <div class="merch-price">SEE ALL</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SOFA CUSHION (useless) -->
+<section id="fun" class="sofa-section">
+  <div class="container">
+    <div class="section-label">05 — 無用但好玩</div>
+    <h2 class="section-title">挑一塊 <span class="accent">沙發坐墊</span>。</h2>
+    <div class="sofa-wrap">
+      <div class="sofa-svg">
+        <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- backrest -->
+          <rect class="cushion" id="back" x="40" y="50" width="320" height="90" rx="12" fill="#8B6F47"/>
+          <!-- arm left -->
+          <rect class="cushion" id="armL" x="20" y="80" width="40" height="120" rx="10" fill="#7A2E3B"/>
+          <!-- arm right -->
+          <rect class="cushion" id="armR" x="340" y="80" width="40" height="120" rx="10" fill="#7A2E3B"/>
+          <!-- seat cushions -->
+          <rect class="cushion" id="seat1" x="65" y="130" width="85" height="70" rx="8" fill="#3D4A3A"/>
+          <rect class="cushion" id="seat2" x="158" y="130" width="84" height="70" rx="8" fill="#C4A574"/>
+          <rect class="cushion" id="seat3" x="250" y="130" width="85" height="70" rx="8" fill="#3D4A3A"/>
+          <!-- legs -->
+          <rect x="40" y="200" width="14" height="20" fill="#1F1B16"/>
+          <rect x="346" y="200" width="14" height="20" fill="#1F1B16"/>
+          <!-- shadow -->
+          <ellipse cx="200" cy="226" rx="170" ry="6" fill="#1F1B16" opacity="0.12"/>
+        </svg>
+      </div>
+      <div class="color-palette">
+        <div class="swatch" style="background:#8B6F47" data-color="#8B6F47"></div>
+        <div class="swatch" style="background:#7A2E3B" data-color="#7A2E3B"></div>
+        <div class="swatch" style="background:#3D4A3A" data-color="#3D4A3A"></div>
+        <div class="swatch" style="background:#C4A574" data-color="#C4A574"></div>
+        <div class="swatch" style="background:#1F1B16" data-color="#1F1B16"></div>
+        <div class="swatch" style="background:#C9C2B3" data-color="#C9C2B3"></div>
+        <div class="swatch" style="background:#E6DFD3" data-color="#E6DFD3"></div>
+      </div>
+      <p class="sofa-hint">點一塊沙發布料，再選一個顏色。沒有作用，純粹爽。</p>
+    </div>
+  </div>
+</section>
+
+<!-- LYRICS FORTUNE -->
+<section class="fortune">
+  <div class="container">
+    <div class="section-label">06 — 今日歌詞籤</div>
+    <h2 class="section-title">抽一句 <span class="accent">送給今天的你。</span></h2>
+    <div class="fortune-card">
+      <div class="fortune-text" id="fortune-text">點下面那顆按鈕，看看今天會抽到什麼。</div>
+      <div class="fortune-from mono" id="fortune-from">— SoulFa</div>
+    </div>
+    <button class="btn filled" onclick="drawFortune()" style="margin-top: 32px;">抽一張 · DRAW</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-name">SoulFa.</div>
+      <p style="color: var(--mist); font-size:14px; max-width:340px;">A Taipei indie rock trio. We write songs about couches, mountains, and the things you only say at 3am.</p>
+    </div>
+    <div>
+      <h4>Listen</h4>
+      <a href="https://open.spotify.com/artist/2eJX9VONHesNkNhdVKuBTY" target="_blank">Spotify ↗</a>
+      <a href="#" target="_blank">Apple Music ↗</a>
+      <a href="#" target="_blank">KKBOX ↗</a>
+      <a href="#" target="_blank">YouTube ↗</a>
+    </div>
+    <div>
+      <h4>Follow</h4>
+      <a href="https://www.instagram.com/soulfa_official/" target="_blank">Instagram ↗</a>
+      <a href="https://www.facebook.com/SoulFaofficial/" target="_blank">Facebook ↗</a>
+      <a href="#" target="_blank">Threads ↗</a>
+      <a href="https://streetvoice.com/SoulFaofficial/" target="_blank">StreetVoice ↗</a>
+    </div>
+    <div>
+      <h4>沙發週報</h4>
+      <form class="newsletter" onsubmit="event.preventDefault(); alert('感謝訂閱！（這只是 demo，記得換成真的服務）');">
+        <input type="email" placeholder="your@email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 SoulFa 靈魂沙發 · All sofa rights reserved.</span>
+    <span>BUILT WITH ☕ + 失望</span>
+  </div>
+</footer>
+
+<script>
+  /* ── Lyrics fortune data ── */
+  const fortunes = [
+    { text: "如果當時回頭了，會看見什麼", from: "失望的山" },
+    { text: "沙發上的白日夢，比真的夢還長", from: "沙發上的白日夢" },
+    { text: "盪在空中，腳沒著地也沒關係", from: "盪在空中" },
+    { text: "走太久，停不下來的日子", from: "失望的山" },
+    { text: "Goodbye, Caroline. See you in another summer.", from: "Goodbye Caroline" },
+    { text: "翻過去之後，剩下的就全是希望了", from: "失望的山" },
+    { text: "So far, so good. So tired.", from: "So Far" },
+    { text: "今天什麼都不做，是對得起自己的決定", from: "（一句沒寫進歌的話）" },
+    { text: "謙虛、忍耐、不爭——這座山悄悄就堆起來了", from: "失望的山" },
+    { text: "Slumber days, where the clock forgets to tick.", from: "Slumber Days" },
+    { text: "你聽到的這首歌，比你想像中還老", from: "（廢話一句）" },
+    { text: "城市的夜晚，每個人都在排練自己的句子", from: "（未完成）" }
+  ];
+
+  let lastIdx = -1;
+  function drawFortune() {
+    const textEl = document.getElementById('fortune-text');
+    const fromEl = document.getElementById('fortune-from');
+    let idx;
+    do { idx = Math.floor(Math.random() * fortunes.length); } while (idx === lastIdx && fortunes.length > 1);
+    lastIdx = idx;
+    textEl.style.opacity = 0;
+    fromEl.style.opacity = 0;
+    setTimeout(() => {
+      textEl.textContent = fortunes[idx].text;
+      fromEl.textContent = '— ' + fortunes[idx].from;
+      textEl.style.opacity = 1;
+      fromEl.style.opacity = 1;
+    }, 300);
+  }
+
+  /* ── Sofa cushion colorizer ── */
+  let selectedCushion = null;
+  document.querySelectorAll('.cushion').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.cushion').forEach(x => x.style.stroke = 'none');
+      c.style.stroke = '#1F1B16';
+      c.style.strokeWidth = '2';
+      selectedCushion = c;
+    });
+  });
+  document.querySelectorAll('.swatch').forEach(s => {
+    s.addEventListener('click', () => {
+      if (!selectedCushion) {
+        // Default: change all cushions for fun
+        document.querySelectorAll('.cushion').forEach(c => c.setAttribute('fill', s.dataset.color));
+      } else {
+        selectedCushion.setAttribute('fill', s.dataset.color);
+      }
+    });
+  });
+
+  /* ── Fade in on scroll ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('in');
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
