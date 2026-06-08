@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About · SoulFa 靈魂沙發</title>
+  <link rel="icon" type="image/png" href="網頁分頁logo.png" />
+  <link rel="stylesheet" href="https://use.typekit.net/wdm8jyp.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Dark brown background, light cream text */
+    body.about {
+      background: #2b2724;
+      color: #e1dccd;
+    }
+    body.about::before { mix-blend-mode: overlay; opacity: 0.12; }
+
+    /* Nav: cream */
+    body.about nav.top .brand,
+    body.about nav.top ul a { color: #e1dccd; }
+    body.about nav.top .brand:hover {
+      color: #e1dccd;
+      font-variation-settings: 'wdth' 125, 'SEED' 88;
+    }
+    body.about nav.top ul a:hover,
+    body.about nav.top ul a.is-active {
+      color: #FFFFFF;
+      font-variation-settings: 'wdth' 125, 'SEED' 12;
+      letter-spacing: 0.24em;
+    }
+    body.about nav.top.scrolled {
+      background: rgba(40, 33, 28, 0.88);
+      border-bottom: 1px solid rgba(225, 220, 205, 0.15);
+    }
+
+    section.scene { padding: 100px 36px 120px; }
+
+    /* Hero photo +30% (520 → 676) */
+    .about-hero {
+      max-width: 1100px;
+      margin: 0 auto 64px;
+      overflow: hidden;
+    }
+    .about-hero img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      max-height: 520px;
+      object-position: center;
+      filter: contrast(1.04) saturate(0.95);
+    }
+
+    /* Page heading (Juana SemiBold) */
+    .about-title {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(44px, 6vw, 72px);
+      text-align: center;
+      color: #e1dccd;
+      margin: 0 0 24px;
+      letter-spacing: 0;
+      line-height: 1.05;
+    }
+    .about-subtitle {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: rgba(225, 220, 205, 0.65);
+      text-align: center;
+      margin: 0 0 12px;
+    }
+
+    /* Quote */
+    .about-quote {
+      font-family: var(--font-juana);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(20px, 2.4vw, 28px);
+      line-height: 1.6;
+      text-align: center;
+      max-width: 760px;
+      margin: 40px auto 56px;
+      color: #e1dccd;
+    }
+    .about-quote .amber { color: #f5e6c8; }
+
+    /* Language switcher */
+    .lang-switch {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      align-items: center;
+      margin: 56px 0 36px;
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.22em;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font: inherit;
+      text-transform: uppercase;
+      color: rgba(225, 220, 205, 0.55);
+      padding: 6px 14px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .lang-btn:hover { color: #e1dccd; }
+    .lang-btn.active {
+      color: #e1dccd;
+      border-bottom-color: #e1dccd;
+    }
+    .lang-divider {
+      color: rgba(225, 220, 205, 0.4);
+      padding: 0 4px;
+    }
+
+    /* Bio: block centered (margin auto), content LEFT-aligned */
+    .bio {
+      display: none;
+      max-width: 720px;
+      margin: 0 auto 48px;
+      text-align: left;
+    }
+    .bio.active { display: block; }
+    .bio p {
+      margin: 0 0 22px;
+      color: #e1dccd;
+    }
+    /* Chinese — GenRyu Medium (weight 500) */
+    .bio-zh p {
+      font-family: var(--font-zh);
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 2.05;
+      letter-spacing: 0.04em;
+    }
+    /* English */
+    .bio-en p {
+      font-family: var(--font-gopher);
+      font-weight: 400;
+      font-size: 17px;
+      line-height: 1.85;
+    }
+    .bio em {
+      font-style: normal;
+      color: #FFFFFF;
+      border-bottom: 1px solid rgba(225, 220, 205, 0.6);
+      padding-bottom: 1px;
+    }
+
+    /* Members (centered) */
+    .members {
+      max-width: 720px;
+      margin: 80px auto 0;
+      padding-top: 56px;
+      border-top: 1px solid rgba(225, 220, 205, 0.18);
+      text-align: center;
+    }
+    .members-head {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(28px, 4vw, 40px);
+      color: #e1dccd;
+      margin: 0 0 32px;
+      letter-spacing: 0;
+    }
+    .members-list { display: flex; flex-direction: column; gap: 0; }
+    .member {
+      padding: 20px 0;
+      border-top: 1px dashed rgba(225, 220, 205, 0.18);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 24px;
+      align-items: baseline;
+      transition: background 0.3s;
+    }
+    .member:last-child { border-bottom: 1px dashed rgba(225, 220, 205, 0.18); }
+    .member-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: rgba(225, 220, 205, 0.6);
+      letter-spacing: 0.15em;
+      text-align: right;
+    }
+    .member-name {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 26px;
+      color: #e1dccd;
+      letter-spacing: -0.01em;
+      text-align: center;
+    }
+    .member-role {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      color: rgba(225, 220, 205, 0.55);
+      text-transform: uppercase;
+      text-align: left;
+    }
+
+    body.about footer {
+      background: #1f1b18;
+      border-top: 1px solid rgba(225, 220, 205, 0.18);
+    }
+    body.about .footer-socials a {
+      color: #e1dccd;
+      border: none;
+      padding: 4px;
+    }
+    body.about .footer-socials a:hover {
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+    body.about .footer-legal {
+      color: rgba(225, 220, 205, 0.5);
+      border-top-color: rgba(225, 220, 205, 0.18);
+    }
+  </style>
+</head>
+<body class="about">
+
+<div class="page-transition"></div>
+
+<nav class="top" id="topnav">
+  <a class="brand" href="index.html">SOULFA</a>
+  <ul>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="tour.html">Tour</a></li>
+    <li><a href="merch.html">Merch</a></li>
+    <li><a href="about.html" class="is-active">About</a></li>
+  </ul>
+</nav>
+
+<section class="scene">
+
+  <div class="about-hero">
+    <img src="圖片/照片素材/樂團簡介照片.jpg" alt="SoulFa 靈魂沙發"/>
+  </div>
+
+  <div class="container">
+    <div class="about-subtitle">About</div>
+    <h1 class="about-title">SoulFa 靈魂沙發</h1>
+
+    <p class="about-quote">
+      "Like sinking into a cozy sofa after a long day, all by yourself,
+      <span class="amber">free-spirited</span>; a corner reserved only for the wildest of dreams."
+    </p>
+
+    <div class="lang-switch">
+      <button class="lang-btn active" data-lang="zh">中文</button>
+      <span class="lang-divider">·</span>
+      <button class="lang-btn" data-lang="en">English</button>
+    </div>
+
+    <div class="bio bio-zh active">
+      <p>
+        SoulFa 靈魂沙發，成立於 2018 年的台北，目前成員為主唱兼吉他手本山、吉他手 Poopoo 和貝斯手亨利。他們的音樂風格深受 90 年代的英倫搖滾啟蒙，並加入草根搖滾、迷幻搖滾等元素，創作語彙則涵蓋華語及英語，至今發行過<em><a href="music.html">三張專輯、一張 EP 及無數首單曲</a></em>。
+      </p>
+      <p>
+        他們歌頌著對於世界與人際之間的觀察，試圖用創作真空壓縮生活中的所有雜念，同時有收納靈魂之含義，讓樂迷能在音樂裡深呼吸，尤其是充滿魔幻感的歌詞，搭配猶如暢遊在公路電影般的旋律，造就樂團獨有的特質。
+      </p>
+    </div>
+
+    <div class="bio bio-en">
+      <p>
+        SoulFa (靈魂沙發), whose Mandarin name stands for <em>"sofa with a soul"</em>, was founded in 2018 in Taipei. The trio—lead vocalist/guitarist Panson (本山), guitarist Poopoo, and bassist Henry (亨利)—crafts a signature sound that blends 90's Britpop with elements of roots rock and psychedelic rock, their lyrics flowing between Mandarin and English.
+      </p>
+      <p>
+        Having released three acclaimed albums and numerous singles while selling out multiple shows since their first album tour, SoulFa has quickly established themselves as a prominent force in Taiwan's indie scene.
+      </p>
+      <p>
+        Through their songwriting, SoulFa celebrates the intricacies of human connection. Their dreamy lyrics and smooth-sailing melodies, reminiscent of classic road movies, offer an escape from daily clutters, inviting audiences to pause, breathe, and find spiritual solace within the music's embrace.
+      </p>
+    </div>
+
+    <div class="members">
+      <h2 class="members-head">Members</h2>
+      <div class="members-list">
+        <div class="member">
+          <div class="member-num">01</div>
+          <div class="member-name">Panson 本山</div>
+          <div class="member-role">VOCAL / GUITAR</div>
+        </div>
+        <div class="member">
+          <div class="member-num">02</div>
+          <div class="member-name">Poopoo</div>
+          <div class="member-role">LEAD GUITAR</div>
+        </div>
+        <div class="member">
+          <div class="member-num">03</div>
+          <div class="member-name">Henry 亨利</div>
+          <div class="member-role">BASS</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <a href="index.html" class="footer-logo-link" aria-label="SoulFa"><svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1199.57 787.9" role="img" aria-label="SoulFa"><path d="M1343,405.63q-72,29.17-144,58.22Q693,668.34,186.92,873c-13.75,5.55-22.56-15.66-8.9-21.2q40.3-16.37,80.63-32.57c-3.88.78-7.51,1.42-11,1.86a99.63,99.63,0,0,1-26.39.11c-23.48-3.22-45.64-12.82-66-28.58a13,13,0,1,1,15.92-20.55C188,785,205.92,792.89,224.86,795.39c13.87,2,44.89.42,97.21-31.15C393.24,721.38,454.33,640,453,590c-.3-9.69-2.27-23-10.5-30.91-10.48-10.25-32-12.43-62.13-6.28-7.85,1.65-15.85,3.59-23.76,5.52-20.4,5-41.42,10.17-61.83,9.89-27.67-.47-52.67-12.76-68.49-33.73-16.92-22.31-22-52.23-14-82.16,13.68-51.3,57.91-91.85,83-111.44,48.57-37.76,100-57.17,141.2-53.14,21.78,2.24,37.44,11,45,25.5,16.82,31.77-9.94,74.18-35.06,107.57a13,13,0,1,1-20.8-15.7c29.25-38.83,40.3-65.62,32.86-79.68-4.51-8.51-17.34-11-24.64-11.69-34.54-3.49-79.2,14-122.53,47.71-38.44,30-65.33,65.55-73.95,97.59-5.91,22.06-2.4,43.85,9.53,59.75,11.24,14.79,28.32,23.08,48.18,23.34,17.08.24,35.59-4.24,55.18-9,8.35-2.08,16.61-4.15,24.84-5.75,39.55-8.08,68.27-3.67,85.5,13a57.46,57.46,0,0,1,14.09,23.4l113.75-46a13,13,0,1,1,9.74,24.15L569,553.79l-29.15,73.93c-7.85,19.89-3.3,41.09,9.86,46.27,7.7,3,15.66-.69,19.71-3.15,8-5,14.92-13.76,18.91-24l51-129.42c4-10.23,4.89-21.28,2.44-30.42-1.32-4.55-4.49-12.68-12.29-15.76s-15.67.6-19.7,3.15c-8.08,5-14.94,13.66-19,23.91a13,13,0,1,1-24.18-9.53c6.08-15.59,16.57-28.51,29.45-36.54,13.91-8.62,29.61-10.52,43-5.27s23.61,17.39,27.83,33.15a36.37,36.37,0,0,1,1.16,5.51l95-38.38a13,13,0,0,1,9.74,24.15L748.85,481v.09l-28.22,71.77c-8.34,21.07-4.31,44.09,8.65,49.11s31.48-8.9,39.82-30.07l54.07-137.4a55.43,55.43,0,0,0,1.9-5.43,10.7,10.7,0,0,1,.69-1.85c0-.09.07-.19.15-.3a12.47,12.47,0,0,1,7.49-8.08l84.77-34.3a15.87,15.87,0,0,1,2-.62L972.25,251.5A13,13,0,1,1,996.43,261L874.78,570.16q43.35-17.6,86.79-35.11a13.06,13.06,0,0,1,.45-8.12l61.7-156.81L993.41,382.4a10.1,10.1,0,0,1-3.22.88,13,13,0,0,1-6.51-25l53.22-21.49,87.47-222.34c-107.55,13.19-259.83,51.34-266.58,108.34-.9,7.44.65,15.3,4.78,23.76,13.66,20,48.67,20,59.17,19.45A13,13,0,0,1,924,291.91l-1,.12c-18,.81-62.32-.51-82.71-31.92l-.81-1.29c-6.51-13.35-9-26.46-7.57-39.15,11.91-101,278.53-130.25,310.91-133.53l.64-.08a17.55,17.55,0,0,1,2.32.07l.19,0a13.23,13.23,0,0,1,2.08.38c.2.07.3.15.39.14.29.06.49.22.78.27a5,5,0,0,1,1.29.67,15.93,15.93,0,0,1,2,1.32,8.35,8.35,0,0,1,1.58,1.56,8.62,8.62,0,0,1,1.58,2.21,9.81,9.81,0,0,1,1,2.28,11.61,11.61,0,0,1,.6,2.51l.08.64a17.65,17.65,0,0,1-.08,2.33l0,.18a12.47,12.47,0,0,1-.39,2.09c-.13.38-.27.77-.4,1.16l-.57,1.37-85.79,218.05L1127,300.4a.09.09,0,0,1,.08-.1l4.23-1.65,32-13a13,13,0,0,1,9.74,24.15l-29.18,11.77-29.34,74.6c-4,10.23-4.89,21.28-2.43,30.42,1.32,4.55,4.57,12.66,12.28,15.76s15.66-.69,19.71-3.15c8.07-5,14.93-13.76,19-24L1214,285.83c7.86-19.8,3.32-41-9.85-46.18s-30.85,7.25-38.61,27.14a13.06,13.06,0,1,1-24.29-9.61c13.25-33.55,45.7-52.31,72.42-41.81s37.77,46.44,24.61,80l-22.54,57.43a8.68,8.68,0,0,1,0,2.22c-1.37,19.91,8.63,34.39,25.63,36.95,6.7,1,14.73,0,23.18-2.76a12.94,12.94,0,0,1,16.43,8.29,13.59,13.59,0,0,1,0,8.44l53.14-21.48C1347.8,378.89,1356.6,400.1,1343,405.63ZM551.37,700.83a41.75,41.75,0,0,1-11.27-2.64c-26.71-10.51-37.66-46.36-24.52-80l20-50.9L479.48,590c-.18,0-.26.13-.44.15,1.12,65-73.09,154-143.48,196.38-2.93,1.76-5.78,3.42-8.62,5.08Zm178.36-72a43,43,0,0,1-10-2.53c-26.72-10.5-37.19-47.71-23.33-83l19.19-48.76-46,18.63a15.13,15.13,0,0,1-2,.63,72.75,72.75,0,0,1-4,13.2L612.61,656.37a79.05,79.05,0,0,1-17.26,26.74Q662.49,656,729.73,628.8Zm116.36-56.94L907,417.19l-58.42,23.63a8.53,8.53,0,0,1-.62,1.65,12.68,12.68,0,0,1-.54,1.65L793.38,581.43a85,85,0,0,1-19.06,29.29c24-9.72,47.94-19.34,71.9-29.05A13.48,13.48,0,0,1,846.09,571.86Zm278.59-102.74a42,42,0,0,1-9.86-2.54c-13.36-5.26-23.51-17.31-27.83-33.06-4-14.69-2.86-31.32,3.31-46.93l20.32-51.5L1057,356.72,991.62,522.9Q1058.1,496,1124.68,469.12Zm126-50.93a59.52,59.52,0,0,1-13.22-.55,53.56,53.56,0,0,1-37.87-23.91l-12.26,31.12a81.37,81.37,0,0,1-16,25.38C1197.73,439.55,1224.26,428.86,1250.69,418.19Z" transform="translate(-150.22 -86.05)"/></svg></a>
+    <div class="footer-socials">
+      <a href="https://www.instagram.com/soulfa_official/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></a>
+      <a href="https://www.youtube.com/results?search_query=SoulFa+%E9%9D%88%E9%AD%82%E6%B2%99%E7%99%BC" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
+      <a href="https://open.spotify.com/artist/2eJX9VONHesNkNhdVKuBTY" target="_blank" rel="noopener" aria-label="Spotify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M7 10c3-1 7-1 10 1"/><path d="M7.5 13c2.5-0.5 6-0.5 8.5 1"/><path d="M8 16c2-0.3 4.5-0.3 6.5 0.8"/></svg></a>
+      <a href="https://www.threads.net/@soulfa_official" target="_blank" rel="noopener" aria-label="Threads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c4 0 6.5 2 6.5 5.5 0 2.5-2 3.5-3.5 3.5-2 0-3-1.5-3-3 0-1.5 1-2.5 2.5-2.5 1 0 1.5.5 1.5 1.5"/><path d="M9 9c0-2 1.5-3 3-3M9 9c0 7 4 9.5 8 8.5"/></svg></a>
+    </div>
+  </div>
+  <div class="footer-legal">© 2026 SoulFa 靈魂沙發 · Taipei</div>
+</footer>
+
+<script src="transitions.js"></script>
+<script>
+  (function () {
+    const btns = document.querySelectorAll('.lang-btn');
+    const bios = document.querySelectorAll('.bio');
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        btns.forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+        bios.forEach(b => b.classList.toggle('active', b.classList.contains('bio-' + lang)));
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

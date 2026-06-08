@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<!--
+  SoulFa Moodboard v2 · REAL FONTS + REAL PHOTOS
+  - Kuhlman Variable (Adobe Fonts) → nav, headings, buttons
+  - Platypi (Google Fonts) → body
+  - Cako Black (local .otf) → accents
+  - Film direction · warm black + photo-paper white + amber leak
+-->
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoulFa · Moodboard v2</title>
+
+  <!-- 字體 -->
+  <link rel="stylesheet" href="https://use.typekit.net/wdm8jyp.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Platypi:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <style>
+    @font-face {
+      font-family: 'Cako';
+      src: url('Cako-Black.otf') format('opentype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --film-black: #0B0907;
+      --film-black-2: #14110B;
+      --film-paper: #ECE6D6;
+      --film-paper-soft: #B8B0A0;
+      --film-amber: #C77B4A;
+      --film-rust: #A05050;
+      --film-mist: #6B665A;
+      --film-edge: rgba(236, 230, 214, 0.15);
+
+      --font-display: "kuhlman-vf", "Inter", sans-serif;
+      --font-body: 'Platypi', Georgia, serif;
+      --font-accent: 'Cako', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--film-black);
+      color: var(--film-paper);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.18;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: -10%;
+      right: -10%;
+      width: 50vw;
+      height: 50vw;
+      background: radial-gradient(circle, rgba(199, 123, 74, 0.22), transparent 60%);
+      pointer-events: none;
+      z-index: 9997;
+      filter: blur(60px);
+    }
+
+    a { color: inherit; }
+
+    .frame { max-width: 1180px; margin: 0 auto; padding: 32px; position: relative; z-index: 1; }
+
+    /* ─── REAL NAV ─── */
+    nav.demo {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 8px;
+      border-bottom: 1px solid var(--film-edge);
+      margin-bottom: 56px;
+    }
+    nav.demo .brand img {
+      height: 44px;
+      width: auto;
+      filter: invert(1) brightness(2);
+    }
+    nav.demo ul {
+      list-style: none;
+      display: flex;
+      gap: 28px;
+      margin: 0;
+      padding: 0;
+    }
+    nav.demo a {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 15px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--film-paper);
+      text-decoration: none;
+      padding: 6px 4px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      font-variation-settings: 'wdth' 100, 'SEED' 12;
+    }
+    nav.demo a:hover { color: var(--film-amber); border-color: var(--film-amber); }
+    nav.demo a.is-active { border-color: var(--film-paper); }
+
+    /* ─── HERO WITH REAL PHOTO ─── */
+    .hero-stage {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      margin: 0 -32px 56px;
+      max-height: 80vh;
+    }
+    .hero-stage img.bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.05) saturate(0.95);
+    }
+    .hero-stage::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(11,9,7,0.35) 0%, transparent 30%, rgba(11,9,7,0.7) 100%),
+        radial-gradient(circle at top right, rgba(0,0,0,0.4), transparent 60%);
+    }
+    .hero-stage .hero-text {
+      position: absolute;
+      bottom: 8%;
+      left: 5%;
+      right: 5%;
+      z-index: 2;
+    }
+    .hero-stage .kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      color: var(--film-paper);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+    .hero-stage h1 {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 11vw, 168px);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      margin: 0;
+      color: var(--film-paper);
+      font-variation-settings: 'wdth' 100, 'SEED' 88;
+    }
+    .hero-stage h1 .word2 {
+      font-variation-settings: 'wdth' 100, 'SEED' 33;
+      color: var(--film-amber);
+    }
+
+    /* ─── SECTION LABEL ─── */
+    .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--film-amber);
+      margin: 80px 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .label::before { content: ''; width: 36px; height: 1px; background: var(--film-amber); }
+
+    .palette {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 24px 0 56px;
+    }
+    .palette .sw {
+      aspect-ratio: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      border: 1px solid var(--film-edge);
+    }
+    .palette .sw .n { color: var(--film-paper); text-transform: uppercase; margin-bottom: 4px; }
+    .palette .sw .h { color: var(--film-mist); }
+
+    /* ─── TYPE DISPLAYS ─── */
+    .type-demo {
+      margin-bottom: 64px;
+      padding: 32px 0;
+      border-top: 1px solid var(--film-edge);
+    }
+    .type-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--film-mist);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .type-meta .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border: 1px solid var(--film-amber);
+      color: var(--film-amber);
+      margin-left: 10px;
+      font-size: 10px;
+    }
+    .display-xl {
+      font-family: var(--font-display);
+      font-size: clamp(56px, 9vw, 120px);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      margin: 0 0 24px;
+      color: var(--film-paper);
+      font-variation-settings: 'wdth' 100, 'SEED' 4;
+    }
+    .display-md {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 400;
+      letter-spacing: 0;
+      margin: 0 0 16px;
+      font-variation-settings: 'wdth' 100, 'SEED' 17;
+    }
+    .display-md .amber { color: var(--film-amber); }
+
+    .body-sample {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.85;
+      max-width: 620px;
+      color: var(--film-paper-soft);
+      margin-bottom: 28px;
+    }
+    .body-sample em { font-style: italic; color: var(--film-paper); }
+    .body-sample .pull {
+      display: block;
+      font-size: 22px;
+      line-height: 1.4;
+      color: var(--film-paper);
+      border-left: 1px solid var(--film-amber);
+      padding-left: 20px;
+      margin: 28px 0;
+    }
+
+    .accent-cako {
+      font-family: var(--font-accent);
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 1;
+      color: var(--film-amber);
+      margin: 24px 0;
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── BUTTONS ─── */
+    .btn-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 24px 0 48px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border: 1px solid var(--film-paper);
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--film-paper);
+      text-decoration: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-variation-settings: 'wdth' 100, 'SEED' 50;
+    }
+    .btn:hover { background: var(--film-paper); color: var(--film-black); }
+    .btn.filled { background: var(--film-paper); color: var(--film-black); }
+    .btn.filled:hover { background: var(--film-amber); color: var(--film-black); border-color: var(--film-amber); }
+
+    /* ─── REAL ALBUM COVERS ─── */
+    .albums {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin: 24px 0 48px;
+    }
+    .album {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .album-img {
+      aspect-ratio: 1;
+      overflow: hidden;
+      background: var(--film-black-2);
+      position: relative;
+    }
+    .album-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: contrast(1.02);
+      transition: transform 0.4s;
+    }
+    .album:hover .album-img img { transform: scale(1.03); }
+    .album .name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: var(--film-paper);
+      font-variation-settings: 'wdth' 100, 'SEED' 7;
+    }
+    .album .meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--film-mist);
+      text-transform: uppercase;
+    }
+
+    /* ─── SEED variation showcase ─── */
+    .seed-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+      margin: 24px 0 48px;
+    }
+    .seed-card {
+      padding: 32px 24px;
+      border: 1px solid var(--film-edge);
+      background: rgba(236, 230, 214, 0.02);
+    }
+    .seed-card .word {
+      font-family: var(--font-display);
+      font-size: 56px;
+      font-weight: 400;
+      line-height: 1;
+      color: var(--film-paper);
+    }
+    .seed-card .seed-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--film-amber);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    /* ─── NOTE ─── */
+    .note {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--film-mist);
+      letter-spacing: 0.08em;
+      padding: 12px 16px;
+      border-left: 2px solid var(--film-amber);
+      background: rgba(199, 123, 74, 0.06);
+      margin: 12px 0 32px;
+    }
+
+    .doc-foot {
+      margin-top: 100px;
+      padding: 32px 0;
+      border-top: 1px solid var(--film-edge);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--film-mist);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<div class="frame">
+
+  <!-- ─── REAL NAV WITH LOGO ─── -->
+  <nav class="demo">
+    <a class="brand" href="#"><img src="logo.png" alt="SoulFa"/></a>
+    <ul>
+      <li><a href="#" class="is-active">About</a></li>
+      <li><a href="#">Music</a></li>
+      <li><a href="#">Gigs</a></li>
+      <li><a href="#">Merch</a></li>
+    </ul>
+  </nav>
+
+  <div class="note">
+    Logo 用 CSS invert 反白（原本是灰色，這樣免再開 Illustrator）。<br/>
+    Nav 字 = Kuhlman Variable，SEED=12，每個 hover 變橘色。
+  </div>
+
+  <!-- ─── HERO ─── -->
+  <div class="hero-stage">
+    <img class="bg" src="圖片/首頁圖.png" alt="SoulFa Live"/>
+    <div class="hero-text">
+      <div class="kicker">TAIPEI · SINCE 2018 · LP NO.3 OUT NOW</div>
+      <h1>SoulFa.<br/><span class="word2">靈魂沙發</span></h1>
+    </div>
+  </div>
+
+  <div class="note">
+    首頁圖直接當滿版背景，上下加暗化漸層讓文字浮起來。<br/>
+    標題 SoulFa. 用 SEED 88、靈魂沙發用 SEED 33 + 橘色—— Kuhlman 兩個字會長得不一樣，這就是 SEED 軸的魔法。<br/>
+    （重新整理頁面也不會變，SEED 是固定的）
+  </div>
+
+  <!-- ─── PALETTE ─── -->
+  <div class="label">01 — Film Palette</div>
+  <div class="palette">
+    <div class="sw" style="background:#0B0907"><span class="n">Film Black</span><span class="h">#0B0907</span></div>
+    <div class="sw" style="background:#14110B"><span class="n">Black 2</span><span class="h">#14110B</span></div>
+    <div class="sw" style="background:#ECE6D6; color:#0B0907"><span class="n" style="color:#0B0907">Film Paper</span><span class="h" style="color:#6B665A">#ECE6D6</span></div>
+    <div class="sw" style="background:#B8B0A0; color:#0B0907"><span class="n" style="color:#0B0907">Paper Soft</span><span class="h" style="color:#0B0907">#B8B0A0</span></div>
+    <div class="sw" style="background:#C77B4A"><span class="n">Amber Leak</span><span class="h">#C77B4A</span></div>
+    <div class="sw" style="background:#A05050"><span class="n">Faded Rust</span><span class="h">#A05050</span></div>
+    <div class="sw" style="background:#6B665A"><span class="n">Silver Grey</span><span class="h">#6B665A</span></div>
+  </div>
+
+  <!-- ─── TYPE: KUHLMAN ─── -->
+  <div class="label">02 — Display · Kuhlman Variable</div>
+  <div class="type-demo">
+    <div class="type-meta">大標題 / Section Title <span class="pill">Kuhlman VF</span></div>
+    <h2 class="display-xl">失望的山</h2>
+    <h3 class="display-md">Where to <span class="amber">find us</span> next.</h3>
+  </div>
+
+  <!-- ─── SEED demo ─── -->
+  <div class="label">03 — 同一個字，不同 SEED</div>
+  <div class="seed-showcase">
+    <div class="seed-card">
+      <div class="seed-label">SEED 0</div>
+      <div class="word" style="font-variation-settings: 'wdth' 100, 'SEED' 0">SoulFa</div>
+    </div>
+    <div class="seed-card">
+      <div class="seed-label">SEED 42</div>
+      <div class="word" style="font-variation-settings: 'wdth' 100, 'SEED' 42">SoulFa</div>
+    </div>
+    <div class="seed-card">
+      <div class="seed-label">SEED 88</div>
+      <div class="word" style="font-variation-settings: 'wdth' 100, 'SEED' 88">SoulFa</div>
+    </div>
+    <div class="seed-card">
+      <div class="seed-label">SEED 142</div>
+      <div class="word" style="font-variation-settings: 'wdth' 100, 'SEED' 142">SoulFa</div>
+    </div>
+  </div>
+
+  <div class="note">
+    這就是 Kuhlman 的殺手鐧——每個 section 換 SEED 數字，字會長得不太一樣，但仍是同一套字體。<br/>
+    我可以幫你規劃：Nav SEED 12 / Hero SEED 88 / Music SEED 42 / Gigs SEED 142 / Shop SEED 7 / About SEED 33。
+  </div>
+
+  <!-- ─── TYPE: PLATYPI ─── -->
+  <div class="label">04 — Body · Platypi</div>
+  <p class="body-sample">
+    SoulFa 是 2018 年成立於台北的三人樂團，靈感來自 90 年代的英倫搖滾，混進迷幻搖滾與根源搖滾的味道。我們用中文跟英文寫歌，<em>常常是寫給某個我們自己。</em>
+  </p>
+  <p class="body-sample">
+    2025 年底，我們發行了第三張專輯《失望的山》——關於翻過那座山、回頭看看自己的故事。
+    <span class="pull">「停下來，誠實地看看自己走了多遠、丟了什麼。」</span>
+    A daydream on the couch, somewhere between Britpop and a Taiwanese summer afternoon.
+  </p>
+
+  <!-- ─── TYPE: CAKO ─── -->
+  <div class="label">05 — Accent · Cako Black</div>
+  <div class="accent-cako">La Montagna Delusa</div>
+  <p class="body-sample">
+    Cako Black 太重不能當內文，但作為**單張專輯標題、引言重點、海報字**這類「一次出現一句」的場合很有戲。<br/>
+    上面這行示範義大利文標題的處理方式。
+  </p>
+
+  <!-- ─── BUTTONS ─── -->
+  <div class="label">06 — Buttons</div>
+  <div class="btn-row">
+    <a class="btn" href="#">Outline Button</a>
+    <a class="btn filled" href="#">Filled Button</a>
+    <a class="btn" href="#">Listen on Spotify ↗</a>
+    <a class="btn filled" href="#">Enter 失望的山 →</a>
+  </div>
+
+  <!-- ─── REAL ALBUM COVERS ─── -->
+  <div class="label">07 — Album Covers (你們真實的)</div>
+  <div class="albums">
+    <div class="album">
+      <div class="album-img"><img src="圖片/單曲封面/單曲、專輯封面/失望的山.png" alt="失望的山"/></div>
+      <div class="name">失望的山</div>
+      <div class="meta">2025 · LP NO.3</div>
+    </div>
+    <div class="album">
+      <div class="album-img"><img src="圖片/單曲封面/單曲、專輯封面/Slumber Days二專.png" alt="Slumber Days"/></div>
+      <div class="name">Slumber Days</div>
+      <div class="meta">2021 · LP NO.2</div>
+    </div>
+    <div class="album">
+      <div class="album-img"><img src="圖片/單曲封面/單曲、專輯封面/SoulFa 一專cover.jpg" alt="SoulFa"/></div>
+      <div class="name">SoulFa</div>
+      <div class="meta">2019 · DEBUT</div>
+    </div>
+    <div class="album">
+      <div class="album-img"><img src="圖片/單曲封面/單曲、專輯封面/宣言 封面 .png" alt="宣言"/></div>
+      <div class="name">宣言</div>
+      <div class="meta">SINGLE</div>
+    </div>
+  </div>
+
+  <div class="note">
+    封面套了 contrast 1.02 微調，整體更服貼底片黑。Hover 微微放大。<br/>
+    其他單曲（POLYDREAM、lover song、hear hear、Rose & i、44、留一盞燈、躺在床上、We Talk to iphone…）都能用同樣 layout 放。
+  </div>
+
+  <!-- ─── FOOTER ─── -->
+  <div class="doc-foot">
+    SoulFa Moodboard v2 · Kuhlman (Adobe) + Platypi (Google) + Cako Black (local) · 2026
+  </div>
+
+</div>
+</body>
+</html>
