@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!--
+  SoulFa Font Comparison · Kuhlman 替代字體
+  3 個免費 Google Fonts 用同樣的 SoulFa 內容 render
+-->
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoulFa · Font Compare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Boldonse&family=Big+Shoulders+Display:wght@500;700;800&family=Platypi:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --film-black: #0B0907;
+      --film-paper: #ECE6D6;
+      --film-paper-soft: #B8B0A0;
+      --film-amber: #C77B4A;
+      --film-mist: #6B665A;
+      --film-edge: rgba(236, 230, 214, 0.15);
+      --font-body: 'Platypi', serif;
+      --font-mono: ui-monospace, 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--film-black);
+      color: var(--film-paper);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0.15;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+
+    .page { max-width: 1080px; margin: 0 auto; padding: 56px 32px 120px; }
+    .doc-head { margin-bottom: 80px; }
+    .doc-head h1 {
+      font-family: var(--font-body);
+      font-size: 36px;
+      font-weight: 500;
+      margin: 0 0 12px;
+      color: var(--film-paper);
+    }
+    .doc-head p {
+      color: var(--film-paper-soft);
+      max-width: 620px;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    /* Each candidate panel */
+    .panel {
+      border-top: 1px solid var(--film-edge);
+      padding: 64px 0;
+    }
+    .panel-meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--film-amber);
+      margin-bottom: 8px;
+    }
+    .panel-name {
+      font-family: var(--font-body);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--film-paper);
+      margin: 0 0 6px;
+    }
+    .panel-desc {
+      font-size: 14px;
+      color: var(--film-paper-soft);
+      margin: 0 0 40px;
+      max-width: 560px;
+    }
+
+    /* Three test cases per panel */
+    .test-block { margin-bottom: 56px; }
+    .test-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--film-mist);
+      margin-bottom: 18px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--film-edge);
+    }
+
+    /* Nav demo */
+    .demo-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 22px;
+      background: rgba(236, 230, 214, 0.03);
+      border: 1px solid var(--film-edge);
+    }
+    .demo-nav .brand {
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.04em;
+    }
+    .demo-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+    }
+    .demo-nav a {
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--film-paper);
+      text-decoration: none;
+      padding: 4px 2px;
+      border-bottom: 1px solid transparent;
+    }
+    .demo-nav a.active { border-color: var(--film-paper); }
+
+    /* Display headline */
+    .demo-headline {
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 600;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      margin: 0 0 16px;
+      color: var(--film-paper);
+    }
+    .demo-meta-row {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--film-mist);
+      text-transform: uppercase;
+    }
+    .demo-meta-row .glow { color: var(--film-amber); }
+
+    /* Buttons */
+    .demo-btn-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .demo-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border: 1px solid var(--film-paper);
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--film-paper);
+      text-decoration: none;
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-btn:hover { background: var(--film-paper); color: var(--film-black); }
+    .demo-btn.filled { background: var(--film-paper); color: var(--film-black); }
+    .demo-btn.filled:hover { background: var(--film-amber); border-color: var(--film-amber); }
+
+    /* Section title sample */
+    .demo-section-title {
+      font-size: 40px;
+      font-weight: 500;
+      margin: 0;
+      color: var(--film-paper);
+    }
+    .demo-section-title .accent { color: var(--film-amber); }
+
+    /* Vote tag */
+    .vote {
+      margin-top: 24px;
+      padding: 14px 18px;
+      background: rgba(199, 123, 74, 0.07);
+      border-left: 2px solid var(--film-amber);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--film-paper-soft);
+    }
+
+    /* Font-specific declarations (the whole point of this page) */
+    .panel.bricolage .demo-nav,
+    .panel.bricolage .demo-headline,
+    .panel.bricolage .demo-btn,
+    .panel.bricolage .demo-section-title { font-family: 'Bricolage Grotesque', sans-serif; }
+
+    .panel.boldonse .demo-nav,
+    .panel.boldonse .demo-headline,
+    .panel.boldonse .demo-btn,
+    .panel.boldonse .demo-section-title { font-family: 'Boldonse', sans-serif; }
+
+    .panel.bigshoulders .demo-nav,
+    .panel.bigshoulders .demo-headline,
+    .panel.bigshoulders .demo-btn,
+    .panel.bigshoulders .demo-section-title { font-family: 'Big Shoulders Display', sans-serif; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="doc-head">
+    <h1>Kuhlman 替代字體 · 三選一</h1>
+    <p>同樣的 SoulFa 內容（nav、首頁標題、按鈕、section 標題），用 3 個免費字體各 render 一次。直接看哪個對。</p>
+  </div>
+
+  <!-- ========== PANEL 1: Bricolage Grotesque ========== -->
+  <div class="panel bricolage">
+    <div class="panel-meta">候選 01</div>
+    <h2 class="panel-name">Bricolage Grotesque</h2>
+    <p class="panel-desc">變數字、現代、有微微手感。最安全的選擇，全 case 都能打。對應 Kuhlman 的「乾淨那一面」。</p>
+
+    <div class="test-block">
+      <div class="test-label">A · Nav 列（你說想用 Kuhlman 的地方）</div>
+      <nav class="demo-nav">
+        <div class="brand">SoulFa.</div>
+        <ul>
+          <li><a class="active" href="#">About</a></li>
+          <li><a href="#">Music</a></li>
+          <li><a href="#">Gigs</a></li>
+          <li><a href="#">Merch</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">B · 首頁大標</div>
+      <h1 class="demo-headline">SoulFa.<br/>靈魂沙發</h1>
+      <div class="demo-meta-row">TAIPEI · SINCE 2018 · <span class="glow">LP NO.3 OUT NOW</span></div>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">C · 按鈕</div>
+      <div class="demo-btn-row">
+        <a class="demo-btn" href="#">Outline Button</a>
+        <a class="demo-btn filled" href="#">Filled Button</a>
+        <a class="demo-btn" href="#">Listen on Spotify ↗</a>
+      </div>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">D · Section 標題</div>
+      <h2 class="demo-section-title">Where to <span class="accent">find us</span> next.</h2>
+    </div>
+  </div>
+
+  <!-- ========== PANEL 2: Boldonse ========== -->
+  <div class="panel boldonse">
+    <div class="panel-meta">候選 02</div>
+    <h2 class="panel-name">Boldonse</h2>
+    <p class="panel-desc">最接近 Kuhlman 的「胖、有手感、書封 lettering」感。展示性最強，但小字會壓。</p>
+
+    <div class="test-block">
+      <div class="test-label">A · Nav 列</div>
+      <nav class="demo-nav">
+        <div class="brand">SoulFa.</div>
+        <ul>
+          <li><a class="active" href="#">About</a></li>
+          <li><a href="#">Music</a></li>
+          <li><a href="#">Gigs</a></li>
+          <li><a href="#">Merch</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">B · 首頁大標</div>
+      <h1 class="demo-headline">SoulFa.<br/>靈魂沙發</h1>
+      <div class="demo-meta-row">TAIPEI · SINCE 2018 · <span class="glow">LP NO.3 OUT NOW</span></div>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">C · 按鈕</div>
+      <div class="demo-btn-row">
+        <a class="demo-btn" href="#">Outline Button</a>
+        <a class="demo-btn filled" href="#">Filled Button</a>
+        <a class="demo-btn" href="#">Listen on Spotify ↗</a>
+      </div>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">D · Section 標題</div>
+      <h2 class="demo-section-title">Where to <span class="accent">find us</span> next.</h2>
+    </div>
+  </div>
+
+  <!-- ========== PANEL 3: Big Shoulders Display ========== -->
+  <div class="panel bigshoulders">
+    <div class="panel-meta">候選 03</div>
+    <h2 class="panel-name">Big Shoulders Display</h2>
+    <p class="panel-desc">高瘦、編輯感強、書封感。跟 Kuhlman 不同方向，但同樣「能扛」。芝加哥城市專案出品，自帶城市感。</p>
+
+    <div class="test-block">
+      <div class="test-label">A · Nav 列</div>
+      <nav class="demo-nav">
+        <div class="brand">SoulFa.</div>
+        <ul>
+          <li><a class="active" href="#">About</a></li>
+          <li><a href="#">Music</a></li>
+          <li><a href="#">Gigs</a></li>
+          <li><a href="#">Merch</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">B · 首頁大標</div>
+      <h1 class="demo-headline">SoulFa.<br/>靈魂沙發</h1>
+      <div class="demo-meta-row">TAIPEI · SINCE 2018 · <span class="glow">LP NO.3 OUT NOW</span></div>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">C · 按鈕</div>
+      <div class="demo-btn-row">
+        <a class="demo-btn" href="#">Outline Button</a>
+        <a class="demo-btn filled" href="#">Filled Button</a>
+        <a class="demo-btn" href="#">Listen on Spotify ↗</a>
+      </div>
+    </div>
+
+    <div class="test-block">
+      <div class="test-label">D · Section 標題</div>
+      <h2 class="demo-section-title">Where to <span class="accent">find us</span> next.</h2>
+    </div>
+
+    <div class="vote">
+      看完三個後，跟我說「我要 01 / 02 / 03」就好。<br/>
+      也可以混搭：Nav 用 A、首頁大標用 B 之類，我都能配。
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
