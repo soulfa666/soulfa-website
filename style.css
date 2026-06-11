@@ -262,9 +262,11 @@ nav.top.open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotat
   nav.top .brand     { font-size: 22px; letter-spacing: 0.12em; flex: 1; }
 
   /* ── Fullscreen menu overlay (slides down from below nav bar) ── */
+  /* position: absolute (not fixed) so backdrop-filter on scrolled nav
+     doesn't create a new containing block and break the overlay */
   nav.top ul {
-    position: fixed;
-    top: 58px; left: 0; right: 0; bottom: 0;
+    position: absolute;
+    top: 58px; left: 0; right: 0; height: 100dvh;
     flex-direction: column;
     align-items: center;
     justify-content: center;
