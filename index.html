@@ -121,7 +121,7 @@
     }
     .hero-scroll {
       position: absolute;
-      bottom: 32px;
+      bottom: calc(32px + env(safe-area-inset-bottom, 0px));
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--font-kuhlman);
@@ -437,6 +437,10 @@
     }
 
     @media (max-width: 720px) {
+      /* Hero: use svh so Safari toolbar doesn't hide scroll hint */
+      section.hero { height: 100svh; }
+      .hero-scroll { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+
       /* Album section */
       .album-section { padding: 80px 24px 80px; }
       .album-cover-wrap { max-width: 320px; }
@@ -627,6 +631,26 @@
       raf = requestAnimationFrame(update);
     }, { passive: true });
     update();
+  })();
+
+  // ─── HERO IMAGE: touch drag left/right to pan (mobile only) ───
+  (function () {
+    if (window.innerWidth > 720) return;
+    var hero = document.getElementById('hero');
+    var img = hero && hero.querySelector('.bg');
+    if (!img) return;
+    var pct = 50; // current object-position-x in %
+    var startX = 0;
+    hero.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+    hero.addEventListener('touchmove', function (e) {
+      var dx = e.touches[0].clientX - startX;
+      startX = e.touches[0].clientX;
+      // dx positive = finger moves right = image shifts left = pct decreases
+      pct = Math.max(0, Math.min(100, pct - dx / window.innerWidth * 80));
+      img.style.objectPosition = pct.toFixed(1) + '% center';
+    }, { passive: true });
   })();
 
   // ─── NAV bar bg: appears when hero leaves viewport (reversible toggle) ───
