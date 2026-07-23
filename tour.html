@@ -12,205 +12,289 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    body.orange { background: #d66528; color: #dee89b; }
-    body.orange::before { mix-blend-mode: multiply; opacity: 0.10; }
+    /* ── PAGE BASE: dark instead of orange ── */
+    body.orange { background: #0E0C09; }
 
-    body.orange nav.top .brand,
-    body.orange nav.top ul a { color: #dee89b; }
-    body.orange nav.top ul a:hover,
-    body.orange nav.top ul a.is-active {
-      color: #FFFFFF;
-      font-variation-settings: 'wdth' 125, 'SEED' 12;
-      letter-spacing: 0.24em;
-    }
+    /* Nav: override scrolled state for dark page */
     body.orange nav.top.scrolled {
-      background: rgba(180, 70, 24, 0.85);
-      border-bottom: 1px solid rgba(222, 232, 155, 0.2);
+      background: rgba(10, 8, 6, 0.92) !important;
+      border-bottom-color: rgba(222, 232, 155, 0.14) !important;
     }
-    body.orange .section-tag { color: #dee89b; }
-    body.orange .section-tag::before { background: #dee89b; }
-    body.orange .section-title { color: #dee89b; }
-    body.orange .section-title .amber { color: #FFFFFF; }
 
-    /* ─── SKY (future shows as floating clouds) ─── */
-    .sky {
-      position: relative;
-      height: 320px;
-      margin-bottom: 30px;
-      overflow: hidden;
-      border-bottom: 1px dashed rgba(222, 232, 155, 0.3);
+    /* ── HERO ───────────────────────────────────── */
+    .tour-hero {
+      min-height: 100vh;
+      padding: 140px 8vw 100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+      border-bottom: 1px solid rgba(222, 232, 155, 0.10);
     }
-    .sky-label {
-      position: absolute;
-      top: 0; left: 0;
+    .tour-eyebrow {
       font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      color: rgba(222, 232, 155, 0.7);
+      font-size: 11px;
+      letter-spacing: 0.46em;
       text-transform: uppercase;
+      color: rgba(222, 232, 155, 0.45);
+      margin-bottom: 28px;
     }
-    .cloud {
-      position: absolute;
-      animation: drift 28s ease-in-out infinite;
-      cursor: default;
+    .tour-main-title {
+      font-family: var(--font-zh);
+      font-weight: 600;
+      font-size: clamp(52px, 7.5vw, 108px);
+      line-height: 1.02;
+      color: #DEE89B;
+      letter-spacing: 0.02em;
+      margin: 0 0 20px;
     }
-    /* Cloud shape: pill body + two bumps via pseudo-elements */
-    .cloud-body {
-      position: relative;
-      display: inline-block;
-      background: rgba(222, 232, 155, 0.93);
-      border-radius: 60px;
-      padding: 9px 20px 11px;
-      text-align: center;
+    .tour-sub-title {
       font-family: var(--font-juana);
       font-weight: 600;
-      font-size: 15px;
-      color: #b84018;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      filter: drop-shadow(0 6px 14px rgba(140, 50, 8, 0.32));
-      line-height: 1.35;
+      font-size: clamp(13px, 1.6vw, 20px);
+      letter-spacing: 0.32em;
+      text-indent: 0.32em;
+      text-transform: uppercase;
+      color: rgba(222, 232, 155, 0.38);
     }
-    .cloud-body::before {
-      content: '';
+    .tour-hero-poster {
+      width: 100%;
+      max-width: 400px;
+      justify-self: end;
+      box-shadow:
+        0 6px 20px rgba(0,0,0,0.5),
+        0 32px 80px rgba(0,0,0,0.65);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .tour-hero-poster:hover {
+      transform: scale(1.02);
+      box-shadow:
+        0 6px 20px rgba(0,0,0,0.5),
+        0 48px 100px rgba(0,0,0,0.72);
+    }
+
+    /* ── SHOW CARDS ─────────────────────────────── */
+    .show-card {
+      min-height: 86vh;
+      padding: 80px 8vw;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(0,0,0,0.22);
+    }
+
+    /* Weather colour identities */
+    .show-sun  { background: linear-gradient(148deg, #6A3308 0%, #A85618 50%, #CE7022 100%); }
+    .show-wind { background: linear-gradient(148deg, #0E2234 0%, #1A3E5C 50%, #26547A 100%); }
+    .show-rain { background: linear-gradient(148deg, #08111E 0%, #0E1E38 50%, #162848 100%); }
+
+    /* Metadata column */
+    .show-meta { position: relative; }
+    .show-num {
       position: absolute;
-      background: rgba(222, 232, 155, 0.93);
-      width: 46%;
-      height: 85%;
-      border-radius: 50%;
-      top: -48%;
-      left: 13%;
+      top: -14px; left: -6px;
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(90px, 13vw, 170px);
+      line-height: 1;
+      color: rgba(255,255,255,0.06);
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.03em;
     }
-    .cloud-body::after {
-      content: '';
-      position: absolute;
-      background: rgba(222, 232, 155, 0.93);
-      width: 32%;
-      height: 62%;
-      border-radius: 50%;
-      top: -30%;
-      right: 16%;
-    }
-    .cloud .date {
+    .show-date-row {
       font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      color: rgba(180, 60, 12, 0.8);
-      display: block;
-      margin-bottom: 1px;
+      font-size: 11px;
+      letter-spacing: 0.42em;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 18px;
+      text-transform: uppercase;
     }
-    .cloud-1 { top: 50px;  left: 6%;   animation-delay: -2s; }
-    .cloud-2 { top: 130px; left: 38%;  animation-delay: -10s; }
-    .cloud-3 { top: 70px;  right: 5%;  animation-delay: -16s; }
-    .cloud-4 { top: 180px; left: 22%;  animation-delay: -7s; }
-    .cloud-5 { top: 220px; right: 24%; animation-delay: -22s; }
-    .cloud-6 { top: 250px; left: 50%;  animation-delay: -14s; }
-
-    @keyframes drift {
-      0%, 100% { transform: translate(0, 0); opacity: 0.55; }
-      50% { transform: translate(36px, -8px); opacity: 0.95; }
+    .show-city {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(70px, 10.5vw, 148px);
+      line-height: 0.88;
+      color: #FFFFFF;
+      letter-spacing: -0.02em;
+      margin: 0 0 26px;
+    }
+    .show-venue {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.24em;
+      color: rgba(255,255,255,0.48);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .show-weather {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 52px;
+    }
+    .show-buy {
+      display: inline-block;
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      border: 1px solid rgba(255,255,255,0.40);
+      padding: 13px 38px;
+      text-decoration: none;
+      transition: background 0.24s ease, border-color 0.24s ease, transform 0.24s ease;
+    }
+    .show-buy:hover {
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.80);
+      transform: translateY(-2px);
     }
 
-    .mountain-header {
+    /* Art column — large atmospheric weather mark */
+    .show-art {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .weather-mark {
+      font-size: clamp(110px, 16vw, 200px);
+      opacity: 0.18;
+      filter: blur(1px);
+      user-select: none;
+      animation: wm-float 5s ease-in-out infinite;
+      line-height: 1;
+    }
+    .show-wind .weather-mark { animation-duration: 3.5s; }
+    .show-rain .weather-mark { animation-duration: 2.8s; }
+    @keyframes wm-float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-14px); }
+    }
+
+    /* ── PAST SHOWS ─────────────────────────────── */
+    .past-section {
+      padding: 120px 8vw 80px;
+      border-top: 1px solid rgba(222, 232, 155, 0.08);
+    }
+    .past-head {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin: 32px 0 32px;
+      margin-bottom: 60px;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 12px;
     }
-    .mountain-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      color: rgba(222, 232, 155, 0.7);
-      text-transform: uppercase;
-    }
-    .mountain-count {
+    .past-title {
       font-family: var(--font-juana);
       font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 0.16em;
-      color: #FFFFFF;
+      font-size: clamp(28px, 4vw, 52px);
+      color: #DEE89B;
+      letter-spacing: 0;
+    }
+    .past-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.40em;
+      color: rgba(222, 232, 155, 0.35);
       text-transform: uppercase;
     }
-
-    .mountain {
-      position: relative;
-      width: 100%;
-      /* height set by JS */
-      margin: 0 auto;
-      overflow: visible;
+    .past-list {
+      list-style: none;
+      padding: 0; margin: 0;
     }
-    /* Each ticket = one organic paper stratum forming the mountain */
-    .ticket {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+    .past-list li {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 0 14px;
-      overflow: hidden;
-      white-space: nowrap;
-      cursor: default;
-      font-family: var(--font-juana);
-      font-weight: 600;
-      font-size: 13px;
-      color: #7a2808;
-      letter-spacing: 0.005em;
-      transition: transform 0.22s ease, filter 0.22s ease;
+      align-items: baseline;
+      gap: 28px;
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(222, 232, 155, 0.07);
+      transition: opacity 0.18s;
     }
-    .ticket:hover {
-      transform: translateX(-50%) translateY(-7px) !important;
-      filter: drop-shadow(0 12px 20px rgba(100, 40, 6, 0.55)) !important;
-      z-index: 999 !important;
-    }
-    .ticket .ticket-date {
+    .past-list li:first-child { border-top: 1px solid rgba(222, 232, 155, 0.07); }
+    .past-list li:hover { opacity: 0.6; }
+    .p-date {
       font-family: var(--font-mono);
-      font-size: 9px;
-      letter-spacing: 0.10em;
-      color: rgba(140, 55, 14, 0.65);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: rgba(222, 232, 155, 0.32);
       flex-shrink: 0;
+      width: 7em;
+    }
+    .p-name {
+      font-family: var(--font-juana);
+      font-weight: 500;
+      font-size: 15px;
+      color: rgba(222, 232, 155, 0.68);
+      letter-spacing: 0.01em;
     }
 
+    /* Booking note */
     .booking-note {
-      margin-top: 64px;
+      margin-top: 80px;
       font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      color: rgba(222, 232, 155, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.24em;
+      color: rgba(222, 232, 155, 0.35);
       text-transform: uppercase;
       text-align: center;
     }
     .booking-note a {
-      color: #FFFFFF;
-      border-bottom: 1px solid #FFFFFF;
+      color: rgba(222, 232, 155, 0.7);
+      border-bottom: 1px solid rgba(222, 232, 155, 0.30);
       padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .booking-note a:hover {
+      color: #DEE89B;
+      border-color: rgba(222, 232, 155, 0.7);
     }
 
-    @media (max-width: 720px) {
-      .sky { height: 220px; }
-      .cloud-body { font-size: 13px; padding: 7px 16px 9px; }
-      .cloud-1 { top: 24px;  left: 2%; }
-      .cloud-2 { top: 100px; left: 5%; }
-      .cloud-3 { top: 152px; left: 3%; }
-      .cloud-4 { top: 32px;  left: 50%; }
-      .cloud-5 { top: 108px; left: 48%; }
-      .cloud-6 { top: 162px; left: 46%; }
-
-      .ticket { font-size: 11px; padding: 0 10px; gap: 6px; }
-      .ticket .ticket-date { font-size: 8px; }
-
-      section.scene { padding: 80px 16px 60px; }
-      .mountain-header { margin: 20px 0 20px; }
-      .booking-note { margin-top: 40px; font-size: 11px; }
+    /* Footer */
+    body.orange footer {
+      background: #080604;
+      border-top: 1px solid rgba(222, 232, 155, 0.10);
     }
-
-    body.orange footer { background: #b85420; border-top: 1px solid rgba(222, 232, 155, 0.2); }
     body.orange .footer-socials a { color: #dee89b; border: none; padding: 4px; }
     body.orange .footer-socials a:hover { color: #FFFFFF; border: none; }
-    body.orange .footer-legal { color: rgba(222, 232, 155, 0.65); border-top-color: rgba(222, 232, 155, 0.2); }
+    body.orange .footer-legal {
+      color: rgba(222, 232, 155, 0.40);
+      border-top-color: rgba(222, 232, 155, 0.10);
+    }
+
+    /* ── MOBILE ──────────────────────────────────── */
+    @media (max-width: 720px) {
+      .tour-hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 110px 24px 72px;
+        gap: 44px;
+      }
+      .tour-hero-poster { max-width: 260px; order: -1; }
+      .tour-main-title  { font-size: clamp(48px, 15vw, 72px); }
+
+      .show-card {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 64px 24px 72px;
+        gap: 36px;
+      }
+      .show-art { order: -1; height: auto; }
+      .weather-mark { font-size: clamp(80px, 28vw, 120px); }
+      .show-city  { font-size: clamp(60px, 20vw, 96px); }
+      .show-weather { margin-bottom: 36px; }
+
+      .past-section { padding: 80px 24px 60px; }
+      .past-head    { margin-bottom: 40px; }
+      .p-name       { font-size: 13px; }
+      .past-list li { gap: 16px; }
+    }
   </style>
 </head>
 <body class="orange">
@@ -231,65 +315,118 @@
   </ul>
 </nav>
 
-<section class="scene">
-  <div class="container">
-    <div class="section-tag">— Tour</div>
-
-    <div class="sky">
-      <div class="sky-label">☁ Upcoming · 飄在空中</div>
-      <div class="cloud cloud-1"><div class="cloud-body"><span class="date">2026.06.20</span>台東最美星空音樂節</div></div>
-      <div class="cloud cloud-2"><div class="cloud-body"><span class="date">2026.08.15</span>敬請期待</div></div>
-      <div class="cloud cloud-3"><div class="cloud-body"><span class="date">2026.08.22</span>敬請期待</div></div>
-      <div class="cloud cloud-4"><div class="cloud-body"><span class="date">2026.08.28</span>敬請期待</div></div>
-      <div class="cloud cloud-5"><div class="cloud-body"><span class="date">2026.09.04</span>敬請期待</div></div>
-      <div class="cloud cloud-6"><div class="cloud-body"><span class="date">2026.09.12</span>敬請期待</div></div>
-    </div>
-
-    <div class="mountain-header">
-      <div class="mountain-label">⛰ Past — newest at the peak · hover to lift</div>
-      <div class="mountain-count">已完成 30 場</div>
-    </div>
-
-    <div class="mountain" id="mountain">
-      <div class="ticket"><span class="ticket-date">2026.04.26</span>北京站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.04.25</span>天津 琉璃SPACE · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.04.12</span>上海站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.04.10</span>杭州站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.03.28</span>重慶站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.03.27</span>成都站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.03.22</span>深圳站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.03.20</span>廣州站 · 失望的山巡演</div>
-      <div class="ticket"><span class="ticket-date">2026.03.13</span>台北發片專場</div>
-      <div class="ticket"><span class="ticket-date">2025.12.10</span>《失望的山》不插電 · 女巫店</div>
-      <div class="ticket"><span class="ticket-date">2024.11.30</span>南寧 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.29</span>廈門 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.24</span>北京 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.22</span>南京 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.17</span>深圳 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.16</span>廣州 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.10</span>武漢 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.08</span>重慶 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.02</span>上海 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.11.01</span>杭州 · 情緒遲到了</div>
-      <div class="ticket"><span class="ticket-date">2024.10.18</span>台北 · 好久不見場</div>
-      <div class="ticket"><span class="ticket-date">2023.06.22</span>香港 Star Hall · 全個世界都有電話</div>
-      <div class="ticket"><span class="ticket-date">2023.04.01</span>大港開唱 Megaport</div>
-      <div class="ticket"><span class="ticket-date">2023.01.14</span>陳如山 X 靈魂沙發 · 公路電影發片場</div>
-      <div class="ticket"><span class="ticket-date">2023.01.07</span>Goodbye Caroline · 暖身小巡迴</div>
-      <div class="ticket"><span class="ticket-date">2022.10.22</span>南國生活節 · 墾丁大灣</div>
-      <div class="ticket"><span class="ticket-date">2022.08.06</span>河海音樂祭 · 淡水漁人碼頭</div>
-      <div class="ticket"><span class="ticket-date">2022.03.25</span>杜鵑花音樂節 · 後台</div>
-      <div class="ticket"><span class="ticket-date">2021.08.11</span>Slumber Days 線上演唱會</div>
-      <div class="ticket"><span class="ticket-date">2021.03.12</span>SnoozzZ 補眠場 · Legacy Taipei</div>
-      <div class="ticket"><span class="ticket-date">2021.03.06</span>SnoozzZ 補眠場 · Legacy Taichung</div>
-      <div class="ticket"><span class="ticket-date">2020.01.18</span>SoulFa 首專發片 · 台北</div>
-      <div class="ticket"><span class="ticket-date">2020.01.04</span>SoulFa 首專發片 · 台中</div>
-      <div class="ticket"><span class="ticket-date">2019.12.28</span>SoulFa 首專發片 · 高雄</div>
-      <div class="ticket"><span class="ticket-date">2018.12.23</span>四四南村 · 尼古拉斯採購日</div>
-    </div>
+<!-- ─── HERO ─── -->
+<section class="tour-hero">
+  <div>
+    <div class="tour-eyebrow">SoulFa 靈魂沙發 · Live Tour 2026</div>
+    <h1 class="tour-main-title">失望的山<br>巡迴系列</h1>
+    <div class="tour-sub-title">La Montagna Delusa</div>
   </div>
+  <a href="https://www.indievox.com/activity/list/soulfa" target="_blank" rel="noopener">
+    <picture>
+      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_mobile.webp" type="image/webp">
+      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.webp" type="image/webp">
+      <img class="tour-hero-poster"
+           src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.jpg"
+           alt="2026 失望的山巡迴系列 Tour Poster" />
+    </picture>
+  </a>
 </section>
 
+<!-- ─── THREE SHOWS ─── -->
+
+<!-- 01 · 高雄 · 晴 -->
+<div class="show-card show-sun">
+  <div class="show-meta">
+    <div class="show-num">01</div>
+    <div class="show-date-row">2026 · 08 · 28 · Sat</div>
+    <h2 class="show-city">高雄</h2>
+    <div class="show-venue">Live Warehouse</div>
+    <div class="show-weather">天氣：晴 · Sun</div>
+    <a class="show-buy"
+       href="https://www.indievox.com/activity/detail/26_iv0414008"
+       target="_blank" rel="noopener">購票 iNDIEVOX →</a>
+  </div>
+  <div class="show-art"><span class="weather-mark">☀</span></div>
+</div>
+
+<!-- 02 · 台中 · 風 -->
+<div class="show-card show-wind">
+  <div class="show-meta">
+    <div class="show-num">02</div>
+    <div class="show-date-row">2026 · 09 · 04 · Fri</div>
+    <h2 class="show-city">台中</h2>
+    <div class="show-venue">Legacy Taichung</div>
+    <div class="show-weather">天氣：風 · Wind</div>
+    <a class="show-buy"
+       href="https://www.indievox.com/activity/detail/26_iv041334f"
+       target="_blank" rel="noopener">購票 iNDIEVOX →</a>
+  </div>
+  <div class="show-art"><span class="weather-mark">💨</span></div>
+</div>
+
+<!-- 03 · 台北 · 雨 -->
+<div class="show-card show-rain">
+  <div class="show-meta">
+    <div class="show-num">03</div>
+    <div class="show-date-row">2026 · 09 · 12 · Sat</div>
+    <h2 class="show-city">台北</h2>
+    <div class="show-venue">Legacy Taipei</div>
+    <div class="show-weather">天氣：雨 · Rain</div>
+    <a class="show-buy"
+       href="https://www.indievox.com/activity/detail/26_iv0413825"
+       target="_blank" rel="noopener">購票 iNDIEVOX →</a>
+  </div>
+  <div class="show-art"><span class="weather-mark">🌧</span></div>
+</div>
+
+<!-- ─── PAST SHOWS ─── -->
+<section class="past-section">
+  <div class="past-head">
+    <div class="past-title">Past Shows</div>
+    <div class="past-count">⛰ 已完成 35 場</div>
+  </div>
+  <ul class="past-list">
+    <li><span class="p-date">2026.04.26</span><span class="p-name">北京站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.04.25</span><span class="p-name">天津 琉璃SPACE · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.04.12</span><span class="p-name">上海站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.04.10</span><span class="p-name">杭州站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.03.28</span><span class="p-name">重慶站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.03.27</span><span class="p-name">成都站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.03.22</span><span class="p-name">深圳站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.03.20</span><span class="p-name">廣州站 · 失望的山巡演</span></li>
+    <li><span class="p-date">2026.03.13</span><span class="p-name">台北發片專場</span></li>
+    <li><span class="p-date">2025.12.10</span><span class="p-name">《失望的山》不插電 · 女巫店</span></li>
+    <li><span class="p-date">2024.11.30</span><span class="p-name">南寧 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.29</span><span class="p-name">廈門 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.24</span><span class="p-name">北京 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.22</span><span class="p-name">南京 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.17</span><span class="p-name">深圳 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.16</span><span class="p-name">廣州 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.10</span><span class="p-name">武漢 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.08</span><span class="p-name">重慶 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.02</span><span class="p-name">上海 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.11.01</span><span class="p-name">杭州 · 情緒遲到了</span></li>
+    <li><span class="p-date">2024.10.18</span><span class="p-name">台北 · 好久不見場</span></li>
+    <li><span class="p-date">2023.06.22</span><span class="p-name">香港 Star Hall · 全個世界都有電話</span></li>
+    <li><span class="p-date">2023.04.01</span><span class="p-name">大港開唱 Megaport</span></li>
+    <li><span class="p-date">2023.01.14</span><span class="p-name">陳如山 X 靈魂沙發 · 公路電影發片場</span></li>
+    <li><span class="p-date">2023.01.07</span><span class="p-name">Goodbye Caroline · 暖身小巡迴</span></li>
+    <li><span class="p-date">2022.10.22</span><span class="p-name">南國生活節 · 墾丁大灣</span></li>
+    <li><span class="p-date">2022.08.06</span><span class="p-name">河海音樂祭 · 淡水漁人碼頭</span></li>
+    <li><span class="p-date">2022.03.25</span><span class="p-name">杜鵑花音樂節 · 後台</span></li>
+    <li><span class="p-date">2021.08.11</span><span class="p-name">Slumber Days 線上演唱會</span></li>
+    <li><span class="p-date">2021.03.12</span><span class="p-name">SnoozzZ 補眠場 · Legacy Taipei</span></li>
+    <li><span class="p-date">2021.03.06</span><span class="p-name">SnoozzZ 補眠場 · Legacy Taichung</span></li>
+    <li><span class="p-date">2020.01.18</span><span class="p-name">SoulFa 首專發片 · 台北</span></li>
+    <li><span class="p-date">2020.01.04</span><span class="p-name">SoulFa 首專發片 · 台中</span></li>
+    <li><span class="p-date">2019.12.28</span><span class="p-name">SoulFa 首專發片 · 高雄</span></li>
+    <li><span class="p-date">2018.12.23</span><span class="p-name">四四南村 · 尼古拉斯採購日</span></li>
+  </ul>
+  <p class="booking-note">演出合作洽詢 · <a href="mailto:soulfa666@gmail.com">soulfa666@gmail.com</a></p>
+</section>
+
+<!-- ─── FOOTER ─── -->
 <footer>
   <div class="footer-inner">
     <a href="index.html" class="footer-logo-link" aria-label="SoulFa"><svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1199.57 787.9" role="img" aria-label="SoulFa"><path d="M1343,405.63q-72,29.17-144,58.22Q693,668.34,186.92,873c-13.75,5.55-22.56-15.66-8.9-21.2q40.3-16.37,80.63-32.57c-3.88.78-7.51,1.42-11,1.86a99.63,99.63,0,0,1-26.39.11c-23.48-3.22-45.64-12.82-66-28.58a13,13,0,1,1,15.92-20.55C188,785,205.92,792.89,224.86,795.39c13.87,2,44.89.42,97.21-31.15C393.24,721.38,454.33,640,453,590c-.3-9.69-2.27-23-10.5-30.91-10.48-10.25-32-12.43-62.13-6.28-7.85,1.65-15.85,3.59-23.76,5.52-20.4,5-41.42,10.17-61.83,9.89-27.67-.47-52.67-12.76-68.49-33.73-16.92-22.31-22-52.23-14-82.16,13.68-51.3,57.91-91.85,83-111.44,48.57-37.76,100-57.17,141.2-53.14,21.78,2.24,37.44,11,45,25.5,16.82,31.77-9.94,74.18-35.06,107.57a13,13,0,1,1-20.8-15.7c29.25-38.83,40.3-65.62,32.86-79.68-4.51-8.51-17.34-11-24.64-11.69-34.54-3.49-79.2,14-122.53,47.71-38.44,30-65.33,65.55-73.95,97.59-5.91,22.06-2.4,43.85,9.53,59.75,11.24,14.79,28.32,23.08,48.18,23.34,17.08.24,35.59-4.24,55.18-9,8.35-2.08,16.61-4.15,24.84-5.75,39.55-8.08,68.27-3.67,85.5,13a57.46,57.46,0,0,1,14.09,23.4l113.75-46a13,13,0,1,1,9.74,24.15L569,553.79l-29.15,73.93c-7.85,19.89-3.3,41.09,9.86,46.27,7.7,3,15.66-.69,19.71-3.15,8-5,14.92-13.76,18.91-24l51-129.42c4-10.23,4.89-21.28,2.44-30.42-1.32-4.55-4.49-12.68-12.29-15.76s-15.67.6-19.7,3.15c-8.08,5-14.94,13.66-19,23.91a13,13,0,1,1-24.18-9.53c6.08-15.59,16.57-28.51,29.45-36.54,13.91-8.62,29.61-10.52,43-5.27s23.61,17.39,27.83,33.15a36.37,36.37,0,0,1,1.16,5.51l95-38.38a13,13,0,0,1,9.74,24.15L748.85,481v.09l-28.22,71.77c-8.34,21.07-4.31,44.09,8.65,49.11s31.48-8.9,39.82-30.07l54.07-137.4a55.43,55.43,0,0,0,1.9-5.43,10.7,10.7,0,0,1,.69-1.85c0-.09.07-.19.15-.3a12.47,12.47,0,0,1,7.49-8.08l84.77-34.3a15.87,15.87,0,0,1,2-.62L972.25,251.5A13,13,0,1,1,996.43,261L874.78,570.16q43.35-17.6,86.79-35.11a13.06,13.06,0,0,1,.45-8.12l61.7-156.81L993.41,382.4a10.1,10.1,0,0,1-3.22.88,13,13,0,0,1-6.51-25l53.22-21.49,87.47-222.34c-107.55,13.19-259.83,51.34-266.58,108.34-.9,7.44.65,15.3,4.78,23.76,13.66,20,48.67,20,59.17,19.45A13,13,0,0,1,924,291.91l-1,.12c-18,.81-62.32-.51-82.71-31.92l-.81-1.29c-6.51-13.35-9-26.46-7.57-39.15,11.91-101,278.53-130.25,310.91-133.53l.64-.08a17.55,17.55,0,0,1,2.32.07l.19,0a13.23,13.23,0,0,1,2.08.38c.2.07.3.15.39.14.29.06.49.22.78.27a5,5,0,0,1,1.29.67,15.93,15.93,0,0,1,2,1.32,8.35,8.35,0,0,1,1.58,1.56,8.62,8.62,0,0,1,1.58,2.21,9.81,9.81,0,0,1,1,2.28,11.61,11.61,0,0,1,.6,2.51l.08.64a17.65,17.65,0,0,1-.08,2.33l0,.18a12.47,12.47,0,0,1-.39,2.09c-.13.38-.27.77-.4,1.16l-.57,1.37-85.79,218.05L1127,300.4a.09.09,0,0,1,.08-.1l4.23-1.65,32-13a13,13,0,0,1,9.74,24.15l-29.18,11.77-29.34,74.6c-4,10.23-4.89,21.28-2.43,30.42,1.32,4.55,4.57,12.66,12.28,15.76s15.66-.69,19.71-3.15c8.07-5,14.93-13.76,19-24L1214,285.83c7.86-19.8,3.32-41-9.85-46.18s-30.85,7.25-38.61,27.14a13.06,13.06,0,1,1-24.29-9.61c13.25-33.55,45.7-52.31,72.42-41.81s37.77,46.44,24.61,80l-22.54,57.43a8.68,8.68,0,0,1,0,2.22c-1.37,19.91,8.63,34.39,25.63,36.95,6.7,1,14.73,0,23.18-2.76a12.94,12.94,0,0,1,16.43,8.29,13.59,13.59,0,0,1,0,8.44l53.14-21.48C1347.8,378.89,1356.6,400.1,1343,405.63ZM551.37,700.83a41.75,41.75,0,0,1-11.27-2.64c-26.71-10.51-37.66-46.36-24.52-80l20-50.9L479.48,590c-.18,0-.26.13-.44.15,1.12,65-73.09,154-143.48,196.38-2.93,1.76-5.78,3.42-8.62,5.08Zm178.36-72a43,43,0,0,1-10-2.53c-26.72-10.5-37.19-47.71-23.33-83l19.19-48.76-46,18.63a15.13,15.13,0,0,1-2,.63,72.75,72.75,0,0,1-4,13.2L612.61,656.37a79.05,79.05,0,0,1-17.26,26.74Q662.49,656,729.73,628.8Zm116.36-56.94L907,417.19l-58.42,23.63a8.53,8.53,0,0,1-.62,1.65,12.68,12.68,0,0,1-.54,1.65L793.38,581.43a85,85,0,0,1-19.06,29.29c24-9.72,47.94-19.34,71.9-29.05A13.48,13.48,0,0,1,846.09,571.86Zm278.59-102.74a42,42,0,0,1-9.86-2.54c-13.36-5.26-23.51-17.31-27.83-33.06-4-14.69-2.86-31.32,3.31-46.93l20.32-51.5L1057,356.72,991.62,522.9Q1058.1,496,1124.68,469.12Zm126-50.93a59.52,59.52,0,0,1-13.22-.55,53.56,53.56,0,0,1-37.87-23.91l-12.26,31.12a81.37,81.37,0,0,1-16,25.38C1197.73,439.55,1224.26,428.86,1250.69,418.19Z" transform="translate(-150.22 -86.05)"/></svg></a>
@@ -305,134 +442,16 @@
 
 <script src="transitions.js"></script>
 <script>
-  // ── Soft paper strata mountain ──────────────────────────────────────────────
-  // Each layer is an organic paper strip with wavy bezier edges (SVG clipPath),
-  // a curl-shadow gradient at the bottom, and irregular width to create holes.
+  // Nav: add .scrolled when user scrolls past 60px
   (function () {
-    var mountain = document.getElementById('mountain');
-    if (!mountain) return;
-    var tickets = Array.from(mountain.querySelectorAll('.ticket'));
-    var total = tickets.length;
-    if (!total) return;
-
-    // ── Seeded xorshift32 RNG (reproducible look) ───────────────────────────
-    var _s = 0xBEEFCAFE;
-    function rnd() {
-      _s ^= _s << 13; _s ^= _s >> 17; _s ^= _s << 5;
-      return (_s >>> 0) / 4294967295;
+    var nav = document.getElementById('topnav');
+    if (!nav) return;
+    function tick() {
+      if (window.scrollY > 60) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
     }
-
-    // ── Layout ───────────────────────────────────────────────────────────────
-    var layerH = 36;   // px: each strip height
-    var stepY  = 24;   // px: step between strips (overlap = 12px)
-    var totalH = stepY * (total - 1) + layerH + 30;
-    mountain.style.height = totalH + 'px';
-
-    // ── Mountain silhouette: narrow peak (t=0) → wide base (t=1) ────────────
-    function profileW(t) {
-      return 0.04 + Math.pow(t, 1.45) * 0.91;
-    }
-
-    // ── Colour: warm cream → muted earthy gold, with curl-shadow gradient ───
-    function layerBg(t) {
-      var r  = Math.round(234 - t * 54);
-      var g  = Math.round(226 - t * 70);
-      var b  = Math.round(152 - t * 88);
-      var dr = r - 30, dg = g - 24, db = b - 16;
-      return (
-        'linear-gradient(to bottom,' +
-        'rgb(' + r  + ',' + g  + ',' + b  + ') 45%,' +
-        'rgb(' + (r-8)  + ',' + (g-6)  + ',' + (b-4)  + ') 70%,' +
-        'rgb(' + dr + ',' + dg + ',' + db + ') 100%)'
-      );
-    }
-
-    // ── Inject SVG defs container ────────────────────────────────────────────
-    var NS  = 'http://www.w3.org/2000/svg';
-    var svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('aria-hidden', 'true');
-    svg.style.cssText = 'position:absolute;top:0;left:0;width:0;height:0;pointer-events:none;';
-    var defs = document.createElementNS(NS, 'defs');
-    svg.appendChild(defs);
-    mountain.insertBefore(svg, mountain.firstChild);
-
-    // ── Wavy bezier clip path (objectBoundingBox: 0-1 coords) ───────────────
-    function wavyPath() {
-      var tSegs = 5 + Math.floor(rnd() * 3);   // 5-7 top segments
-      var bSegs = 4 + Math.floor(rnd() * 3);   // 4-6 bottom segments
-
-      // Top edge y-positions (0% = top of element)
-      var ty = [];
-      for (var i = 0; i <= tSegs; i++) ty.push(Math.max(0, rnd() * 0.16 - 0.02));
-
-      // Bottom edge y-positions (near 100%)
-      var by = [];
-      for (var i = 0; i <= bSegs; i++) by.push(Math.min(1, 0.84 + rnd() * 0.16));
-
-      var d = 'M 0 ' + ty[0].toFixed(4);
-
-      // Top: left → right
-      for (var i = 1; i <= tSegs; i++) {
-        var x0 = (i-1)/tSegs, y0 = ty[i-1];
-        var x1 = i/tSegs,     y1 = ty[i];
-        var sp = x1 - x0;
-        var cp1x = (x0 + sp * (0.20 + rnd()*0.20)).toFixed(4);
-        var cp1y = (y0 + (rnd()-0.5)*0.14).toFixed(4);
-        var cp2x = (x0 + sp * (0.55 + rnd()*0.25)).toFixed(4);
-        var cp2y = (y1 + (rnd()-0.5)*0.14).toFixed(4);
-        d += ' C ' + cp1x+' '+cp1y+' '+cp2x+' '+cp2y+' '+x1.toFixed(4)+' '+y1.toFixed(4);
-      }
-
-      // Right edge → bottom-right corner
-      d += ' L 1 ' + by[bSegs].toFixed(4);
-
-      // Bottom: right → left
-      for (var i = bSegs; i >= 1; i--) {
-        var x0 = i/bSegs,     y0 = by[i];
-        var x1 = (i-1)/bSegs, y1 = by[i-1];
-        var sp = x0 - x1;
-        var cp1x = (x0 - sp*(0.20 + rnd()*0.20)).toFixed(4);
-        var cp1y = (y0 + (rnd()-0.5)*0.10).toFixed(4);
-        var cp2x = (x0 - sp*(0.55 + rnd()*0.25)).toFixed(4);
-        var cp2y = (y1 + (rnd()-0.5)*0.10).toFixed(4);
-        d += ' C ' + cp1x+' '+cp1y+' '+cp2x+' '+cp2y+' '+x1.toFixed(4)+' '+y1.toFixed(4);
-      }
-
-      d += ' L 0 ' + ty[0].toFixed(4) + ' Z';
-      return d;
-    }
-
-    // ── Position every layer ─────────────────────────────────────────────────
-    tickets.forEach(function (ticket, i) {
-      var t = total > 1 ? i / (total - 1) : 0;
-
-      // Width: profile × per-layer random variation → organic gaps/holes
-      var w = Math.min(0.97, profileW(t) * (0.93 + rnd() * 0.12));
-
-      var y = i * stepY;
-      var z = total - i + 2;
-
-      // Create SVG clipPath
-      var cid = 'lc' + i;
-      var cp  = document.createElementNS(NS, 'clipPath');
-      cp.setAttribute('id', cid);
-      cp.setAttribute('clipPathUnits', 'objectBoundingBox');
-      var path = document.createElementNS(NS, 'path');
-      path.setAttribute('d', wavyPath());
-      cp.appendChild(path);
-      defs.appendChild(cp);
-
-      // Apply
-      ticket.style.top        = y + 'px';
-      ticket.style.left       = '50%';
-      ticket.style.width      = (w * 100).toFixed(2) + '%';
-      ticket.style.height     = layerH + 'px';
-      ticket.style.zIndex     = z;
-      ticket.style.background = layerBg(t);
-      ticket.style.clipPath   = 'url(#' + cid + ')';
-      ticket.style.filter     = 'drop-shadow(0 4px 7px rgba(0,0,0,0.26))';
-      ticket.style.transform  = 'translateX(-50%)';
-    });
+    window.addEventListener('scroll', tick, { passive: true });
+    tick();
   })();
 </script>
 
