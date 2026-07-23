@@ -491,52 +491,94 @@
       flex-direction: column;
       align-items: center;
     }
-    .tour-reveal-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.45em;
+    /* 比照 .album-pretitle 排版 */
+    .tour-reveal-title {
+      font-family: var(--font-zh);
+      font-weight: 600;
+      font-size: clamp(27px, 3.7vw, 45px);
+      letter-spacing: 0.06em;
+      color: #DEE89B;
+      margin: 0 0 48px;
+      line-height: 1.25;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .tour-reveal-title .accent {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 0.44em;
+      letter-spacing: 0.42em;
+      text-indent: 0.42em;
       text-transform: uppercase;
       color: rgba(222, 232, 155, 0.65);
-      margin-bottom: 52px;
+      display: block;
+      margin-top: 14px;
+      white-space: nowrap;
     }
     .tour-reveal-poster {
       display: block;
-      width: min(480px, 84vw);
-      transform: rotate(-1deg);
-      transform-origin: center bottom;
+      width: min(620px, 88vw);
       box-shadow:
         0 4px 12px rgba(0,0,0,0.45),
         0 32px 80px rgba(0,0,0,0.70),
         0 64px 120px rgba(0,0,0,0.35);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
     }
     .tour-reveal-poster:hover {
-      transform: rotate(0deg) scale(1.025);
+      transform: scale(1.015);
       box-shadow:
         0 4px 12px rgba(0,0,0,0.45),
-        0 48px 100px rgba(0,0,0,0.75),
+        0 44px 100px rgba(0,0,0,0.75),
         0 80px 140px rgba(0,0,0,0.38);
     }
-    .tour-reveal-cta {
-      margin-top: 56px;
+    /* 三個場次按鈕 */
+    .tour-tickets {
+      margin-top: 48px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .tour-ticket-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 16px 28px;
+      border: 1px solid rgba(222, 232, 155, 0.38);
+      color: #DEE89B;
+      text-decoration: none;
+      transition: background 0.26s ease, border-color 0.26s ease, transform 0.26s ease;
+      min-width: 120px;
+    }
+    .tour-ticket-btn:hover {
+      background: rgba(222, 232, 155, 0.10);
+      border-color: rgba(222, 232, 155, 0.80);
+      transform: translateY(-3px);
+    }
+    .tour-ticket-btn .t-weather {
+      font-size: 22px;
+      line-height: 1;
+    }
+    .tour-ticket-btn .t-date {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: rgba(222, 232, 155, 0.60);
+    }
+    .tour-ticket-btn .t-city {
       font-family: var(--font-juana);
       font-weight: 600;
-      font-size: 13px;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: #DEE89B;
-      border: 1px solid rgba(222, 232, 155, 0.45);
-      padding: 14px 40px;
-      transition: background 0.28s ease, border-color 0.28s ease;
-    }
-    .tour-reveal-cta:hover {
-      background: rgba(222, 232, 155, 0.1);
-      border-color: rgba(222, 232, 155, 0.85);
+      font-size: 15px;
+      letter-spacing: 0.06em;
     }
     @media (max-width: 720px) {
       .tour-reveal { padding: 80px 24px 80px; }
-      .tour-reveal-tag { margin-bottom: 36px; }
-      .tour-reveal-cta { margin-top: 40px; }
+      .tour-reveal-title { margin-bottom: 36px; }
+      .tour-tickets { margin-top: 36px; gap: 10px; }
+      .tour-ticket-btn { padding: 13px 20px; min-width: 100px; }
+      .tour-ticket-btn .t-city { font-size: 13px; }
     }
 
     /* ─── FOOTER ─── */
@@ -576,19 +618,36 @@
 
 <!-- ─── 失望的山巡迴 2026 ─── -->
 <section class="tour-reveal fade-in">
-  <div class="tour-reveal-tag">⛰ 失望的山巡迴系列 · Live Tour 2026</div>
-  <a href="https://www.indievox.com" target="_blank" rel="noopener" aria-label="購票 iNDIEVOX">
+  <h2 class="tour-reveal-title">
+    最新活動
+    <span class="accent">Latest Event</span>
+  </h2>
+  <a href="https://www.indievox.com/activity/list/soulfa" target="_blank" rel="noopener" aria-label="失望的山巡迴 購票">
     <picture>
-      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_mobile.webp" type="image/webp">
-      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_web.webp" type="image/webp">
+      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_mobile.webp" type="image/webp">
+      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.webp" type="image/webp">
       <img class="tour-reveal-poster"
-           src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_web.jpg"
+           src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.jpg"
            alt="2026 失望的山巡迴系列 Tour Poster"/>
     </picture>
   </a>
-  <a class="tour-reveal-cta" href="https://www.indievox.com" target="_blank" rel="noopener">
-    購票 iNDIEVOX →
-  </a>
+  <div class="tour-tickets">
+    <a class="tour-ticket-btn" href="https://www.indievox.com/activity/detail/26_iv0414008" target="_blank" rel="noopener">
+      <span class="t-weather">☀️</span>
+      <span class="t-date">08.28</span>
+      <span class="t-city">高雄</span>
+    </a>
+    <a class="tour-ticket-btn" href="https://www.indievox.com/activity/detail/26_iv041334f" target="_blank" rel="noopener">
+      <span class="t-weather">💨</span>
+      <span class="t-date">09.04</span>
+      <span class="t-city">台中</span>
+    </a>
+    <a class="tour-ticket-btn" href="https://www.indievox.com/activity/detail/26_iv0413825" target="_blank" rel="noopener">
+      <span class="t-weather">🌧</span>
+      <span class="t-date">09.12</span>
+      <span class="t-city">台北</span>
+    </a>
+  </div>
 </section>
 
 <!-- ─── FEATURED ALBUM (each child fades in as it enters viewport) ─── -->
@@ -627,16 +686,16 @@
       <div class="deco deco-square"></div>
 
       <!-- Show blocks — 失望的山巡迴 3 場 -->
-      <a class="show-block show-1" href="https://www.indievox.com" target="_blank" rel="noopener">
-        <span class="date">2026.08.28 · ☀ 天氣：晴</span>
+      <a class="show-block show-1" href="https://www.indievox.com/activity/detail/26_iv0414008" target="_blank" rel="noopener">
+        <span class="date">2026.08.28 · ☀️ 天氣：晴</span>
         <span class="name">高雄 Live Warehouse</span>
       </a>
-      <a class="show-block show-2" href="https://www.indievox.com" target="_blank" rel="noopener">
-        <span class="date">2026.09.04 · 〰 天氣：風</span>
+      <a class="show-block show-2" href="https://www.indievox.com/activity/detail/26_iv041334f" target="_blank" rel="noopener">
+        <span class="date">2026.09.04 · 💨 天氣：風</span>
         <span class="name">台中 Legacy</span>
       </a>
-      <a class="show-block show-3" href="https://www.indievox.com" target="_blank" rel="noopener">
-        <span class="date">2026.09.12 · ≋ 天氣：雨</span>
+      <a class="show-block show-3" href="https://www.indievox.com/activity/detail/26_iv0413825" target="_blank" rel="noopener">
+        <span class="date">2026.09.12 · 🌧 天氣：雨</span>
         <span class="name">台北 Legacy</span>
       </a>
     </div>
