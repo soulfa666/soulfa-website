@@ -17,9 +17,13 @@
 
     body.orange nav.top .brand,
     body.orange nav.top ul a { color: #dee89b; }
-    body.orange nav.top ul a:hover,
-    body.orange nav.top ul a.is-active {
+    body.orange nav.top ul a:hover {
       color: #FFFFFF;
+      font-variation-settings: 'wdth' 125, 'SEED' 12;
+      letter-spacing: 0.24em;
+    }
+    body.orange nav.top ul a.is-active {
+      color: #C77B4A;
       font-variation-settings: 'wdth' 125, 'SEED' 12;
       letter-spacing: 0.24em;
     }
@@ -283,6 +287,87 @@
     }
     .gated-form button:hover { background: #FFFFFF; border-color: #FFFFFF; }
 
+    /* ── GALLERY VIDEO HERO ── */
+    .gallery-hero {
+      position: relative;
+      height: 100svh;
+      background: #080604;
+      overflow: hidden;
+    }
+    .gallery-hero video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+    }
+    /* top gradient — nav legibility */
+    .gallery-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 160px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* bottom gradient into page background */
+    .gallery-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: var(--grad-h, 22px);
+      background: linear-gradient(to top, #d66528 0%, transparent 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* YouTube thumbnail — bottom-left corner */
+    .gallery-yt-link {
+      position: absolute;
+      bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+      left: 28px;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: opacity 0.22s;
+    }
+    .gallery-yt-link {
+      transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.22s;
+      transform-origin: bottom left;
+    }
+    .gallery-yt-link:hover { transform: scale(1.05); opacity: 0.9; }
+    .gallery-yt-link img {
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .gallery-yt-link span {
+      font-family: var(--font-mono);
+      font-size: 8.5px;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.65);
+      text-align: center;
+      max-width: 160px;
+      line-height: 1.55;
+    }
+    @media (max-width: 720px) {
+      .gallery-yt-link { left: 16px; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
+      .gallery-yt-link img { width: 110px; height: 110px; }
+      .gallery-yt-link span { font-size: 7.5px; max-width: 110px; }
+    }
+    /* Nav 白字：影片可見時 */
+    body.orange nav.top.over-video .brand,
+    body.orange nav.top.over-video ul a,
+    body.orange nav.top.over-video .nav-toggle { color: #FFFFFF; }
+    /* 但 is-active 保持橘色 */
+    body.orange nav.top.over-video ul a.is-active { color: #C77B4A; }
+
     body.orange footer { background: #b85420; border-top: 1px solid rgba(222, 232, 155, 0.2); }
     body.orange .footer-socials a { color: #dee89b; border: none; padding: 4px; }
     body.orange .footer-socials a:hover { color: #FFFFFF; border: none; }
@@ -316,18 +401,25 @@
   </ul>
 </nav>
 
+<!-- ─── GALLERY VIDEO HERO ─── -->
+<section class="gallery-hero" id="gallery-hero">
+  <video autoplay loop muted playsinline preload="auto">
+    <source src="影片/gallery首頁.mp4" type="video/mp4">
+  </video>
+  <a class="gallery-yt-link"
+     href="https://www.youtube.com/watch?v=fyOhXjKWvbA"
+     target="_blank" rel="noopener"
+     aria-label="Watch So Far Official Music Video on YouTube">
+    <img src="https://img.youtube.com/vi/fyOhXjKWvbA/mqdefault.jpg" alt="So Far" />
+    <span>Watch "So Far"<br>Official Music Video</span>
+  </a>
+</section>
+
 <section class="scene">
   <div class="container">
     <div class="block">
       <h2 class="block-title">MV <span class="mini">Music Videos</span></h2>
       <div class="mv-grid">
-        <div class="mv-card reveal">
-          <div class="mv-thumb" data-vid="fyOhXjKWvbA">
-            <img src="https://img.youtube.com/vi/fyOhXjKWvbA/maxresdefault.jpg" alt="So Far" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/fyOhXjKWvbA/sddefault.jpg'"/>
-            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
-          </div>
-          <div class="mv-meta"><div class="mv-title en">So Far</div><div class="mv-year">2023</div></div>
-        </div>
         <div class="mv-card reveal">
           <div class="mv-thumb" data-vid="Wt3MQ66vnL4">
             <img src="https://img.youtube.com/vi/Wt3MQ66vnL4/maxresdefault.jpg" alt="沙發上的白日夢" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/Wt3MQ66vnL4/sddefault.jpg'"/>
@@ -401,6 +493,48 @@
 
 <script src="transitions.js"></script>
 <script>
+  // ─── GALLERY HERO: fade out on scroll ───
+  (function () {
+    var hero = document.getElementById('gallery-hero');
+    if (!hero) return;
+    function onScroll() {
+      var scrollY = window.scrollY;
+      var heroH = hero.offsetHeight;
+      // 漸層：從第一格就長大，滾到 40% 時達到 120px
+      var gradProgress = Math.min(scrollY / (heroH * 0.2), 1);
+      hero.style.setProperty('--grad-h', (22 + gradProgress * 98) + 'px');
+      // 整體淡出：25% 後才開始
+      var fadeStart = heroH * 0.25;
+      var fadeProgress = Math.max(0, Math.min((scrollY - fadeStart) / (heroH * 0.5), 1));
+      hero.style.opacity = 1 - fadeProgress;
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+
+  // ─── NAV: scrolled state ───
+  (function () {
+    var nav = document.getElementById('topnav');
+    if (!nav) return;
+    function tick() {
+      if (window.scrollY > window.innerHeight * 0.8) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }
+    window.addEventListener('scroll', tick, { passive: true });
+    tick();
+  })();
+
+  // ─── NAV: white text while gallery hero is visible ───
+  (function () {
+    var nav = document.getElementById('topnav');
+    var hero = document.getElementById('gallery-hero');
+    if (!nav || !hero) return;
+    var obs = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) nav.classList.add('over-video');
+      else nav.classList.remove('over-video');
+    }, { threshold: 0.1 });
+    obs.observe(hero);
+  })();
+
   // ─── MV: CLICK TO PLAY ───
   (function () {
     document.querySelectorAll('.mv-thumb').forEach(function (thumb) {

@@ -21,162 +21,62 @@
       border-bottom-color: rgba(222, 232, 155, 0.14) !important;
     }
 
-    /* ── HERO ───────────────────────────────────── */
+    /* ── HERO: full-screen poster ───────────────── */
     .tour-hero {
-      min-height: 100vh;
-      padding: 140px 8vw 100px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 60px;
-      border-bottom: 1px solid rgba(222, 232, 155, 0.10);
-    }
-    .tour-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.46em;
-      text-transform: uppercase;
-      color: rgba(222, 232, 155, 0.45);
-      margin-bottom: 28px;
-    }
-    .tour-main-title {
-      font-family: var(--font-zh);
-      font-weight: 600;
-      font-size: clamp(52px, 7.5vw, 108px);
-      line-height: 1.02;
-      color: #DEE89B;
-      letter-spacing: 0.02em;
-      margin: 0 0 20px;
-    }
-    .tour-sub-title {
-      font-family: var(--font-juana);
-      font-weight: 600;
-      font-size: clamp(13px, 1.6vw, 20px);
-      letter-spacing: 0.32em;
-      text-indent: 0.32em;
-      text-transform: uppercase;
-      color: rgba(222, 232, 155, 0.38);
-    }
-    .tour-hero-poster {
-      width: 100%;
-      max-width: 400px;
-      justify-self: end;
-      box-shadow:
-        0 6px 20px rgba(0,0,0,0.5),
-        0 32px 80px rgba(0,0,0,0.65);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-    }
-    .tour-hero-poster:hover {
-      transform: scale(1.02);
-      box-shadow:
-        0 6px 20px rgba(0,0,0,0.5),
-        0 48px 100px rgba(0,0,0,0.72);
-    }
-
-    /* ── SHOW CARDS ─────────────────────────────── */
-    .show-card {
-      min-height: 86vh;
-      padding: 80px 8vw;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 40px;
       position: relative;
+      height: 100svh;
       overflow: hidden;
-      border-bottom: 1px solid rgba(0,0,0,0.22);
+      background: #0A0806;
     }
-
-    /* Weather colour identities */
-    .show-sun  { background: linear-gradient(148deg, #6A3308 0%, #A85618 50%, #CE7022 100%); }
-    .show-wind { background: linear-gradient(148deg, #0E2234 0%, #1A3E5C 50%, #26547A 100%); }
-    .show-rain { background: linear-gradient(148deg, #08111E 0%, #0E1E38 50%, #162848 100%); }
-
-    /* Metadata column */
-    .show-meta { position: relative; }
-    .show-num {
+    .tour-hero picture,
+    .tour-hero img {
       position: absolute;
-      top: -14px; left: -6px;
-      font-family: var(--font-juana);
-      font-weight: 600;
-      font-size: clamp(90px, 13vw, 170px);
-      line-height: 1;
-      color: rgba(255,255,255,0.06);
-      pointer-events: none;
-      user-select: none;
-      letter-spacing: -0.03em;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
     }
-    .show-date-row {
+    /* top gradient for nav legibility */
+    .tour-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    /* bottom fade to dark */
+    .tour-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 200px;
+      background: linear-gradient(to top, #0E0C09 0%, transparent 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+    .tour-scroll {
+      position: absolute;
+      bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
       font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.42em;
-      color: rgba(255,255,255,0.38);
-      margin-bottom: 18px;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      white-space: nowrap;
+      animation: t-bob 2.4s ease-in-out infinite;
     }
-    .show-city {
-      font-family: var(--font-juana);
-      font-weight: 600;
-      font-size: clamp(70px, 10.5vw, 148px);
-      line-height: 0.88;
-      color: #FFFFFF;
-      letter-spacing: -0.02em;
-      margin: 0 0 26px;
-    }
-    .show-venue {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      letter-spacing: 0.24em;
-      color: rgba(255,255,255,0.48);
-      text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    .show-weather {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      letter-spacing: 0.26em;
-      color: rgba(255,255,255,0.28);
-      margin-bottom: 52px;
-    }
-    .show-buy {
-      display: inline-block;
-      font-family: var(--font-juana);
-      font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: #FFFFFF;
-      border: 1px solid rgba(255,255,255,0.40);
-      padding: 13px 38px;
-      text-decoration: none;
-      transition: background 0.24s ease, border-color 0.24s ease, transform 0.24s ease;
-    }
-    .show-buy:hover {
-      background: rgba(255,255,255,0.10);
-      border-color: rgba(255,255,255,0.80);
-      transform: translateY(-2px);
+    @keyframes t-bob {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
     }
 
-    /* Art column — large atmospheric weather mark */
-    .show-art {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-    .weather-mark {
-      font-size: clamp(110px, 16vw, 200px);
-      opacity: 0.18;
-      filter: blur(1px);
-      user-select: none;
-      animation: wm-float 5s ease-in-out infinite;
-      line-height: 1;
-    }
-    .show-wind .weather-mark { animation-duration: 3.5s; }
-    .show-rain .weather-mark { animation-duration: 2.8s; }
-    @keyframes wm-float {
-      0%, 100% { transform: translateY(0px); }
-      50%       { transform: translateY(-14px); }
-    }
 
     /* ── PAST SHOWS ─────────────────────────────── */
     .past-section {
@@ -270,26 +170,6 @@
 
     /* ── MOBILE ──────────────────────────────────── */
     @media (max-width: 720px) {
-      .tour-hero {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding: 110px 24px 72px;
-        gap: 44px;
-      }
-      .tour-hero-poster { max-width: 260px; order: -1; }
-      .tour-main-title  { font-size: clamp(48px, 15vw, 72px); }
-
-      .show-card {
-        grid-template-columns: 1fr;
-        min-height: auto;
-        padding: 64px 24px 72px;
-        gap: 36px;
-      }
-      .show-art { order: -1; height: auto; }
-      .weather-mark { font-size: clamp(80px, 28vw, 120px); }
-      .show-city  { font-size: clamp(60px, 20vw, 96px); }
-      .show-weather { margin-bottom: 36px; }
-
       .past-section { padding: 80px 24px 60px; }
       .past-head    { margin-bottom: 40px; }
       .p-name       { font-size: 13px; }
@@ -315,70 +195,16 @@
   </ul>
 </nav>
 
-<!-- ─── HERO ─── -->
+<!-- ─── HERO: full-screen poster ─── -->
 <section class="tour-hero">
-  <div>
-    <div class="tour-eyebrow">SoulFa 靈魂沙發 · Live Tour 2026</div>
-    <h1 class="tour-main-title">失望的山<br>巡迴系列</h1>
-    <div class="tour-sub-title">La Montagna Delusa</div>
-  </div>
-  <a href="https://www.indievox.com/activity/list/soulfa" target="_blank" rel="noopener">
-    <picture>
-      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_mobile.webp" type="image/webp">
-      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.webp" type="image/webp">
-      <img class="tour-hero-poster"
-           src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.jpg"
-           alt="2026 失望的山巡迴系列 Tour Poster" />
-    </picture>
-  </a>
+  <picture>
+    <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_mobile.webp" type="image/webp">
+    <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.webp" type="image/webp">
+    <img src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.jpg"
+         alt="2026 失望的山巡迴系列 Tour Poster" />
+  </picture>
+  <div class="tour-scroll">Scroll ↓</div>
 </section>
-
-<!-- ─── THREE SHOWS ─── -->
-
-<!-- 01 · 高雄 · 晴 -->
-<div class="show-card show-sun">
-  <div class="show-meta">
-    <div class="show-num">01</div>
-    <div class="show-date-row">2026 · 08 · 28 · Sat</div>
-    <h2 class="show-city">高雄</h2>
-    <div class="show-venue">Live Warehouse</div>
-    <div class="show-weather">天氣：晴 · Sun</div>
-    <a class="show-buy"
-       href="https://www.indievox.com/activity/detail/26_iv0414008"
-       target="_blank" rel="noopener">購票 iNDIEVOX →</a>
-  </div>
-  <div class="show-art"><span class="weather-mark">☀</span></div>
-</div>
-
-<!-- 02 · 台中 · 風 -->
-<div class="show-card show-wind">
-  <div class="show-meta">
-    <div class="show-num">02</div>
-    <div class="show-date-row">2026 · 09 · 04 · Fri</div>
-    <h2 class="show-city">台中</h2>
-    <div class="show-venue">Legacy Taichung</div>
-    <div class="show-weather">天氣：風 · Wind</div>
-    <a class="show-buy"
-       href="https://www.indievox.com/activity/detail/26_iv041334f"
-       target="_blank" rel="noopener">購票 iNDIEVOX →</a>
-  </div>
-  <div class="show-art"><span class="weather-mark">💨</span></div>
-</div>
-
-<!-- 03 · 台北 · 雨 -->
-<div class="show-card show-rain">
-  <div class="show-meta">
-    <div class="show-num">03</div>
-    <div class="show-date-row">2026 · 09 · 12 · Sat</div>
-    <h2 class="show-city">台北</h2>
-    <div class="show-venue">Legacy Taipei</div>
-    <div class="show-weather">天氣：雨 · Rain</div>
-    <a class="show-buy"
-       href="https://www.indievox.com/activity/detail/26_iv0413825"
-       target="_blank" rel="noopener">購票 iNDIEVOX →</a>
-  </div>
-  <div class="show-art"><span class="weather-mark">🌧</span></div>
-</div>
 
 <!-- ─── PAST SHOWS ─── -->
 <section class="past-section">
