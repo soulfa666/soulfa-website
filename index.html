@@ -143,7 +143,7 @@
 
     /* ─── FEATURED ALBUM ─── */
     .album-section {
-      padding: 180px 32px 160px;
+      padding: 80px 32px 160px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -483,9 +483,13 @@
       .deco { display: none; }
     }
 
+    /* ─── POSTER BG WRAPPER (single background, no seam) ─── */
+    .poster-bg-wrap {
+      background: url('圖片/海報底.png') center / cover no-repeat fixed;
+    }
+
     /* ─── TOUR REVEAL (hero 下方第一區塊) ─── */
     .tour-reveal {
-      background: #0E0C09;
       padding: 130px 32px 130px;
       display: flex;
       flex-direction: column;
@@ -497,7 +501,7 @@
       font-weight: 600;
       font-size: clamp(27px, 3.7vw, 45px);
       letter-spacing: 0.06em;
-      color: #DEE89B;
+      color: #3A3028 !important;
       margin: 0 0 48px;
       line-height: 1.25;
       display: flex;
@@ -511,7 +515,7 @@
       letter-spacing: 0.42em;
       text-indent: 0.42em;
       text-transform: uppercase;
-      color: rgba(222, 232, 155, 0.65);
+      color: rgba(58, 48, 40, 0.55) !important;
       display: block;
       margin-top: 14px;
       white-space: nowrap;
@@ -546,15 +550,14 @@
       align-items: center;
       gap: 6px;
       padding: 16px 28px;
-      border: 1px solid rgba(222, 232, 155, 0.38);
-      color: #DEE89B;
+      background: rgba(216, 213, 200, 0.95);
+      color: #3A3028;
       text-decoration: none;
-      transition: background 0.26s ease, border-color 0.26s ease, transform 0.26s ease;
+      transition: background 0.26s ease, transform 0.26s ease;
       min-width: 120px;
     }
     .tour-ticket-btn:hover {
-      background: rgba(222, 232, 155, 0.10);
-      border-color: rgba(222, 232, 155, 0.80);
+      background: rgba(216, 213, 200, 0.92);
       transform: translateY(-3px);
     }
     .tour-ticket-btn .t-weather {
@@ -565,7 +568,7 @@
       font-family: var(--font-mono);
       font-size: 10px;
       letter-spacing: 0.18em;
-      color: rgba(222, 232, 155, 0.60);
+      color: rgba(58, 48, 40, 0.55);
     }
     .tour-ticket-btn .t-city {
       font-family: var(--font-juana);
@@ -616,6 +619,9 @@
   <div class="hero-scroll">SCROLL ↓</div>
 </section>
 
+<!-- ─── POSTER BG WRAPPER: single background for tour-reveal + album-section ─── -->
+<div class="poster-bg-wrap">
+
 <!-- ─── 失望的山巡迴 2026 ─── -->
 <section class="tour-reveal fade-in">
   <h2 class="tour-reveal-title">
@@ -665,42 +671,7 @@
   <h1 class="album-juana-title">La Montagna Delusa</h1>
 </section>
 
-<!-- ─── NEXT ON (collage block style) ─── -->
-<section class="next-section fade-in">
-  <div class="next-container">
-    <div class="next-head">
-      <h2 class="next-title">Next on…</h2>
-      <a class="next-more" href="tour.html">All shows →</a>
-    </div>
-
-    <div class="next-collage">
-      <!-- Band B/W photo anchored at bottom (audience silhouettes form the floor) -->
-      <img class="next-band-photo" src="圖片/演出黑白.png" alt="SoulFa on stage" />
-
-      <!-- Decorative shapes -->
-      <div class="deco deco-leaf-1"></div>
-      <div class="deco deco-leaf-2"></div>
-      <div class="deco deco-leaf-3"></div>
-      <div class="deco deco-red"></div>
-      <div class="deco deco-dot"></div>
-      <div class="deco deco-square"></div>
-
-      <!-- Show blocks — 失望的山巡迴 3 場 -->
-      <a class="show-block show-1" href="https://www.indievox.com/activity/detail/26_iv0414008" target="_blank" rel="noopener">
-        <span class="date">2026.08.28 · ☀️ 天氣：晴</span>
-        <span class="name">高雄 Live Warehouse</span>
-      </a>
-      <a class="show-block show-2" href="https://www.indievox.com/activity/detail/26_iv041334f" target="_blank" rel="noopener">
-        <span class="date">2026.09.04 · 💨 天氣：風</span>
-        <span class="name">台中 Legacy</span>
-      </a>
-      <a class="show-block show-3" href="https://www.indievox.com/activity/detail/26_iv0413825" target="_blank" rel="noopener">
-        <span class="date">2026.09.12 · 🌧 天氣：雨</span>
-        <span class="name">台北 Legacy</span>
-      </a>
-    </div>
-  </div>
-</section>
+</div><!-- /.poster-bg-wrap -->
 
 <!-- ─── FOOTER ─── -->
 <footer>

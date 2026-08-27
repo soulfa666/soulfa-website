@@ -12,13 +12,13 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    body.orange { background: #d66528; color: #dee89b; }
-    body.orange::before { mix-blend-mode: multiply; opacity: 0.10; }
+    body.orange { background: #EFECE5; color: #2C2420; }
+    body.orange::before { mix-blend-mode: multiply; opacity: 0.06; }
 
     body.orange nav.top .brand,
-    body.orange nav.top ul a { color: #dee89b; }
+    body.orange nav.top ul a { color: #2C2420; }
     body.orange nav.top ul a:hover {
-      color: #FFFFFF;
+      color: #7A3A1C;
       font-variation-settings: 'wdth' 125, 'SEED' 12;
       letter-spacing: 0.24em;
     }
@@ -28,11 +28,11 @@
       letter-spacing: 0.24em;
     }
     body.orange nav.top.scrolled {
-      background: rgba(180, 70, 24, 0.85);
-      border-bottom: 1px solid rgba(222, 232, 155, 0.2);
+      background: rgba(239, 236, 229, 0.92);
+      border-bottom: 1px solid rgba(44, 36, 32, 0.12);
     }
-    body.orange .section-tag { color: #dee89b; }
-    body.orange .section-tag::before { background: #dee89b; }
+    body.orange .section-tag { color: #7A3A1C; }
+    body.orange .section-tag::before { background: #7A3A1C; }
 
     .block { margin-bottom: 80px; }
     .block-title {
@@ -41,7 +41,7 @@
       font-size: clamp(40px, 5.4vw, 64px);
       line-height: 1;
       margin: 0 0 36px;
-      color: #dee89b;
+      color: #2C2420;
       display: flex;
       align-items: baseline;
       gap: 18px;
@@ -51,13 +51,16 @@
       font-family: var(--font-mono);
       font-size: 11px;
       letter-spacing: 0.3em;
-      color: rgba(222, 232, 155, 0.7);
+      color: rgba(44, 36, 32, 0.55);
       text-transform: uppercase;
     }
 
     .mv-grid {
       display: flex;
       flex-direction: column;
+      gap: 56px;
+      max-width: 960px;
+      margin: 0 auto;
       align-items: center;
       gap: 56px;
     }
@@ -124,7 +127,7 @@
       font-weight: 500;
       font-size: 17px;
       letter-spacing: 0.02em;
-      color: #dee89b;
+      color: #2C2420;
       line-height: 1.5;
       padding: 0;
     }
@@ -196,10 +199,10 @@
       font-family: var(--font-mono);
       font-size: 12px;
       letter-spacing: 0.18em;
-      color: #dee89b;
+      color: rgba(44,36,32,0.55);
       text-transform: uppercase;
     }
-    .mv-link-more a { border-bottom: 1px solid #dee89b; padding-bottom: 2px; }
+    .mv-link-more a { color: #2C2420; border-bottom: 1px solid rgba(44,36,32,0.4); padding-bottom: 2px; }
 
     .show-photos-card {
       padding: 56px 40px;
@@ -318,7 +321,7 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: var(--grad-h, 22px);
-      background: linear-gradient(to top, #d66528 0%, transparent 100%);
+      background: linear-gradient(to top, #EFECE5 0%, transparent 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -368,10 +371,39 @@
     /* 但 is-active 保持橘色 */
     body.orange nav.top.over-video ul a.is-active { color: #C77B4A; }
 
-    body.orange footer { background: #b85420; border-top: 1px solid rgba(222, 232, 155, 0.2); }
-    body.orange .footer-socials a { color: #dee89b; border: none; padding: 4px; }
-    body.orange .footer-socials a:hover { color: #FFFFFF; border: none; }
-    body.orange .footer-legal { color: rgba(222, 232, 155, 0.65); border-top-color: rgba(222, 232, 155, 0.2); }
+    /* ── SCATTER FILM PHOTOS ── */
+    .scatter-canvas {
+      position: relative;
+      /* 突破 container，撐滿整個 viewport 寬度 */
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      min-height: 600px;
+    }
+    .scatter-photo {
+      position: absolute;
+      display: block;
+      transform-origin: center center;
+      z-index: 1;
+      text-decoration: none;
+    }
+    .scatter-photo:hover { z-index: 20; }
+    .scatter-photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      box-shadow: 3px 5px 18px rgba(0,0,0,0.22);
+      mix-blend-mode: multiply;
+      transition: box-shadow 0.28s ease, transform 0.28s ease;
+    }
+    .scatter-photo:hover img {
+      box-shadow: 8px 12px 36px rgba(0,0,0,0.35);
+      transform: scale(1.04);
+    }
+
+    body.orange footer { background: #E5E1D9; border-top: 1px solid rgba(44, 36, 32, 0.10); }
+    body.orange .footer-socials a { color: #2C2420; border: none; padding: 4px; }
+    body.orange .footer-socials a:hover { color: #7A3A1C; border: none; }
+    body.orange .footer-legal { color: rgba(44, 36, 32, 0.45); border-top-color: rgba(44, 36, 32, 0.10); }
 
     @media (max-width: 720px) {
       .block-title { font-size: clamp(28px, 8vw, 48px); flex-wrap: wrap; gap: 8px; }
@@ -404,14 +436,14 @@
 <!-- ─── GALLERY VIDEO HERO ─── -->
 <section class="gallery-hero" id="gallery-hero">
   <video autoplay loop muted playsinline preload="auto">
-    <source src="影片/gallery首頁.mp4" type="video/mp4">
+    <source src="影片/失望的山mv片段.mp4" type="video/mp4">
   </video>
   <a class="gallery-yt-link"
-     href="https://www.youtube.com/watch?v=fyOhXjKWvbA"
+     href="https://www.youtube.com/watch?v=-_fzYbJcKTo"
      target="_blank" rel="noopener"
-     aria-label="Watch So Far Official Music Video on YouTube">
-    <img src="https://img.youtube.com/vi/fyOhXjKWvbA/mqdefault.jpg" alt="So Far" />
-    <span>Watch "So Far"<br>Official Music Video</span>
+     aria-label="Watch 失望的山 Official Music Video on YouTube">
+    <img src="https://img.youtube.com/vi/-_fzYbJcKTo/mqdefault.jpg" alt="失望的山" />
+    <span>Watch "失望的山"<br>Official Music Video</span>
   </a>
 </section>
 
@@ -420,6 +452,13 @@
     <div class="block">
       <h2 class="block-title">MV <span class="mini">Music Videos</span></h2>
       <div class="mv-grid">
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="fyOhXjKWvbA">
+            <img src="https://img.youtube.com/vi/fyOhXjKWvbA/maxresdefault.jpg" alt="So Far" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/fyOhXjKWvbA/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title en">So Far</div><div class="mv-year">2023</div></div>
+        </div>
         <div class="mv-card reveal">
           <div class="mv-thumb" data-vid="Wt3MQ66vnL4">
             <img src="https://img.youtube.com/vi/Wt3MQ66vnL4/maxresdefault.jpg" alt="沙發上的白日夢" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/Wt3MQ66vnL4/sddefault.jpg'"/>
@@ -453,26 +492,33 @@
     </div>
 
     <div class="block">
-      <h2 class="block-title">Live Shots <span class="mini">演出照</span></h2>
-      <div class="show-photos-card reveal">
-        <div class="text">
-          舞台上才會發生的事，<em>都在 Instagram。</em><br/>
-          排練、巡演、現場、漏光、回憶——這裡只放即時的東西。
-        </div>
-        <a class="btn-ig" href="https://www.instagram.com/soulfa_official/" target="_blank" rel="noopener">@soulfa_official ↗</a>
-      </div>
-    </div>
-
-    <div class="block">
-      <h2 class="block-title">Private <span class="mini">生活照 · Email required</span></h2>
-      <div class="gated-form reveal">
-        <p>
-          舞台後面、車上、半夜、廚房、客廳沙發——這些<em>不太想公開的照片</em>，留電子郵件給我們，會寄連結給你看。
-        </p>
-        <form onsubmit="event.preventDefault(); alert('感謝訂閱，連結之後寄到信箱。\n（此功能需接 Mailchimp / Brevo / Buttondown 才會真寄信。）');">
-          <input type="email" placeholder="your@email" required />
-          <button type="submit">Send me the link →</button>
-        </form>
+      <h2 class="block-title">Life <span class="mini">Photo & Film</span></h2>
+      <div class="scatter-canvas" id="scatter-canvas">
+        <a class="scatter-photo" data-size="xl" href="圖片/Ilford Delta 3200/web/000311550014.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550014.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550016.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550016.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" href="圖片/Ilford Delta 3200/web/000311550017.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550017.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550018.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550018.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550019.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550019.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" data-size="xl" href="圖片/Ilford Delta 3200/web/000311550021.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550021.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550024.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550024.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550025.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550025.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550026.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550026.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550029.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550029.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550030.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550030.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550031.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550031.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550032.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550032.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1805.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1805.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1806.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1806.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1807.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1807.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1808.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1808.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1809.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1809.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1810.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1810.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1811.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1811.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1812.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1812.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" data-size="xl" href="圖片/Ilford Delta 3200/web/IMG_1813.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1813.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" href="圖片/Ilford Delta 3200/web/IMG_1814.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1814.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1815.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1815.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" data-size="xl" href="圖片/Ilford Delta 3200/web/IMG_1816.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1816.jpg" alt="" loading="lazy"/></a>
       </div>
     </div>
   </div>
@@ -521,6 +567,125 @@
     }
     window.addEventListener('scroll', tick, { passive: true });
     tick();
+  })();
+
+  // ─── PHOTO SCATTER (collision-detection) ───
+  (function () {
+    var canvas = document.getElementById('scatter-canvas');
+    if (!canvas) return;
+
+    // Seeded RNG
+    var _s = 7331;
+    function rand() {
+      _s ^= _s << 13; _s ^= _s >> 17; _s ^= _s << 5;
+      _s = _s >>> 0; return _s / 4294967296;
+    }
+
+    var photos = Array.from(canvas.querySelectorAll('.scatter-photo'));
+    var N = photos.length;
+    var W = canvas.offsetWidth;
+    var mobile = W < 600;
+
+    var landAR = 662 / 1000;
+    var portAR  = 995 / 660;
+
+    // Size pools — big range: xs very small, xl very large
+    var landSizes = mobile ? [75, 125, 170, 215, 265] : [100, 190, 280, 390, 520];
+    var portSizes = mobile ? [60,  95, 130, 165, 200] : [ 80, 145, 210, 290, 370];
+    // Weighted draw: xs×2, s×3, m×3, l×2, xl×1
+    var landPool = [0,0,1,1,1,2,2,2,3,3,4];
+    var portPool = [0,0,1,1,1,2,2,2,3,3,4];
+
+    // Canvas height
+    var TOTAL_H = mobile ? 1900 : 2300;
+    var PAD_REG = mobile ?   6 :  18; // 一般照片最小間距
+    var PAD_XL  = mobile ?  10 :  22; // 其他照片必須離 xl 這麼多
+    var ATTEMPTS = 80;
+    var MARGIN = mobile ? 10 : 48;
+
+    // 最高照片高度（用來修正 band Y 分佈，避免底部堆疊）
+    var maxPH = mobile ? 200 : 560;
+    var AVAIL_H = TOTAL_H - maxPH - 20; // band 只分配到這裡
+
+    canvas.style.height = TOTAL_H + 'px';
+
+    // Shuffle
+    var order = Array.from({length: N}, function(_, i) { return i; });
+    for (var i = N - 1; i > 0; i--) {
+      var j = Math.floor(rand() * (i + 1));
+      var t = order[i]; order[i] = order[j]; order[j] = t;
+    }
+
+    var placed   = []; // all placed rects
+    var xlPlaced = []; // xl rects (others must avoid these)
+
+    function rectOverlaps(ax,ay,aw,ah, bx,by,bw,bh) {
+      return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
+    }
+    function checkOverlap(x,y,w,h, list, pad) {
+      for (var k = 0; k < list.length; k++) {
+        var p = list[k];
+        if (rectOverlaps(x-pad, y-pad, w+pad*2, h+pad*2, p.x, p.y, p.w, p.h)) return true;
+      }
+      return false;
+    }
+    function rawOverlapCount(x,y,w,h) {
+      var c = 0;
+      for (var k = 0; k < placed.length; k++) {
+        var p = placed[k];
+        if (rectOverlaps(x,y,w,h, p.x,p.y,p.w,p.h)) c++;
+      }
+      return c;
+    }
+
+    order.forEach(function(idx, seq) {
+      var photo = photos[idx];
+      var isPortrait = photo.classList.contains('portrait');
+      var isXL = photo.dataset.size === 'xl';
+      var sizes = isPortrait ? portSizes : landSizes;
+      var pw;
+      if (isXL) {
+        pw = sizes[sizes.length - 1];
+      } else {
+        var pool = isPortrait ? portPool : landPool;
+        pw = sizes[pool[Math.floor(rand() * pool.length)]];
+      }
+      var ph = Math.round(pw * (isPortrait ? portAR : landAR));
+
+      // Band Y — distributed over AVAIL_H so last photo doesn't get clamped
+      var bandH = AVAIL_H / N;
+      var baseY = seq * bandH;
+
+      var bestX = MARGIN, bestY = baseY, bestOv = Infinity;
+
+      for (var a = 0; a < ATTEMPTS; a++) {
+        var tx = MARGIN + rand() * Math.max(1, W - pw - MARGIN * 2);
+        var ty = baseY - bandH * 0.5 + rand() * bandH * 2.0;
+        ty = Math.max(8, Math.min(TOTAL_H - ph - 8, ty));
+
+        // xl 照片一定不能被遮：嚴格迴避
+        if (checkOverlap(tx, ty, pw, ph, xlPlaced, PAD_XL)) continue;
+        // 一般照片間允許少量重疊
+        if (!checkOverlap(tx, ty, pw, ph, placed, PAD_REG)) {
+          bestX = tx; bestY = ty; bestOv = 0;
+          break;
+        }
+        var ov = rawOverlapCount(tx, ty, pw, ph);
+        if (ov < bestOv) { bestOv = ov; bestX = tx; bestY = ty; }
+      }
+
+      var rot = (rand() - 0.5) * 13;
+      photo.style.width     = pw + 'px';
+      photo.style.left      = Math.round(bestX) + 'px';
+      photo.style.top       = Math.round(bestY) + 'px';
+      photo.style.transform = 'rotate(' + rot.toFixed(2) + 'deg)';
+      // xl 照片置頂，其他照片在下
+      photo.style.zIndex = isXL ? 10 : (isPortrait ? 2 : 1);
+
+      var rect = { x: bestX, y: bestY, w: pw, h: ph };
+      placed.push(rect);
+      if (isXL) xlPlaced.push(rect);
+    });
   })();
 
   // ─── NAV: white text while gallery hero is visible ───

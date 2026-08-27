@@ -12,69 +12,148 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* ── PAGE BASE: dark instead of orange ── */
+    /* ── PAGE BASE: dark ── */
     body.orange { background: #0E0C09; }
 
-    /* Nav: override scrolled state for dark page */
+    /* Nav: 初始狀態在稿紙背景上 → 深色文字 */
+    body.orange nav.top .brand,
+    body.orange nav.top ul a,
+    body.orange nav.top .nav-toggle { color: #2C2420; }
+    body.orange nav.top ul a.is-active { color: #C77B4A; }
+    /* scrolled → 深色背景 + 淺色文字 */
     body.orange nav.top.scrolled {
       background: rgba(10, 8, 6, 0.92) !important;
       border-bottom-color: rgba(222, 232, 155, 0.14) !important;
     }
+    body.orange nav.top.scrolled .brand,
+    body.orange nav.top.scrolled ul a { color: #DEE89B; }
+    body.orange nav.top.scrolled ul a.is-active { color: #C77B4A; }
 
-    /* ── HERO: full-screen poster ───────────────── */
+    /* ── HERO: poster display ───────────────── */
     .tour-hero {
-      position: relative;
-      height: 100svh;
-      overflow: hidden;
-      background: #0A0806;
+      padding: 140px 32px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: url('圖片/海報底.png') center / cover no-repeat;
     }
-    .tour-hero picture,
-    .tour-hero img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
+    .tour-title {
+      font-family: var(--font-zh);
+      font-weight: 600;
+      font-size: clamp(22px, 3.2vw, 42px);
+      color: #3A3028 !important;
+      letter-spacing: 0.06em;
+      margin-bottom: 36px;
+      text-align: center;
+      line-height: 1.25;
+    }
+    .tour-title .en {
       display: block;
-    }
-    /* top gradient for nav legibility */
-    .tour-hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 200px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
-    /* bottom fade to dark */
-    .tour-hero::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 200px;
-      background: linear-gradient(to top, #0E0C09 0%, transparent 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
-    .tour-scroll {
-      position: absolute;
-      bottom: calc(40px + env(safe-area-inset-bottom, 0px));
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      font-family: var(--font-mono);
-      font-size: 11px;
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 0.44em;
       letter-spacing: 0.42em;
+      text-indent: 0.42em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
-      white-space: nowrap;
-      animation: t-bob 2.4s ease-in-out infinite;
+      color: #3A3028;
+      margin-top: 10px;
     }
-    @keyframes t-bob {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%       { transform: translateX(-50%) translateY(6px); }
+    .tour-poster-wrap {
+      display: block;
+      width: min(680px, 88vw);
+      text-decoration: none;
+    }
+    .tour-poster-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.7);
+    }
+
+    /* ── UPCOMING SHOWS ───────────────────── */
+    .upcoming-section {
+      padding: 56px 8vw 80px;
+    }
+    .upcoming-head {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(222,232,155,0.35);
+      margin-bottom: 32px;
+    }
+    .show-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .show-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 26px 0;
+      border-bottom: 1px solid rgba(222,232,155,0.08);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .show-row:first-child { border-top: 1px solid rgba(222,232,155,0.08); }
+    .show-row:hover { opacity: 0.55; }
+    .show-date {
+      font-family: var(--font-juana);
+      font-weight: 300;
+      font-size: 26px;
+      letter-spacing: 0.05em;
+      color: rgba(222,232,155,0.65);
+      flex-shrink: 0;
+      margin-right: 20px;
+    }
+    .show-sep {
+      flex-shrink: 0;
+      width: 90px;
+      height: 2.5px;
+      background: rgba(222,232,155,0.90);
+      border-radius: 1px;
+      margin-right: 20px;
+    }
+    .show-weather-label {
+      font-family: var(--font-zh);
+      font-size: 18px;
+      letter-spacing: 0.04em;
+      color: #DEE89B;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-right: 10px;
+    }
+    .show-city {
+      font-family: var(--font-zh);
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      color: #DEE89B;
+      flex-shrink: 0;
+    }
+    .show-cta {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(222,232,155,0.70);
+      border: 1px solid rgba(222,232,155,0.55);
+      padding: 6px 14px;
+      flex-shrink: 0;
+      margin-left: auto;
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .show-row:hover .show-cta {
+      color: #DEE89B;
+      border-color: rgba(222,232,155,0.55);
+    }
+    @media (max-width: 520px) {
+      .tour-hero { padding: 120px 20px 48px; }
+      .show-date { font-size: 18px; width: 4.5em; }
+      .show-city { font-size: 16px; }
+      .show-sep  { margin: 0 16px; }
+      .show-cta  { display: none; }
     }
 
 
@@ -195,62 +274,46 @@
   </ul>
 </nav>
 
-<!-- ─── HERO: full-screen poster ─── -->
+<!-- ─── HERO: poster ─── -->
 <section class="tour-hero">
-  <picture>
-    <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_mobile.webp" type="image/webp">
-    <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.webp" type="image/webp">
-    <img src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.jpg"
-         alt="2026 失望的山巡迴系列 Tour Poster" />
-  </picture>
-  <div class="tour-scroll">Scroll ↓</div>
+  <h1 class="tour-title">2026《失望的山》巡迴系列<span class="en">La Montagna Delusa Tour 2026</span></h1>
+  <a class="tour-poster-wrap" href="https://www.indievox.com/activity/list/soulfa" target="_blank" rel="noopener">
+    <picture>
+      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_mobile.webp" type="image/webp">
+      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_web.webp" type="image/webp">
+      <img src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_web.jpg" alt="2026 失望的山巡迴系列 Tour Poster" />
+    </picture>
+  </a>
 </section>
 
-<!-- ─── PAST SHOWS ─── -->
-<section class="past-section">
-  <div class="past-head">
-    <div class="past-title">Past Shows</div>
-    <div class="past-count">⛰ 已完成 35 場</div>
+<!-- ─── UPCOMING SHOWS ─── -->
+<section class="upcoming-section">
+  <div class="upcoming-head">Upcoming Shows</div>
+  <div class="show-list">
+    <a class="show-row" href="https://www.indievox.com/activity/detail/26_iv0414008" target="_blank" rel="noopener">
+      <span class="show-date">08.28</span>
+      <span class="show-sep"></span>
+      <span class="show-weather-label">天氣：☀️</span>
+      <span class="show-city">高雄</span>
+      <span class="show-cta">Buy Ticket</span>
+    </a>
+    <a class="show-row" href="https://www.indievox.com/activity/detail/26_iv041334f" target="_blank" rel="noopener">
+      <span class="show-date">09.04</span>
+      <span class="show-sep"></span>
+      <span class="show-weather-label">天氣：💨</span>
+      <span class="show-city">台中</span>
+      <span class="show-cta">Buy Ticket</span>
+    </a>
+    <a class="show-row" href="https://www.indievox.com/activity/detail/26_iv0413825" target="_blank" rel="noopener">
+      <span class="show-date">09.12</span>
+      <span class="show-sep"></span>
+      <span class="show-weather-label">天氣：🌧</span>
+      <span class="show-city">台北</span>
+      <span class="show-cta">Buy Ticket</span>
+    </a>
   </div>
-  <ul class="past-list">
-    <li><span class="p-date">2026.04.26</span><span class="p-name">北京站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.04.25</span><span class="p-name">天津 琉璃SPACE · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.04.12</span><span class="p-name">上海站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.04.10</span><span class="p-name">杭州站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.03.28</span><span class="p-name">重慶站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.03.27</span><span class="p-name">成都站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.03.22</span><span class="p-name">深圳站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.03.20</span><span class="p-name">廣州站 · 失望的山巡演</span></li>
-    <li><span class="p-date">2026.03.13</span><span class="p-name">台北發片專場</span></li>
-    <li><span class="p-date">2025.12.10</span><span class="p-name">《失望的山》不插電 · 女巫店</span></li>
-    <li><span class="p-date">2024.11.30</span><span class="p-name">南寧 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.29</span><span class="p-name">廈門 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.24</span><span class="p-name">北京 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.22</span><span class="p-name">南京 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.17</span><span class="p-name">深圳 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.16</span><span class="p-name">廣州 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.10</span><span class="p-name">武漢 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.08</span><span class="p-name">重慶 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.02</span><span class="p-name">上海 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.11.01</span><span class="p-name">杭州 · 情緒遲到了</span></li>
-    <li><span class="p-date">2024.10.18</span><span class="p-name">台北 · 好久不見場</span></li>
-    <li><span class="p-date">2023.06.22</span><span class="p-name">香港 Star Hall · 全個世界都有電話</span></li>
-    <li><span class="p-date">2023.04.01</span><span class="p-name">大港開唱 Megaport</span></li>
-    <li><span class="p-date">2023.01.14</span><span class="p-name">陳如山 X 靈魂沙發 · 公路電影發片場</span></li>
-    <li><span class="p-date">2023.01.07</span><span class="p-name">Goodbye Caroline · 暖身小巡迴</span></li>
-    <li><span class="p-date">2022.10.22</span><span class="p-name">南國生活節 · 墾丁大灣</span></li>
-    <li><span class="p-date">2022.08.06</span><span class="p-name">河海音樂祭 · 淡水漁人碼頭</span></li>
-    <li><span class="p-date">2022.03.25</span><span class="p-name">杜鵑花音樂節 · 後台</span></li>
-    <li><span class="p-date">2021.08.11</span><span class="p-name">Slumber Days 線上演唱會</span></li>
-    <li><span class="p-date">2021.03.12</span><span class="p-name">SnoozzZ 補眠場 · Legacy Taipei</span></li>
-    <li><span class="p-date">2021.03.06</span><span class="p-name">SnoozzZ 補眠場 · Legacy Taichung</span></li>
-    <li><span class="p-date">2020.01.18</span><span class="p-name">SoulFa 首專發片 · 台北</span></li>
-    <li><span class="p-date">2020.01.04</span><span class="p-name">SoulFa 首專發片 · 台中</span></li>
-    <li><span class="p-date">2019.12.28</span><span class="p-name">SoulFa 首專發片 · 高雄</span></li>
-    <li><span class="p-date">2018.12.23</span><span class="p-name">四四南村 · 尼古拉斯採購日</span></li>
-  </ul>
-  <p class="booking-note">演出合作洽詢 · <a href="mailto:soulfa666@gmail.com">soulfa666@gmail.com</a></p>
 </section>
+
 
 <!-- ─── FOOTER ─── -->
 <footer>
