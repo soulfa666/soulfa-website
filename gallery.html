@@ -641,8 +641,8 @@
       _s = _s >>> 0; return _s / 4294967296;
     }
 
-    var landSizes   = mobile ? [55,100,155,220,290] : [80,160,250,370,500];
-    var portSizes   = mobile ? [42, 76,118,168,220] : [60,120,190,280,380];
+    var landSizes   = mobile ? [38, 68,105,148,195] : [80,160,250,370,500];
+    var portSizes   = mobile ? [28, 52, 80,114,150] : [60,120,190,280,380];
     // Even orbit positions → small/medium; odd → medium/large  (大小交替)
     var landPoolS   = [0,0,1,1,2];    // small side
     var landPoolL   = [2,3,3,4];      // large side
@@ -788,8 +788,27 @@
     window.addEventListener('mouseup', function () {
       if (!isDragging) return;
       isDragging  = false;
-      targetSpeed = 0; // decelerate to stop after release
+      targetSpeed = 0;
       canvas.style.cursor = 'grab';
+    });
+
+    // Touch support (mobile drag = rotate)
+    canvas.addEventListener('touchstart', function (e) {
+      isDragging = true;
+      lastDragX  = e.touches[0].clientX;
+      e.preventDefault();
+    }, { passive: false });
+    window.addEventListener('touchmove', function (e) {
+      if (!isDragging) return;
+      var delta = -(e.touches[0].clientX - lastDragX) * 0.003;
+      for (var i = 0; i < N; i++) data[i].angle += delta;
+      speed = delta;
+      lastDragX = e.touches[0].clientX;
+      e.preventDefault();
+    }, { passive: false });
+    window.addEventListener('touchend', function () {
+      isDragging  = false;
+      targetSpeed = 0;
     });
 
     canvas.style.cursor = 'grab';

@@ -46,16 +46,15 @@
       .about-title { font-size: clamp(52px, 14vw, 72px); }
     }
     @media (max-width: 480px) {
-      /* Stack member rows vertically on very narrow screens */
       .member {
         grid-template-columns: 1fr;
-        text-align: center;
-        gap: 4px;
-        padding: 16px 0;
+        text-align: left;
+        gap: 3px;
+        padding: 14px 0;
       }
-      .member-num  { text-align: center; }
-      .member-role { text-align: center; }
-      .member-name { font-size: 22px; }
+      .member-num  { font-size: 10px; }
+      .member-name { font-size: 18px; }
+      .member-role { font-size: 9px; letter-spacing: 0.14em; }
     }
 
     /* Hero photo +30% (520 → 676) */
