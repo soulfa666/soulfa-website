@@ -19,7 +19,7 @@
   <style>
     /* ─── HOMEPAGE OVERRIDES ─── */
     body.home {
-      background: #D8D9C8;
+      background: #EFECE5;
       color: #443424;
     }
 
@@ -483,9 +483,9 @@
       .deco { display: none; }
     }
 
-    /* ─── POSTER BG WRAPPER (single background, no seam) ─── */
+    /* ─── POSTER BG WRAPPER ─── */
     .poster-bg-wrap {
-      background: url('圖片/海報底.png') center / cover no-repeat fixed;
+      background: none;
     }
 
     /* ─── TOUR REVEAL (hero 下方第一區塊) ─── */
@@ -501,7 +501,7 @@
       font-weight: 600;
       font-size: clamp(27px, 3.7vw, 45px);
       letter-spacing: 0.06em;
-      color: #3A3028 !important;
+      color: #443424;
       margin: 0 0 48px;
       line-height: 1.25;
       display: flex;
@@ -515,26 +515,24 @@
       letter-spacing: 0.42em;
       text-indent: 0.42em;
       text-transform: uppercase;
-      color: rgba(58, 48, 40, 0.55) !important;
+      color: #443424;
       display: block;
       margin-top: 14px;
       white-space: nowrap;
     }
     .tour-reveal-poster {
       display: block;
-      width: min(620px, 88vw);
+      width: min(760px, 92vw);
       box-shadow:
-        0 4px 12px rgba(0,0,0,0.45),
-        0 32px 80px rgba(0,0,0,0.70),
-        0 64px 120px rgba(0,0,0,0.35);
+        0 8px 24px rgba(0,0,0,0.18),
+        0 32px 72px rgba(0,0,0,0.22);
       transition: box-shadow 0.4s ease, transform 0.4s ease;
     }
     .tour-reveal-poster:hover {
-      transform: scale(1.015);
+      transform: scale(1.012);
       box-shadow:
-        0 4px 12px rgba(0,0,0,0.45),
-        0 44px 100px rgba(0,0,0,0.75),
-        0 80px 140px rgba(0,0,0,0.38);
+        0 8px 28px rgba(0,0,0,0.20),
+        0 40px 90px rgba(0,0,0,0.26);
     }
     /* 三個場次按鈕 */
     .tour-tickets {
@@ -565,14 +563,15 @@
       line-height: 1;
     }
     .tour-ticket-btn .t-date {
-      font-family: var(--font-mono);
+      font-family: 'Juana Alt', serif;
+      font-weight: 300;
       font-size: 10px;
       letter-spacing: 0.18em;
-      color: rgba(58, 48, 40, 0.55);
+      color: rgba(58, 48, 40, 0.50);
     }
     .tour-ticket-btn .t-city {
-      font-family: var(--font-juana);
-      font-weight: 600;
+      font-family: var(--font-zh);
+      font-weight: 900;
       font-size: 15px;
       letter-spacing: 0.06em;
     }

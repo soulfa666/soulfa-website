@@ -486,6 +486,13 @@
           </div>
           <div class="mv-meta"><div class="mv-title">牛</div><div class="mv-year">2020</div></div>
         </div>
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="NDAdelnlrHQ">
+            <img src="https://img.youtube.com/vi/NDAdelnlrHQ/maxresdefault.jpg" alt="Polydream" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/NDAdelnlrHQ/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title en">Polydream</div><div class="mv-year">2019</div></div>
+        </div>
       </div>
       <p class="mv-link-more"><a href="https://www.youtube.com/results?search_query=SoulFa+%E9%9D%88%E9%AD%82%E6%B2%99%E7%99%BC" target="_blank" rel="noopener">More on YouTube ↗</a></p>
     </div>
@@ -618,7 +625,7 @@
 
     var W = canvas.offsetWidth;
     var mobile = W < 600;
-    var CANVAS_H = mobile ? 2000 : 2900;
+    var CANVAS_H = mobile ? 1900 : 2800;
     canvas.style.height   = CANVAS_H + 'px';
     canvas.style.overflow = 'visible';
 
@@ -634,15 +641,30 @@
       _s = _s >>> 0; return _s / 4294967296;
     }
 
-    // Same size pools as old scatter
-    var landSizes = mobile ? [75,125,170,215,265] : [100,190,280,390,520];
-    var portSizes = mobile ? [60, 95,130,165,200] : [ 80,145,210,290,370];
-    var landPool  = [0,0,1,1,1,2,2,2,3,3,4];
-    var portPool  = [0,0,1,1,1,2,2,2,3,3,4];
+    var landSizes   = mobile ? [55,100,155,220,290] : [80,160,250,370,500];
+    var portSizes   = mobile ? [42, 76,118,168,220] : [60,120,190,280,380];
+    // Even orbit positions → small/medium; odd → medium/large  (大小交替)
+    var landPoolS   = [0,0,1,1,2];    // small side
+    var landPoolL   = [2,3,3,4];      // large side
+    var portPoolS   = [0,0,1,1,2];
+    var portPoolL   = [2,3,3,4];
 
-    var spread   = CANVAS_H - 360;
-    var MAX_W    = mobile ? 265 : 520;  // max photo width for x-overlap detection
-    var placed   = [];                  // {angle, yLane, halfH}
+    var spread = CANVAS_H - 360;
+
+    // ── 8×8 stratified grid ──────────────────────────────────────────────────
+    // 8 orbit sectors × 8 height zones = 64 cells → exactly 1 photo per cell.
+    // Shuffle cells so adjacent orbit positions get random heights (no diagonal).
+    var K = 8;
+    var cells = [];
+    for (var gc = 0; gc < K; gc++) {
+      for (var gr = 0; gr < K; gr++) {
+        cells.push({ col: gc, row: gr });
+      }
+    }
+    for (var gi = K * K - 1; gi > 0; gi--) {
+      var gj = Math.floor(rand() * (gi + 1));
+      var gt = cells[gi]; cells[gi] = cells[gj]; cells[gj] = gt;
+    }
 
     // Shuffle photo order so HP5/Delta mix randomly
     var order = Array.from({length: N}, function(_, i){ return i; });
@@ -651,48 +673,32 @@
       var ot = order[oi]; order[oi] = order[oj]; order[oj] = ot;
     }
 
-    var data = order.map(function (idx, seq) {
-      var photo  = photos[idx];
+    var data = Array.from({length: N}, function(_, seq) {
+      var photo  = photos[order[seq]];
+      var cell   = cells[seq];
       var isXL   = photo.dataset.size === 'xl';
       var isPort = photo.classList.contains('portrait');
-      var sizes  = isPort ? portSizes : landSizes;
-      var pool   = isPort ? portPool  : landPool;
+      var sizes  = isPort ? portSizes   : landSizes;
+      var pool   = seq % 2 === 0
+                   ? (isPort ? portPoolS : landPoolS)   // even → small/medium
+                   : (isPort ? portPoolL : landPoolL);  // odd  → medium/large
       var baseW  = isXL ? sizes[sizes.length-1] : sizes[pool[Math.floor(rand() * pool.length)]];
       var ar     = isPort ? (995/660) : (662/1000);
       var tilt   = (rand() - 0.5) * 16;
-      var angle0 = (seq / N) * Math.PI * 2;
-      var x_i    = cx + rx * Math.cos(angle0);
-      var halfH  = baseW * 0.62 * ar / 2; // approximate half-height at mid-scale
 
-      // Greedy: pick yLane with maximum vertical clearance from x-nearby photos
-      var nearbyHalfH = [];
-      var nearbyY     = [];
-      for (var pi = 0; pi < placed.length; pi++) {
-        var x_j = cx + rx * Math.cos(placed[pi].angle);
-        if (Math.abs(x_i - x_j) < MAX_W * 1.3) {
-          nearbyY.push(placed[pi].yLane);
-          nearbyHalfH.push(placed[pi].halfH);
-        }
-      }
+      // Orbit angle: cell defines sector, jitter within sector
+      var sectorW = (Math.PI * 2) / K;
+      var angle0  = cell.col * sectorW + (rand() - 0.5) * sectorW * 0.55;
 
-      var bestY = (rand() - 0.5) * spread, bestScore = -Infinity;
-      for (var a = 0; a < 80; a++) {
-        var cand  = (rand() - 0.5) * spread;
-        var score = spread; // min clearance
-        for (var k = 0; k < nearbyY.length; k++) {
-          var gap = Math.abs(cand - nearbyY[k]) - halfH - nearbyHalfH[k];
-          if (gap < score) score = gap;
-        }
-        if (score > bestScore) { bestScore = score; bestY = cand; }
-      }
-
-      placed.push({ angle: angle0, yLane: bestY, halfH: halfH });
+      // y lane: ±25% jitter within zone keeps adjacent-zone min gap ≥ 50% zoneH
+      var zoneH  = spread / K;
+      var yLane  = (cell.row + 0.5 + (rand() - 0.5) * 0.5) * zoneH - spread / 2;
 
       var floatAmp   = 4 + rand() * 8;
       var floatFreq  = 0.006 + rand() * 0.006;
       var floatPhase = rand() * Math.PI * 2;
       return { photo: photo, baseW: baseW, ar: ar, tilt: tilt,
-               angle: angle0, yLane: bestY,
+               angle: angle0, yLane: yLane,
                floatAmp: floatAmp, floatFreq: floatFreq, floatPhase: floatPhase };
     });
 
@@ -741,7 +747,7 @@
         d.photo.style.left      = x.toFixed(1) + 'px';
         d.photo.style.top       = y.toFixed(1) + 'px';
         d.photo.style.transform = 'rotate(' + d.tilt.toFixed(1) + 'deg)';
-        d.photo.style.opacity   = (0.28 + depth * 0.72).toFixed(3);
+        d.photo.style.opacity   = '1';
         d.photo.style.zIndex    = rank + 1;
       });
 
