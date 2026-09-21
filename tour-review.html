@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>巡演回顧 · SoulFa 靈魂沙發</title>
+  <link rel="icon" type="image/png" href="網頁分頁logo.png" />
+  <link rel="stylesheet" href="https://use.typekit.net/wdm8jyp.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* ── Body: grid paper background ── */
+    body.orange {
+      background:
+        linear-gradient(rgba(239,236,229,0.52), rgba(239,236,229,0.52)),
+        url('圖片/海報底.png') center / cover no-repeat fixed;
+      color: #2C2420;
+    }
+    body.orange::before { display: none; }
+
+    body.orange nav.top .brand,
+    body.orange nav.top ul a,
+    body.orange nav.top .nav-toggle { color: #2C2420; }
+    body.orange nav.top ul a:hover {
+      color: #7A3A1C;
+      font-variation-settings: 'wdth' 125, 'SEED' 12;
+      letter-spacing: 0.24em;
+    }
+    body.orange nav.top ul a.is-active {
+      color: #C77B4A;
+      font-variation-settings: 'wdth' 125, 'SEED' 12;
+      letter-spacing: 0.24em;
+    }
+    body.orange nav.top.scrolled {
+      background: rgba(228,222,210,0.90);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(44,36,32,0.14);
+    }
+
+    /* ── Hero ── */
+    .review-hero {
+      padding: 160px 32px 56px;
+      text-align: center;
+    }
+    .review-hero-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.42);
+      margin: 0 0 18px;
+    }
+    .review-hero-title {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(44px, 7vw, 80px);
+      line-height: 1;
+      color: #2C2420;
+      margin: 0 0 12px;
+      letter-spacing: -0.01em;
+    }
+    .review-hero-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.42);
+      margin: 0;
+    }
+
+    /* ── Three-column wrapper ── */
+    .photo-grid {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 0 12px 140px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+    .photo-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Each photo item ── */
+    .photo-item {
+      box-sizing: border-box;
+      cursor: zoom-in;
+    }
+    .photo-item img {
+      display: block;
+      width: 100%;
+      height: auto;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.13);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .photo-item:hover img {
+      transform: scale(1.03);
+      box-shadow: 0 6px 22px rgba(0,0,0,0.22);
+    }
+
+    @media (max-width: 700px) {
+      .photo-grid { gap: 8px; padding: 0 8px 80px; }
+    }
+
+    /* ── Lightbox ── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(16,12,8,0.93);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: 92vw;
+      max-height: 92vh;
+      object-fit: contain;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+    }
+    #lb-close {
+      position: fixed;
+      top: 24px; right: 32px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      color: rgba(255,255,255,0.50);
+      text-transform: uppercase;
+      cursor: pointer;
+      background: none; border: none;
+    }
+    #lb-prev, #lb-next {
+      position: fixed;
+      top: 50%; transform: translateY(-50%);
+      font-size: 28px;
+      color: rgba(255,255,255,0.50);
+      cursor: pointer;
+      background: none; border: none;
+      padding: 16px;
+      line-height: 1;
+    }
+    #lb-prev { left: 16px; }
+    #lb-next { right: 16px; }
+  </style>
+</head>
+<body class="orange">
+
+<div class="page-transition"></div>
+
+<nav class="top" id="topnav">
+  <a class="brand" href="index.html">SOULFA</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="選單" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="tour.html" class="is-active">Tour</a></li>
+    <li><a href="merch.html">Merch</a></li>
+    <li><a href="about.html">About</a></li>
+  </ul>
+</nav>
+
+<div class="review-hero">
+  <p class="review-hero-tag">2026 · 失望的山巡迴系列</p>
+  <h1 class="review-hero-title">精彩回顧</h1>
+  <p class="review-hero-sub">Tour Highlights</p>
+</div>
+
+<div class="photo-grid" id="photo-grid"></div>
+
+<div id="lightbox">
+  <button id="lb-close">✕ close</button>
+  <button id="lb-prev">&#8249;</button>
+  <img id="lb-img" src="" alt="">
+  <button id="lb-next">&#8250;</button>
+</div>
+
+<script src="transitions.js"></script>
+<script>
+(function () {
+  var S = 20260828;
+  function rnd() { S^=S<<13; S^=S>>17; S^=S<<5; return (S>>>0)/4294967296; }
+
+  var srcs = [
+    '圖片/巡演回顧/260828_03.jpg','圖片/巡演回顧/260828_04.jpg',
+    '圖片/巡演回顧/260828_08.jpg','圖片/巡演回顧/260828_19.jpg',
+    '圖片/巡演回顧/260828_21.jpg','圖片/巡演回顧/260828_30.jpg',
+    '圖片/巡演回顧/260828_34.jpg','圖片/巡演回顧/260828_35.jpg',
+    '圖片/巡演回顧/DSC00074.jpg', '圖片/巡演回顧/DSC08361.jpg',
+    '圖片/巡演回顧/DSC08389.jpg', '圖片/巡演回顧/DSC08826.jpg',
+    '圖片/巡演回顧/DSC08894.jpg', '圖片/巡演回顧/DSC09096.jpg',
+    '圖片/巡演回顧/DSC09239.jpg', '圖片/巡演回顧/DSC09305.jpg',
+    '圖片/巡演回顧/DSC09796.jpg', '圖片/巡演回顧/IMG_3595.jpg',
+    '圖片/巡演回顧/IMG_3780.jpg', '圖片/巡演回顧/IMG_3878.jpg',
+    '圖片/巡演回顧/IMG_3891.jpg', '圖片/巡演回顧/W__00079.jpg',
+    '圖片/巡演回顧/W__00187.jpg', '圖片/巡演回顧/W__00214.jpg',
+    '圖片/巡演回顧/W__00222.jpg', '圖片/巡演回顧/W__00276.jpg',
+    '圖片/巡演回顧/W__00288.jpg', '圖片/巡演回顧/W__00308.jpg',
+    '圖片/巡演回顧/W__00321.jpg', '圖片/巡演回顧/W__09678.jpg',
+    '圖片/巡演回顧/W__09695.jpg', '圖片/巡演回顧/W__09755.jpg',
+    '圖片/巡演回顧/W__09756.jpg', '圖片/巡演回顧/W__09812.jpg',
+    '圖片/巡演回顧/W__09909.jpg', '圖片/巡演回顧/W__09950.jpg'
+  ];
+
+  /* Shuffle */
+  for (var i = srcs.length - 1; i > 0; i--) {
+    var j = ~~(rnd() * (i + 1));
+    var t = srcs[i]; srcs[i] = srcs[j]; srcs[j] = t;
+  }
+
+  var isMobile = window.innerWidth <= 540;
+  var numCols  = isMobile ? 2 : 3;
+
+  /* Build columns */
+  var grid = document.getElementById('photo-grid');
+  var cols = [];
+  for (var c = 0; c < numCols; c++) {
+    var col = document.createElement('div');
+    col.className = 'photo-col';
+    grid.appendChild(col);
+    cols.push(col);
+  }
+
+  /* Width pool: 100% large, 88% medium, 50% small */
+  var widths = [100, 100, 88, 88, 50, 50, 50];
+  function pickAlign() {
+    var r = rnd();
+    return r < 0.4 ? 'flex-start' : r < 0.75 ? 'center' : 'flex-end';
+  }
+
+  var allItems = [];
+  srcs.forEach(function (src, idx) {
+    var col     = cols[idx % numCols];
+    var wrapper = document.createElement('div');
+    wrapper.className = 'photo-item';
+
+    var w      = widths[~~(rnd() * widths.length)];
+    var topGap = ~~(rnd() * (isMobile ? 14 : 44));
+    var botGap = ~~(rnd() * (isMobile ? 12 : 30)) + 6;
+
+    wrapper.style.marginTop    = topGap + 'px';
+    wrapper.style.marginBottom = botGap + 'px';
+
+    if (w < 100) {
+      wrapper.style.width     = w + '%';
+      wrapper.style.alignSelf = pickAlign();
+    }
+
+    if (!isMobile && rnd() < 0.28) {
+      var deg = ((rnd() * 3.6) - 1.8).toFixed(2);
+      wrapper.style.transform = 'rotate(' + deg + 'deg)';
+      (function (d) {
+        wrapper.addEventListener('mouseenter', function () { wrapper.style.transform = 'rotate('+d+'deg) scale(1.03)'; });
+        wrapper.addEventListener('mouseleave', function () { wrapper.style.transform = 'rotate('+d+'deg)'; });
+      })(deg);
+    }
+
+    var img     = document.createElement('img');
+    img.src     = src;
+    img.alt     = '';
+    img.loading = idx < 6 ? 'eager' : 'lazy';
+    wrapper.appendChild(img);
+    col.appendChild(wrapper);
+    allItems.push(wrapper);
+  });
+
+  /* Lightbox */
+  var lb    = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var cur   = 0;
+
+  function openLB(idx) { cur = idx; lbImg.src = allItems[idx].querySelector('img').src; lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLB()   { lb.classList.remove('open'); document.body.style.overflow = ''; }
+  function prevLB()    { openLB((cur - 1 + allItems.length) % allItems.length); }
+  function nextLB()    { openLB((cur + 1) % allItems.length); }
+
+  allItems.forEach(function (el, idx) { el.addEventListener('click', function () { openLB(idx); }); });
+  document.getElementById('lb-close').addEventListener('click', closeLB);
+  document.getElementById('lb-prev').addEventListener('click', function (e) { e.stopPropagation(); prevLB(); });
+  document.getElementById('lb-next').addEventListener('click', function (e) { e.stopPropagation(); nextLB(); });
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target === lbImg) closeLB(); });
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  prevLB();
+    if (e.key === 'ArrowRight') nextLB();
+    if (e.key === 'Escape')     closeLB();
+  });
+
+  /* Nav */
+  var nav = document.getElementById('topnav');
+  function navTick() { nav.classList.toggle('scrolled', window.scrollY > 60); }
+  window.addEventListener('scroll', navTick, { passive: true });
+  navTick();
+
+  /* Hamburger */
+  var btn = document.getElementById('nav-toggle');
+  if (btn) btn.addEventListener('click', function () { btn.setAttribute('aria-expanded', nav.classList.toggle('open')); });
+})();
+</script>
+</body>
+</html>
