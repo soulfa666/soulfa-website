@@ -20,36 +20,64 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-    /* Dark brown background, light cream text */
-    body.about {
-      background: #2b2724;
-      color: #e1dccd;
+    /* About 頁中文字改用源石黑體（只含本頁用到的字，約 36KB／字重）
+       之後 About 頁新增中文內容，需重新產生字型子集 */
+    @font-face {
+      font-family: 'GenSeki';
+      src: url('專輯字體/web/GenSekiGothic2TW-R-about.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
     }
-    body.about::before { mix-blend-mode: overlay; opacity: 0.12; }
+    @font-face {
+      font-family: 'GenSeki';
+      src: url('專輯字體/web/GenSekiGothic2TW-M-about.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'GenSeki';
+      src: url('專輯字體/web/GenSekiGothic2TW-B-about.woff2') format('woff2');
+      font-weight: 700;
+      font-display: swap;
+    }
+    body.about {
+      --font-zh: 'GenSeki', 'Noto Sans TC', sans-serif;
+      --font-juana: 'Juana Alt', 'GenSeki', sans-serif;      /* 英文維持 Juana，中文落到源石黑體 */
+      --font-gopher: "gopher", "Inter", 'GenSeki', sans-serif;
+    }
 
-    /* Nav: cream */
+    /* 橘底、淺藍字（取自樂團照片的天空藍） */
+    body.about {
+      background: #d66528;
+      color: #1AC0FF;
+    }
+    body.about::before { mix-blend-mode: multiply; opacity: 0.10; }
+
+    /* Nav：白字；目前頁（About）和滑鼠移上去是藍色；捲動時不墊底色 */
     body.about nav.top .brand,
-    body.about nav.top ul a { color: #e1dccd; }
+    body.about nav.top ul a { color: #FFFFFF; }   /* 不覆寫 transition，保留共用的字寬／字距變形動畫 */
     body.about nav.top .brand:hover {
-      color: #e1dccd;
+      color: #1AC0FF;
       font-variation-settings: 'wdth' 125, 'SEED' 88;
     }
     body.about nav.top ul a:hover,
     body.about nav.top ul a.is-active {
-      color: #FFFFFF;
+      color: #1AC0FF;
       font-variation-settings: 'wdth' 125, 'SEED' 12;
       letter-spacing: 0.24em;
     }
     body.about nav.top.scrolled {
-      background: rgba(40, 33, 28, 0.88);
-      border-bottom: 1px solid rgba(225, 220, 205, 0.15);
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: none;
     }
 
     section.scene { padding: 100px 36px 120px; }
     @media (max-width: 720px) {
       section.scene { padding: 80px 20px 80px; }
       .about-hero { margin-bottom: 40px; }
-      .about-hero img { max-height: 300px; }
+      .about-hero img { max-height: 360px; }
       .about-quote { font-size: clamp(17px, 4.5vw, 22px); margin: 28px auto 40px; }
       .about-title { font-size: clamp(52px, 14vw, 72px); }
     }
@@ -67,7 +95,7 @@
 
     /* Hero photo +30% (520 → 676) */
     .about-hero {
-      max-width: 1100px;
+      max-width: 1240px;
       margin: 0 auto 64px;
       overflow: hidden;
     }
@@ -75,7 +103,7 @@
       width: 100%;
       height: auto;
       object-fit: cover;
-      max-height: 520px;
+      max-height: 640px;
       object-position: center;
       filter: contrast(1.04) saturate(0.95);
     }
@@ -86,7 +114,7 @@
       font-weight: 600;
       font-size: clamp(44px, 6vw, 72px);
       text-align: center;
-      color: #e1dccd;
+      color: #1AC0FF;
       margin: 0 0 24px;
       letter-spacing: 0;
       line-height: 1.05;
@@ -97,7 +125,7 @@
       font-size: 12px;
       letter-spacing: 0.36em;
       text-transform: uppercase;
-      color: rgba(225, 220, 205, 0.65);
+      color: rgba(26, 192, 255, 0.65);
       text-align: center;
       margin: 0 0 12px;
     }
@@ -112,20 +140,20 @@
       text-align: center;
       max-width: 760px;
       margin: 40px auto 56px;
-      color: #e1dccd;
+      color: #FFFFFF;
     }
-    .about-quote .amber { color: #f5e6c8; }
+    .about-quote .amber { color: #FFFFFF; }
 
     /* Language switcher */
     .lang-switch {
       display: flex;
       justify-content: center;
-      gap: 6px;
+      gap: 12px;
       align-items: center;
-      margin: 56px 0 36px;
+      margin: 56px 0 40px;
       font-family: var(--font-juana);
       font-weight: 600;
-      font-size: 13px;
+      font-size: 18px;
       letter-spacing: 0.22em;
     }
     .lang-btn {
@@ -134,18 +162,18 @@
       cursor: pointer;
       font: inherit;
       text-transform: uppercase;
-      color: rgba(225, 220, 205, 0.55);
-      padding: 6px 14px;
-      border-bottom: 1px solid transparent;
+      color: rgba(26, 192, 255, 0.55);
+      padding: 10px 20px;
+      border-bottom: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
     }
-    .lang-btn:hover { color: #e1dccd; }
+    .lang-btn:hover { color: #1AC0FF; }
     .lang-btn.active {
-      color: #e1dccd;
-      border-bottom-color: #e1dccd;
+      color: #1AC0FF;
+      border-bottom-color: #1AC0FF;
     }
     .lang-divider {
-      color: rgba(225, 220, 205, 0.4);
+      color: rgba(26, 192, 255, 0.4);
       padding: 0 4px;
     }
 
@@ -159,27 +187,27 @@
     .bio.active { display: block; }
     .bio p {
       margin: 0 0 22px;
-      color: #e1dccd;
+      color: #FFFFFF;   /* 中英文介紹：白字 */
     }
-    /* Chinese — GenRyu Medium (weight 500) */
+    /* Chinese — 源石黑體 Regular */
     .bio-zh p {
       font-family: var(--font-zh);
-      font-weight: 500;
+      font-weight: 400;      /* 由 500 改細，和英文 400 的份量接近 */
       font-size: 18px;
-      line-height: 2.05;
+      line-height: 2.3;      /* 中文字塊較滿，行距要比英文大，視覺上才一樣鬆 */
       letter-spacing: 0.04em;
     }
     /* English */
     .bio-en p {
       font-family: var(--font-gopher);
       font-weight: 400;
-      font-size: 17px;
-      line-height: 1.85;
+      font-size: 20px;   /* 英文字面較小，20px 視覺上才和 18px 中文差不多 */
+      line-height: 1.9;
     }
     .bio em {
       font-style: normal;
       color: #FFFFFF;
-      border-bottom: 1px solid rgba(225, 220, 205, 0.6);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
       padding-bottom: 1px;
     }
 
@@ -188,32 +216,32 @@
       max-width: 720px;
       margin: 80px auto 0;
       padding-top: 56px;
-      border-top: 1px solid rgba(225, 220, 205, 0.18);
+      border-top: 1px solid rgba(26, 192, 255, 0.18);
       text-align: center;
     }
     .members-head {
       font-family: var(--font-juana);
       font-weight: 600;
       font-size: clamp(28px, 4vw, 40px);
-      color: #e1dccd;
+      color: #1AC0FF;
       margin: 0 0 32px;
       letter-spacing: 0;
     }
     .members-list { display: flex; flex-direction: column; gap: 0; }
     .member {
       padding: 20px 0;
-      border-top: 1px dashed rgba(225, 220, 205, 0.18);
+      border-top: 1px dashed rgba(26, 192, 255, 0.18);
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 8px;
       align-items: center;
       transition: background 0.3s;
     }
-    .member:last-child { border-bottom: 1px dashed rgba(225, 220, 205, 0.18); }
+    .member:last-child { border-bottom: 1px dashed rgba(26, 192, 255, 0.18); }
     .member-num {
       font-family: var(--font-juana);
       font-size: 11px;
-      color: rgba(225, 220, 205, 0.6);
+      color: rgba(26, 192, 255, 0.6);
       letter-spacing: 0.15em;
       text-align: right;
     }
@@ -221,7 +249,7 @@
       font-family: var(--font-juana);
       font-weight: 600;
       font-size: 26px;
-      color: #e1dccd;
+      color: #1AC0FF;
       letter-spacing: -0.01em;
       text-align: left;
     }
@@ -230,28 +258,33 @@
       font-weight: 600;
       font-size: 11px;
       letter-spacing: 0.18em;
-      color: rgba(225, 220, 205, 0.55);
+      color: rgba(26, 192, 255, 0.55);
       text-transform: uppercase;
       text-align: left;
     }
 
     body.about footer {
-      background: #1f1b18;
-      border-top: 1px solid rgba(225, 220, 205, 0.18);
+      background: #b85420;
+      border-top: 1px solid rgba(26, 192, 255, 0.6);
     }
     body.about .footer-socials a {
-      color: #e1dccd;
+      color: #FFFFFF;
       border: none;
       padding: 4px;
     }
     body.about .footer-socials a:hover {
-      color: #FFFFFF;
+      color: #1AC0FF;   /* 頁尾：平常白、滑上去藍 */
       transform: translateY(-2px);
     }
     body.about .footer-legal {
-      color: rgba(225, 220, 205, 0.5);
-      border-top-color: rgba(225, 220, 205, 0.18);
-    }</style>
+      color: #1AC0FF;
+      border-top-color: rgba(26, 192, 255, 0.6);
+    }
+    body.about .footer-logo-link:hover,
+    body.about .footer-logo-link:hover .footer-logo { color: #1AC0FF !important; }
+    body.about .footer-soulFam-btn { color: #FFFFFF; border-color: #FFFFFF; }
+    body.about .footer-soulFam-btn:hover { color: #1AC0FF !important; border-color: #1AC0FF !important; }
+</style>
 </head>
 <body class="about">
 
@@ -284,7 +317,6 @@
   </div>
 
   <div class="container">
-    <div class="about-subtitle">About</div>
     <h1 class="about-title">SoulFa 靈魂沙發</h1>
 
     <p class="about-quote">

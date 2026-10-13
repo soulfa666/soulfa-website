@@ -184,19 +184,22 @@
     .discog-stage {
       position: relative;
       width: 100%;
-      height: clamp(400px, 58vw, 700px);
+      height: clamp(360px, 46vw, 760px);
       overflow: visible;
+      touch-action: pan-y;   /* 橫向拖曳交給輪播，直向照常捲動 */
+      user-select: none; -webkit-user-select: none;
+      cursor: grab;
     }
     .discog-card {
       position: absolute;
       left: 50%;
       top: 50%;
-      width: clamp(300px, 44vw, 580px);
+      width: clamp(220px, 32vw, 620px); /* 最外側兩張約被切 3/4，只露出 1/4 */
       transform-origin: center;
       cursor: pointer;
       transition:
-        transform 0.58s cubic-bezier(0.22, 0.61, 0.36, 1),
-        opacity   0.58s cubic-bezier(0.22, 0.61, 0.36, 1);
+        transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1),
+        opacity   0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
       will-change: transform, opacity;
     }
     .discog-cover {
@@ -225,7 +228,13 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      opacity: 0;
+      transition: opacity 0.6s ease;
     }
+    .discog-stage.is-dragging { cursor: grabbing; }
+    .discog-stage img, .discog-stage a { -webkit-user-drag: none; }
+    /* 只有中間那張顯示名稱 */
+    .discog-card.is-active .discog-card-name { opacity: 1; }
 
 
     /* Side arrows */
@@ -238,9 +247,10 @@
       color: rgba(239,236,229,0.88);
       font-size: 28px; cursor: pointer; z-index: 10;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.18s; line-height: 1;
+      transition: background 0.18s, opacity 0.18s; line-height: 1;
+      opacity: 0.8;
     }
-    .discog-arrow:hover { background: #C77B4A; }
+    .discog-arrow:hover { background: #C77B4A; opacity: 1; } /* 滑上去的橘色維持原樣 */
     .discog-arrow-prev { left: 16px; }
     .discog-arrow-next { right: 16px; }
 
@@ -336,8 +346,10 @@
 
     @media (max-width: 720px) {
       .discog-header { padding: 0 24px 32px; }
-      .discog-stage { height: clamp(280px, 82vw, 480px); }
-      .discog-card { width: clamp(220px, 74vw, 360px); }
+      .discog-stage { height: clamp(240px, 58vw, 380px); }
+      .discog-card { width: 32vw; }
+      .discog-card-name { font-size: 12px; padding-top: 10px; }
+      .discog-arrow { display: none; } /* 手機用滑動 / 點旁邊封面切換 */
       #stream-panel { padding: 28px 24px 44px; }
     }
 
@@ -598,7 +610,7 @@
 
     /* ─── TOUR REVEAL (hero 下方第一區塊) ─── */
     .tour-reveal {
-      padding: 130px 32px 130px;
+      padding: 40px 32px 130px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -630,7 +642,7 @@
     }
     .tour-reveal-poster {
       display: block;
-      width: min(760px, 92vw);
+      width: min(560px, 80vw);
       box-shadow:
         0 8px 24px rgba(0,0,0,0.18),
         0 32px 72px rgba(0,0,0,0.22);
@@ -684,7 +696,7 @@
       letter-spacing: 0.06em;
     }
     @media (max-width: 720px) {
-      .tour-reveal { padding: 80px 24px 80px; }
+      .tour-reveal { padding: 32px 24px 80px; }
       .tour-reveal-title { margin-bottom: 36px; }
       .tour-tickets { margin-top: 36px; gap: 10px; }
       .tour-ticket-btn { padding: 13px 20px; min-width: 100px; }
@@ -807,25 +819,28 @@
     (function () {
       var releases = [
         // ── 由舊到新 oldest → newest ──
-        { cover:'圖片/單曲封面/單曲、專輯封面/POLYDREAM.jpg',      name:'Polydream', links:[{name:'Spotify',url:'https://open.spotify.com/track/0WN1pMW1Pimvy5u7bbiyqV'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/44 Seconds Road Movie.png', name:'44 Seconds Road Movie', links:[{name:'Spotify',url:'https://open.spotify.com/album/2Yqy5m7BXFDPTnb3QKloFW'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/lover song.png',     name:'Lover Song', links:[{name:'Spotify',url:'https://open.spotify.com/track/6J23NwckI3WgaaWqJyQcI0'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/Rose & i.png',       name:'Rose and i.', links:[{name:'Spotify',url:'https://open.spotify.com/album/7ingM7kfWG7btVL74j3jOf'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/夏日午睡.jpg',       name:'夏日午睡',  links:[{name:'Spotify',url:'https://open.spotify.com/track/4rWHPMjUeyk5KFHeEZaWD3'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/hear hear.png',      name:'Hear Hear', links:[{name:'Spotify',url:'https://open.spotify.com/album/0YsmMOc98qht1ivzBTEp4G'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/SoulFa 一專cover.jpg', name:'SoulFa',  links:[{name:'Spotify',url:'https://open.spotify.com/album/7ingM7kfWG7btVL74j3jOf'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/留一盞燈給漫漫長夜.jpg', name:'留一盞燈給漫漫長夜', links:[{name:'Spotify',url:'https://open.spotify.com/album/00e4nHORgucdUArLsYhtWM'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/Slumber Days單曲.png', name:'Slumber Days (Single)', links:[{name:'Spotify',url:'https://open.spotify.com/track/5NwrgVZwoOTGmmlY3Ptw6i'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/Slumber Days (Album cover).png', name:'Slumber Days', links:[{name:'Spotify',url:'https://open.spotify.com/album/2mnD5h9xbjF5S9YYEMN0TQ'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/So Far cover.jpeg',  name:'So Far',    links:[{name:'Spotify',url:'https://open.spotify.com/track/5meEhwzqvqbhRytujnx2pi'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/We Talk to iphone But Not Our Best Friend.jpg', name:'We Talk to iPhone…', links:[{name:'Spotify',url:'https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/荒唐的盡頭.jpg',     name:'荒唐的盡頭', links:[{name:'Spotify',url:'https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/失望的山.png',      name:'失望的山',  links:[{name:'Spotify',url:'https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI'}] }  // index 13 ← opens centered
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/POLYDREAM.jpg',      name:'Polydream', links:[{name:'Spotify',url:'https://open.spotify.com/album/70SfyYQgUSvQqJkXPi6bdc'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/44 Seconds Road Movie.jpg', name:'44 Seconds Road Movie', links:[{name:'Spotify',url:'https://open.spotify.com/album/2Yqy5m7BXFDPTnb3QKloFW'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/lover song.jpg',     name:'Lover Song', links:[{name:'Spotify',url:'https://open.spotify.com/album/56W5X2mnit4XbNgmhKwq2x'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/Rose & i.jpg',       name:'Rose and i.', links:[{name:'Spotify',url:'https://open.spotify.com/album/423gQHASzIUaRSCiTaGZZX'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/夏日午睡.jpg',       name:'夏日午睡',  links:[{name:'Spotify',url:'https://open.spotify.com/track/4rWHPMjUeyk5KFHeEZaWD3'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/hear hear.jpg',      name:'Hear Hear', links:[{name:'Spotify',url:'https://open.spotify.com/album/0YsmMOc98qht1ivzBTEp4G'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/SoulFa 一專cover.jpg', name:'SoulFa',  links:[{name:'Listen',url:'https://lnkfi.re/SoulFa1stAlbum'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/留一盞燈給漫漫長夜.jpg', name:'留一盞燈給漫漫長夜', links:[{name:'Spotify',url:'https://open.spotify.com/album/00e4nHORgucdUArLsYhtWM'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/Slumber Days單曲.jpg', name:'Slumber Days (Single)', links:[{name:'Spotify',url:'https://open.spotify.com/track/5NwrgVZwoOTGmmlY3Ptw6i'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/Slumber Days (Album cover).jpg', name:'Slumber Days', links:[{name:'Listen',url:'https://lnkfi.re/TeX6CGhr'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/So Far cover.jpg',  name:'So Far',    links:[{name:'Spotify',url:'https://open.spotify.com/track/5meEhwzqvqbhRytujnx2pi'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/I did it again.jpg', name:'I did it again', links:[{name:'Listen',url:'https://legacy.soundscape.net/a/43937'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/午夜宣言.jpg',      name:'午夜宣言',  links:[{name:'Spotify',url:'https://open.spotify.com/album/3HMXwCbQ0zuRbjXuQ3Kdmf'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/躺在床上.jpg',      name:'躺在床上',  links:[{name:'Spotify',url:'https://open.spotify.com/album/4gtYvHdvoqY9OdOCtAXqjl'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/We Talk to iphone But Not Our Best Friend.jpg', name:'We Talk to iPhone…', links:[{name:'Spotify',url:'https://open.spotify.com/album/62b1b9z2OELU2sH8hwxIrj'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/荒唐的盡頭.jpg',     name:'荒唐的盡頭', links:[{name:'Spotify',url:'https://open.spotify.com/album/4EeV6PLkovXhliJXzAZfba'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/失望的山.jpg',      name:'失望的山',  links:[{name:'Listen',url:'https://umg.lnk.to/jthcd3wt'}] }  // index 16 ← opens centered
       ];
 
       var n   = releases.length;
       var ext = releases.concat(releases).concat(releases);
-      var cur = n + 13; // open centered on 失望的山 (index 13)
+      var cur = n + 16; // open centered on 失望的山 (index 16)
       var stage   = document.getElementById('discog-stage');
       var overlay = document.getElementById('stream-overlay');
       var cards   = [];
@@ -844,7 +859,7 @@
         card.addEventListener('click', function (e) {
           var pos = i - cur;
           if (pos === 0) { /* listen btn handles it */ }
-          else if (Math.abs(pos) === 1) { e.preventDefault(); goTo(i); }
+          else if (Math.abs(pos) <= 2) { e.preventDefault(); goTo(i); }
         });
         stage.appendChild(card);
         cards.push(card);
@@ -872,7 +887,7 @@
             ctx.scale(dpr, dpr);
             ctx.clearRect(0, 0, w, h);
             ctx.fillStyle = '#fff';
-            var r = 8;
+            var r = parseFloat(getComputedStyle(btn).borderTopLeftRadius) || 8;
             ctx.beginPath();
             if (ctx.roundRect) { ctx.roundRect(0, 0, w, h, r); }
             else {
@@ -898,59 +913,90 @@
           window.addEventListener('resize', function() {
             requestAnimationFrame(function() { draw(); });
           });
-          btn.addEventListener('mouseenter', function() { cvs.style.opacity = '1'; });
+          btn.addEventListener('mouseenter', function() { draw(); cvs.style.opacity = '1'; });
           btn.addEventListener('mouseleave', function() { cvs.style.opacity = '0'; });
         })(card.querySelector('.discog-listen-btn'));
       });
 
 
-      var busy = false;
+      var prevBtn, nextBtn;
+      var dragFrac = 0;      // 拖曳中的偏移（以「一張」為單位）
+      var stepPx   = 1;      // 一張的移動距離（px），由 place() 更新
+
+      // 連續位置 → 位移 / 縮放 / 透明度（在關鍵點之間線性內插，拖曳時才會平順變化）
+      function lerpAt(arr, ap) {
+        var k = Math.floor(ap), t = ap - k;
+        if (k >= arr.length - 1) return arr[arr.length - 1];
+        return arr[k] + (arr[k + 1] - arr[k]) * t;
+      }
 
       function place(animated) {
         var cw  = cards[n].offsetWidth;
-        var gap = Math.round(cw * 1.06);
+        // 中心 1 張 + 左右各 2 張；依縮放後寬度排列，間距 = 卡寬 8%
+        var g  = cw * 0.08;
+        var d1 = cw * (0.5 + 0.375) + g;          // ±1 中心距
+        var d2 = d1 + cw * (0.375 + 0.28) + g;    // ±2 中心距
+        var d3 = d2 + cw * (0.28 + 0.2) + g;      // 畫面外
+        stepPx = d1;
+        stage.style.setProperty('--discog-cw', cw + 'px');
+        var D = [0, d1, d2, d3, d3 + cw * 0.5];
+        var S = [1, 0.75, 0.56, 0.40, 0.40];
+        var O = [1, 0.72, 0.6, 0, 0];
         cards.forEach(function (card, i) {
-          var pos = i - cur;
-          var tx, scale, opacity, zi;
-          if      (pos === 0)           { tx = -cw/2;           scale = 1;    opacity = 1;    zi = 4; }
-          else if (Math.abs(pos) === 1) { tx = -cw/2 + pos*gap; scale = 0.75; opacity = 0.48; zi = 3; }
-          else if (Math.abs(pos) === 2) { tx = -cw/2 + pos*gap; scale = 0.56; opacity = 0.18; zi = 2; }
-          else                          { tx = -cw/2 + pos*gap; scale = 0.40; opacity = 0;    zi = 1; }
+          var p  = i - cur + dragFrac;
+          var ap = Math.abs(p), sg = p < 0 ? -1 : 1;
+          var dist = ap <= 4 ? lerpAt(D, ap) : D[4] + (ap - 4) * cw * 0.5;
+          var scale = lerpAt(S, Math.min(ap, 4));
+          var opacity = lerpAt(O, Math.min(ap, 4));
+          var tx = -cw / 2 + sg * dist;
           card.style.transition    = animated === false ? 'none' : '';
           card.style.transform     = 'translateX(' + tx + 'px) translateY(-50%) scale(' + scale + ')';
           card.style.opacity       = opacity;
-          card.style.zIndex        = zi;
-          card.style.pointerEvents = Math.abs(pos) <= 1 ? 'auto' : 'none';
-          if (pos === 0) card.classList.add('is-active');
+          card.style.zIndex        = 10 - Math.round(ap);
+          card.style.pointerEvents = ap <= 2.5 ? 'auto' : 'none';
+          if (Math.round(p) === 0) card.classList.add('is-active');
           else card.classList.remove('is-active');
         });
+        // 箭頭放在 ±1 與 ±2 兩張之間的間隔
+        if (prevBtn && nextBtn) {
+          var mid = (d1 + cw * 0.375 + d2 - cw * 0.28) / 2;
+          var half = stage.offsetWidth / 2, aw = prevBtn.offsetWidth;
+          prevBtn.style.left  = (half - mid - aw / 2) + 'px';
+          nextBtn.style.left  = (half + mid - aw / 2) + 'px';
+          nextBtn.style.right = 'auto';
+        }
       }
 
-      function goTo(idx) {
-        if (busy) return;
-        busy = true;
-        cur = idx;
-        place();
-        setTimeout(function () {
-          busy = false;
+      // 無限循環：停下來後，若跑出中段就無痕跳回中段
+      var normTimer = null;
+      function normalizeLater() {
+        clearTimeout(normTimer);
+        normTimer = setTimeout(function () {
           if (cur < n || cur >= 2 * n) {
             cur = ((cur % n) + n) % n + n;
-            cards.forEach(function (c) { c.style.transition = 'none'; });
             place(false);
             cards[0].offsetWidth;
             cards.forEach(function (c) { c.style.transition = ''; });
           }
-        }, 620);
+        }, 900);
+      }
+
+      // 不鎖定：動畫進行中也能連續點，CSS transition 會從目前位置平順接續
+      function goTo(idx) {
+        cur = idx;
+        dragFrac = 0;
+        place();
+        normalizeLater();
       }
 
       // Arrows
-      var prevBtn = document.createElement('button');
+      prevBtn = document.createElement('button');
       prevBtn.className = 'discog-arrow discog-arrow-prev';
       prevBtn.setAttribute('aria-label', '上一張');
       prevBtn.innerHTML = '&#8249;';
       stage.appendChild(prevBtn);
 
-      var nextBtn = document.createElement('button');
+      nextBtn = document.createElement('button');
       nextBtn.className = 'discog-arrow discog-arrow-next';
       nextBtn.setAttribute('aria-label', '下一張');
       nextBtn.innerHTML = '&#8250;';
@@ -959,15 +1005,51 @@
       prevBtn.addEventListener('click', function () { goTo(cur - 1); });
       nextBtn.addEventListener('click', function () { goTo(cur + 1); });
 
-      // Swipe
-      var tx0 = null;
-      stage.addEventListener('pointerdown', function (e) { if (e.target !== prevBtn && e.target !== nextBtn) tx0 = e.clientX; });
-      stage.addEventListener('pointerup',   function (e) {
-        if (tx0 === null) return;
-        var dx = e.clientX - tx0;
-        if (Math.abs(dx) > 50) goTo(dx < 0 ? cur + 1 : cur - 1);
-        tx0 = null;
+      // 拖曳：封面即時跟著手指 / 滑鼠走，放開後吸附到最近的一張
+      var drag = null, dragged = false;
+      stage.addEventListener('pointerdown', function (e) {
+        if (e.target === prevBtn || e.target === nextBtn) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        drag = { x0: e.clientX, y0: e.clientY, lastX: e.clientX, lastT: performance.now(), v: 0, active: false };
+        dragged = false;
       });
+      window.addEventListener('pointermove', function (e) {
+        if (!drag) return;
+        var dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
+        if (!drag.active) {
+          if (Math.abs(dx) < 6) return;
+          if (Math.abs(dy) > Math.abs(dx)) { drag = null; return; } // 直向捲動就放掉
+          drag.active = true; dragged = true;
+          stage.classList.add('is-dragging');
+        }
+        var now = performance.now();
+        drag.v = (e.clientX - drag.lastX) / Math.max(1, now - drag.lastT); // px/ms
+        drag.lastX = e.clientX; drag.lastT = now;
+        dragFrac = dx / stepPx;
+        place(false);
+      });
+      function endDrag() {
+        if (!drag) return;
+        var wasActive = drag.active, v = drag.v;
+        drag = null;
+        stage.classList.remove('is-dragging');
+        if (!wasActive) return;
+        var steps = -Math.round(dragFrac);
+        if (steps === 0 && Math.abs(v) > 0.35) steps = v < 0 ? 1 : -1;   // 快速甩動也算一張
+        cur += steps;
+        dragFrac = 0;
+        cards.forEach(function (c) { c.style.transition = ''; });
+        place();
+        normalizeLater();
+      }
+      // 封面上的 listen 連結會觸發瀏覽器原生拖曳，擋掉才能順利拖輪播
+      stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
+      window.addEventListener('pointerup', endDrag);
+      window.addEventListener('pointercancel', endDrag);
+      // 拖曳後放開不要觸發點擊（避免誤開 listen 連結或跳張）
+      stage.addEventListener('click', function (e) {
+        if (dragged) { e.preventDefault(); e.stopPropagation(); dragged = false; }
+      }, true);
 
       requestAnimationFrame(function () { requestAnimationFrame(function () { place(false); }); });
       window.addEventListener('resize', function () { place(false); });

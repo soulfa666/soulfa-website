@@ -245,15 +245,17 @@
       border-color: rgba(222, 232, 155, 0.7);
     }
 
-    /* Footer */
+    /* Footer（tour / gallery 共用同一套：深色底、米白字、滑鼠移上去變橘） */
     body.orange footer {
       background: #080604;
       border-top: 1px solid rgba(222, 232, 155, 0.10);
     }
-    body.orange .footer-socials a { color: #ECE6D6; border: none; padding: 4px; }
-    body.orange .footer-socials a:hover { color: #FFFFFF; border: none; }
+    body.orange .footer-socials a { color: #ECE6D6; border: none; padding: 4px; transition: color 0.25s, transform 0.25s; }
+    body.orange .footer-socials a:hover { color: var(--film-amber); border: none; }
     body.orange .footer-logo-link { color: #ECE6D6 !important; }
-    body.orange .footer-logo path { fill: #ECE6D6 !important; }
+    body.orange .footer-logo path { fill: #ECE6D6 !important; transition: fill 0.25s; }
+    body.orange .footer-logo-link:hover { color: var(--film-amber) !important; }
+    body.orange .footer-logo-link:hover .footer-logo path { fill: var(--film-amber) !important; }
     body.orange .footer-soulFam-btn { color: #ECE6D6 !important; border-color: #ECE6D6; }
     body.orange .footer-soulFam-btn:hover { color: var(--film-amber) !important; border-color: var(--film-amber) !important; }
     body.orange .footer-legal {

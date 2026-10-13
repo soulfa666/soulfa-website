@@ -407,10 +407,23 @@
       transform: scale(1.04);
     }
 
-    body.orange footer { background: #E5E1D9; border-top: 1px solid rgba(44, 36, 32, 0.10); }
-    body.orange .footer-socials a { color: #2C2420; border: none; padding: 4px; }
-    body.orange .footer-socials a:hover { color: #7A3A1C; border: none; }
-    body.orange .footer-legal { color: rgba(44, 36, 32, 0.45); border-top-color: rgba(44, 36, 32, 0.10); }
+    /* Footer（tour / gallery 共用同一套：深色底、米白字、滑鼠移上去變橘） */
+    body.orange footer {
+      background: #080604;
+      border-top: 1px solid rgba(222, 232, 155, 0.10);
+    }
+    body.orange .footer-socials a { color: #ECE6D6; border: none; padding: 4px; transition: color 0.25s, transform 0.25s; }
+    body.orange .footer-socials a:hover { color: var(--film-amber); border: none; }
+    body.orange .footer-logo-link { color: #ECE6D6 !important; }
+    body.orange .footer-logo path { fill: #ECE6D6 !important; transition: fill 0.25s; }
+    body.orange .footer-logo-link:hover { color: var(--film-amber) !important; }
+    body.orange .footer-logo-link:hover .footer-logo path { fill: var(--film-amber) !important; }
+    body.orange .footer-soulFam-btn { color: #ECE6D6 !important; border-color: #ECE6D6; }
+    body.orange .footer-soulFam-btn:hover { color: var(--film-amber) !important; border-color: var(--film-amber) !important; }
+    body.orange .footer-legal {
+      color: rgba(236, 230, 214, 0.40);
+      border-top-color: rgba(222, 232, 155, 0.10);
+    }
 
     @media (max-width: 720px) {
       .block-title { font-size: clamp(28px, 8vw, 48px); flex-wrap: wrap; gap: 8px; }
@@ -420,8 +433,7 @@
       .gated-form input[type="email"] { min-width: 0; width: 100%; }
       .gated-form button { width: 100%; }
     }
-    .footer-logo-link { color: #1A1A1A !important; }
-    .footer-logo path { fill: #1A1A1A !important; }</style>
+</style>
 </head>
 <body class="orange">
 
