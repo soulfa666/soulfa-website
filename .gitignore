@@ -4,7 +4,6 @@ Thumbs.db
 *.mp4
 *.mov
 # 壓縮後的 gallery 影片可以 push
-!影片/gallery首頁.mp4
 !影片/失望的山mv片段.mp4
 # 原始大檔排除，用壓縮版取代
 首頁圖.png
