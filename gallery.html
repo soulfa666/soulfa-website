@@ -63,21 +63,23 @@
       color: rgba(44, 36, 32, 0.55);
     }
 
+    /* 金馬影展式：三欄滿版圖格、細縫、文字滑上去才出現 */
     .mv-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 56px;
-      max-width: 960px;
-      margin: 0 auto;
-      align-items: center;
-      gap: 56px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      width: min(1400px, calc(100vw - 64px));
+      margin-left: 50%;
+      transform: translateX(-50%);
     }
+    @media (max-width: 960px) { .mv-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; width: calc(100vw - 32px); } }
+    @media (max-width: 560px) { .mv-grid { grid-template-columns: 1fr; } }
     .mv-card {
+      position: relative;
       background: transparent;
       border: none;
-      overflow: visible;
+      overflow: hidden;
       width: 100%;
-      max-width: 960px;
     }
     .mv-card iframe {
       width: 100%;
@@ -124,12 +126,27 @@
       position: absolute; inset: 0;
     }
     .mv-meta {
+      position: absolute;
+      inset: 0;
       display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      padding: 13px 0 0;
-      gap: 16px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 16px;
+      text-align: center;
+      background: rgba(0,0,0,0.42);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
     }
+    .mv-card:hover .mv-meta { opacity: 1; }
+    @media (hover: none) { .mv-meta { opacity: 1; background: rgba(0,0,0,0.3); } }   /* 手機沒有滑鼠，歌名常駐 */
+    .mv-card iframe ~ .mv-meta { display: none; }   /* 播放中不蓋住影片 */
+    .mv-play { display: none !important; }          /* 不用 YouTube 紅色播放鍵 */
+    .mv-card .mv-title { font-size: clamp(18px, 1.7vw, 24px) !important; }
+    .mv-card .mv-title, .mv-card .mv-title.en { color: #FFFFFF !important; }
+    .mv-card .mv-year { color: rgba(255,255,255,0.75) !important; }
     .mv-card .mv-title {
       font-family: var(--font-zh);
       font-weight: 500;
@@ -170,7 +187,8 @@
       display: block;
       transition: opacity 0.3s;
     }
-    .mv-thumb:hover img { opacity: 0.8; }
+    .mv-thumb img { transition: opacity 0.3s, transform 0.6s ease; }
+    .mv-thumb:hover img { opacity: 0.85; transform: scale(1.03); }
     .mv-play {
       position: absolute;
       inset: 0;
@@ -181,6 +199,7 @@
     }
     /* YouTube-style red play button (smaller than YT default 68×48) */
     .mv-play-btn {
+      opacity: 0;
       width: 52px;
       height: 36px;
       background: #FF0000;
@@ -189,10 +208,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.18s ease, transform 0.22s ease, box-shadow 0.22s ease;
+      transition: opacity 0.3s ease, background 0.18s ease, transform 0.22s ease, box-shadow 0.22s ease;
       box-shadow: 0 4px 12px rgba(0,0,0,0.35);
     }
     .mv-thumb:hover .mv-play-btn {
+      opacity: 1;
       background: #CC0000;
       transform: scale(1.08);
       box-shadow: 0 6px 18px rgba(0,0,0,0.5);
@@ -399,7 +419,7 @@
       width: 100%;
       height: auto;
       box-shadow: 3px 5px 18px rgba(0,0,0,0.22);
-      mix-blend-mode: multiply;
+      /* 拿掉 mix-blend-mode: multiply：64 張移動中的照片疊色，Safari 會隨機漏畫成空白框 */
       transition: box-shadow 0.28s ease, transform 0.28s ease;
     }
     .scatter-photo:hover img {
@@ -474,11 +494,39 @@
       <h2 class="block-title">MV <span class="mini">Music Videos</span></h2>
       <div class="mv-grid">
         <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="-_fzYbJcKTo">
+            <img src="https://img.youtube.com/vi/-_fzYbJcKTo/maxresdefault.jpg" alt="失望的山" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/-_fzYbJcKTo/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title">失望的山</div><div class="mv-year">2025</div></div>
+        </div>
+        <div class="mv-card reveal">
           <div class="mv-thumb" data-vid="fyOhXjKWvbA">
             <img src="https://img.youtube.com/vi/fyOhXjKWvbA/maxresdefault.jpg" alt="So Far" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/fyOhXjKWvbA/sddefault.jpg'"/>
             <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
           </div>
           <div class="mv-meta"><div class="mv-title en">So Far</div><div class="mv-year">2023</div></div>
+        </div>
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="-6xJZepHRAE">
+            <img src="https://img.youtube.com/vi/-6xJZepHRAE/maxresdefault.jpg" alt="Goodbye Caroline" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/-6xJZepHRAE/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title en">Goodbye Caroline</div><div class="mv-year">2023</div></div>
+        </div>
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="97Eyjfceozg">
+            <img src="https://img.youtube.com/vi/97Eyjfceozg/maxresdefault.jpg" alt="留一盞燈給漫漫長夜（崁仔頂漁市 Version）" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/97Eyjfceozg/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title">留一盞燈給漫漫長夜（崁仔頂漁市 Version）</div><div class="mv-year">2022</div></div>
+        </div>
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="H_cyM4XodUc">
+            <img src="https://img.youtube.com/vi/H_cyM4XodUc/maxresdefault.jpg" alt="Slumber Days" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/H_cyM4XodUc/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title en">Slumber Days</div><div class="mv-year">2021</div></div>
         </div>
         <div class="mv-card reveal">
           <div class="mv-thumb" data-vid="Wt3MQ66vnL4">
@@ -488,11 +536,18 @@
           <div class="mv-meta"><div class="mv-title">沙發上的白日夢</div><div class="mv-year">2021</div></div>
         </div>
         <div class="mv-card reveal">
-          <div class="mv-thumb" data-vid="H_cyM4XodUc">
-            <img src="https://img.youtube.com/vi/H_cyM4XodUc/maxresdefault.jpg" alt="Slumber Days" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/H_cyM4XodUc/sddefault.jpg'"/>
+          <div class="mv-thumb" data-vid="pYbw9qvRJj4">
+            <img src="https://img.youtube.com/vi/pYbw9qvRJj4/maxresdefault.jpg" alt="牛" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/pYbw9qvRJj4/sddefault.jpg'"/>
             <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
           </div>
-          <div class="mv-meta"><div class="mv-title en">Slumber Days</div><div class="mv-year">2020</div></div>
+          <div class="mv-meta"><div class="mv-title">牛</div><div class="mv-year">2020</div></div>
+        </div>
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="J5-GzN5X4Yo">
+            <img src="https://img.youtube.com/vi/J5-GzN5X4Yo/maxresdefault.jpg" alt="I wonder" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/J5-GzN5X4Yo/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title en">I wonder</div><div class="mv-year">2020</div></div>
         </div>
         <div class="mv-card reveal">
           <div class="mv-thumb" data-vid="xIOkxzLotQI">
@@ -502,18 +557,25 @@
           <div class="mv-meta"><div class="mv-title en">Hear Hear</div><div class="mv-year">2019</div></div>
         </div>
         <div class="mv-card reveal">
-          <div class="mv-thumb" data-vid="pYbw9qvRJj4">
-            <img src="https://img.youtube.com/vi/pYbw9qvRJj4/maxresdefault.jpg" alt="牛" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/pYbw9qvRJj4/sddefault.jpg'"/>
+          <div class="mv-thumb" data-vid="y2ilJERt9jU">
+            <img src="https://img.youtube.com/vi/y2ilJERt9jU/maxresdefault.jpg" alt="Lover Song" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/y2ilJERt9jU/sddefault.jpg'"/>
             <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
           </div>
-          <div class="mv-meta"><div class="mv-title">牛</div><div class="mv-year">2020</div></div>
+          <div class="mv-meta"><div class="mv-title en">Lover Song</div><div class="mv-year">2019</div></div>
+        </div>
+        <div class="mv-card reveal">
+          <div class="mv-thumb" data-vid="GB9xpyAwn80">
+            <img src="https://img.youtube.com/vi/GB9xpyAwn80/maxresdefault.jpg" alt="44 Seconds Road Movie" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/GB9xpyAwn80/sddefault.jpg'"/>
+            <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+          </div>
+          <div class="mv-meta"><div class="mv-title en">44 Seconds Road Movie</div><div class="mv-year">2018</div></div>
         </div>
         <div class="mv-card reveal">
           <div class="mv-thumb" data-vid="NDAdelnlrHQ">
             <img src="https://img.youtube.com/vi/NDAdelnlrHQ/maxresdefault.jpg" alt="Polydream" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/NDAdelnlrHQ/sddefault.jpg'"/>
             <div class="mv-play"><div class="mv-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
           </div>
-          <div class="mv-meta"><div class="mv-title en">Polydream</div><div class="mv-year">2019</div></div>
+          <div class="mv-meta"><div class="mv-title en">Polydream</div><div class="mv-year">2018</div></div>
         </div>
       </div>
       <p class="mv-link-more"><a href="https://www.youtube.com/results?search_query=SoulFa+%E9%9D%88%E9%AD%82%E6%B2%99%E7%99%BC" target="_blank" rel="noopener">More on YouTube ↗</a></p>
@@ -522,70 +584,70 @@
     <div class="block">
       <h2 class="block-title">Life <span class="mini">Photo & Film</span></h2>
       <div class="scatter-canvas" id="scatter-canvas">
-        <a class="scatter-photo" data-size="xl" href="圖片/Ilford Delta 3200/web/000311550014.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550014.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550016.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550016.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo portrait" href="圖片/Ilford Delta 3200/web/000311550017.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550017.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550018.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550018.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550019.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550019.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" data-size="xl" href="圖片/Ilford Delta 3200/web/000311550021.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550021.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550024.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550024.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550025.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550025.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550026.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550026.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550029.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550029.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550030.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550030.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550031.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550031.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550032.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/000311550032.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1805.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1805.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1806.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1806.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1807.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1807.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1808.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1808.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1809.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1809.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1810.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1810.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1811.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1811.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1812.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1812.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo portrait" data-size="xl" href="圖片/Ilford Delta 3200/web/IMG_1813.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1813.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo portrait" href="圖片/Ilford Delta 3200/web/IMG_1814.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1814.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1815.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1815.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo portrait" data-size="xl" href="圖片/Ilford Delta 3200/web/IMG_1816.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/web/IMG_1816.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620001.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620001.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620002.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620002.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620003.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620003.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620004.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620004.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620005.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620005.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620006.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620006.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620007.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620007.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620008.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620008.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620009.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620009.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620010.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620010.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620011.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620011.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620012.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620012.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620013.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620013.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620014.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620014.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620015.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620015.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620016.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620016.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620017.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620017.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620018.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620018.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620019.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620019.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620020.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620020.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620021.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620021.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620022.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620022.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620023.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620023.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620024.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620024.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620025.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620025.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620026.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620026.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620027.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620027.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620028.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620028.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620029.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620029.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620030.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620030.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620031.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620031.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620032.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620032.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620033.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620033.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620034.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620034.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620035.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620035.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620036.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620036.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620037.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620037.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620038.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620038.jpg" alt="" loading="lazy"/></a>
-        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620039.jpg" target="_blank"><img src="圖片/Ilford HP5/web/000028620039.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" data-size="xl" href="圖片/Ilford Delta 3200/web/000311550014.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550014.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550016.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550016.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" href="圖片/Ilford Delta 3200/web/000311550017.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550017.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550018.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550018.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550019.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550019.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" data-size="xl" href="圖片/Ilford Delta 3200/web/000311550021.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550021.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550024.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550024.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550025.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550025.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550026.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550026.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550029.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550029.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550030.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550030.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550031.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550031.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/000311550032.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/000311550032.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1805.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1805.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1806.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1806.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1807.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1807.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1808.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1808.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1809.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1809.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1810.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1810.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1811.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1811.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1812.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1812.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" data-size="xl" href="圖片/Ilford Delta 3200/web/IMG_1813.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1813.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" href="圖片/Ilford Delta 3200/web/IMG_1814.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1814.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford Delta 3200/web/IMG_1815.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1815.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo portrait" data-size="xl" href="圖片/Ilford Delta 3200/web/IMG_1816.jpg" target="_blank"><img src="圖片/Ilford Delta 3200/thumb/IMG_1816.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620001.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620001.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620002.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620002.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620003.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620003.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620004.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620004.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620005.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620005.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620006.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620006.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620007.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620007.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620008.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620008.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620009.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620009.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620010.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620010.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620011.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620011.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620012.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620012.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620013.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620013.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620014.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620014.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620015.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620015.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620016.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620016.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620017.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620017.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620018.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620018.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620019.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620019.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620020.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620020.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620021.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620021.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620022.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620022.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620023.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620023.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620024.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620024.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620025.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620025.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620026.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620026.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620027.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620027.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620028.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620028.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620029.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620029.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620030.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620030.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620031.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620031.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620032.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620032.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620033.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620033.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620034.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620034.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620035.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620035.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620036.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620036.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620037.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620037.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620038.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620038.jpg" alt="" loading="lazy"/></a>
+        <a class="scatter-photo" href="圖片/Ilford HP5/web/000028620039.jpg" target="_blank"><img src="圖片/Ilford HP5/thumb/000028620039.jpg" alt="" loading="lazy"/></a>
       </div>
     </div>
   </div>
@@ -743,7 +805,14 @@
     var isDragging = false;
     var lastDragX  = 0;
 
+    var inView = true;   // 照片區不在畫面時暫停動畫，減輕瀏覽器負擔
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { inView = en[0].isIntersecting; }, { rootMargin: '300px 0px' }).observe(canvas);
+    }
+
     function frame() {
+      if (!inView) { requestAnimationFrame(frame); return; }
+      var canvasTop = canvas.getBoundingClientRect().top, vh = window.innerHeight;
       time++;
       if (!isDragging) {
         speed += (targetSpeed - speed) * 0.09;
@@ -760,20 +829,17 @@
         var depth = (sinA + 1) / 2;
         var scale = 0.30 + depth * 0.70;
 
-        var w = d.baseW * scale;
-        var h = w * d.ar;
-
+        // 只用 transform 移動（不每格改 width/left/top），避免每格重排版；Safari 才不會漏畫照片
+        var bw = d.baseW, bh = bw * d.ar;
         var floatY = Math.sin(time * d.floatFreq + d.floatPhase) * d.floatAmp;
-
-        var x = cx + rx * cosA - w / 2;
-        var y = cy + ry * sinA + d.yLane - h / 2 + floatY;
-
-        d.photo.style.width     = w.toFixed(1) + 'px';
-        d.photo.style.left      = x.toFixed(1) + 'px';
-        d.photo.style.top       = y.toFixed(1) + 'px';
-        d.photo.style.transform = 'rotate(' + d.tilt.toFixed(1) + 'deg)';
-        d.photo.style.opacity   = '1';
+        var x = cx + rx * cosA - bw / 2;
+        var y = cy + ry * sinA + d.yLane - bh / 2 + floatY;
+        d.photo.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' +
+                                  d.tilt.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
         d.photo.style.zIndex    = rank + 1;
+        // 離畫面太遠的照片先不畫（Safari 同時畫太多張會把部分照片畫成空白）
+        var sy = canvasTop + y;
+        d.photo.style.visibility = (sy > vh + 400 || sy + bh < -400) ? 'hidden' : 'visible';
       });
 
       requestAnimationFrame(frame);
@@ -782,7 +848,33 @@
     photos.forEach(function (p) {
       p.style.position   = 'absolute';
       p.style.transition = 'none';
+      p.style.left = '0px';
+      p.style.top  = '0px';
+      p.style.opacity = '1';
     });
+    data.forEach(function (d) { d.photo.style.width = d.baseW + 'px'; });  // 寬度固定，縮放交給 transform
+
+    // 照片一直在轉，瀏覽器的 lazy loading 常判斷錯而漏載（轉一轉出現空白框）。
+    // 改成：照片區快進入畫面時，一次把全部照片都載入。
+    function loadAllPhotos() {
+      photos.forEach(function (p) {
+        var img = p.querySelector('img');
+        if (!img) return;
+        img.loading  = 'eager';
+        img.decoding = 'async';
+        if (img.complete && img.naturalWidth === 0) {
+          var src = img.getAttribute('src'); img.src = ''; img.src = src;   // 載入失敗的重新請求一次
+        }
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting; })) { loadAllPhotos(); io.disconnect(); }
+      }, { rootMargin: '1200px 0px' });
+      io.observe(canvas);
+    } else {
+      loadAllPhotos();
+    }
 
     // Hover — variable speed by x position
     canvas.addEventListener('mousemove', function (e) {
@@ -845,11 +937,15 @@
     var nav = document.getElementById('topnav');
     var hero = document.getElementById('gallery-hero');
     if (!nav || !hero) return;
-    var obs = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) nav.classList.add('over-video');
+    // 影片淡出到一半（捲動約 50% 影片高度）就把選單切回深色字，
+    // 不再等影片整個捲出畫面才變
+    function update() {
+      if (window.scrollY < hero.offsetHeight * 0.5) nav.classList.add('over-video');
       else nav.classList.remove('over-video');
-    }, { threshold: 0.1 });
-    obs.observe(hero);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   })();
 
   // ─── MV: CLICK TO PLAY ───
