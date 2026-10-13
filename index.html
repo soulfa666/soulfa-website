@@ -27,7 +27,7 @@
   <style>
     /* ─── HOMEPAGE OVERRIDES ─── */
     body.home {
-      background: #EFECE5;
+      background: #E8E8E8;
       color: #443424;
     }
 
@@ -149,92 +149,196 @@
       50% { transform: translate(-50%, 6px); }
     }
 
-    /* ─── FEATURED ALBUM ─── */
-    .album-section {
-      padding: 80px 32px 160px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* ─── DISCOGRAPHY CAROUSEL (center-stage) ─── */
+    .discog-section {
+      padding: 80px 0 100px;
+      overflow: hidden;
       text-align: center;
     }
-    /* 最新專輯 + LATEST ALBUM kicker stack, both centered */
-    .album-pretitle {
+    .discog-header {
+      padding: 0 48px 48px;
+      text-align: left;
+    }
+    .discog-title {
       font-family: var(--font-zh);
       font-weight: 600;
-      font-size: clamp(27px, 3.7vw, 45px);
+      font-size: clamp(22px, 3vw, 36px);
       letter-spacing: 0.06em;
       color: #443424;
-      margin: 0 0 48px;
-      line-height: 1.25;
+      margin: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 6px;
     }
-    .album-pretitle .accent {
+    .discog-title .accent {
       font-family: var(--font-juana);
-      font-weight: 600;
       font-size: 0.44em;
       letter-spacing: 0.42em;
       text-indent: 0.42em;
       text-transform: uppercase;
       color: #443424;
-      display: block;
-      margin-top: 14px;
-      white-space: nowrap;
+      opacity: 0.6;
     }
-    /* Chinese album title between cover and Juana title */
-    .album-zh-title {
-      font-family: var(--font-zh);
-      font-weight: 600;
-      font-size: clamp(36px, 4.7vw, 62px);
-      letter-spacing: 0.06em;
-      color: #443424;
-      margin: 36px 0 0;
-      line-height: 1;
-      text-shadow:
-        0.5px 0 0 #443424,
-        -0.5px 0 0 #443424,
-        0 0.5px 0 #443424,
-        0 -0.5px 0 #443424;
-    }
-    .album-cover-wrap {
+
+    /* Stage: overflow visible so cards bleed to viewport edges */
+    .discog-stage {
+      position: relative;
       width: 100%;
-      max-width: 460px;
+      height: clamp(400px, 58vw, 700px);
+      overflow: visible;
+    }
+    .discog-card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: clamp(300px, 44vw, 580px);
+      transform-origin: center;
+      cursor: pointer;
+      transition:
+        transform 0.58s cubic-bezier(0.22, 0.61, 0.36, 1),
+        opacity   0.58s cubic-bezier(0.22, 0.61, 0.36, 1);
+      will-change: transform, opacity;
+    }
+    .discog-cover {
+      width: 100%;
       aspect-ratio: 1;
       overflow: hidden;
       background: rgba(0,0,0,0.06);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      cursor: pointer;
-      box-shadow: 0 14px 32px rgba(68, 52, 36, 0.18);
-      display: block;
+      box-shadow: 0 12px 32px rgba(68,52,36,0.20);
     }
-    .album-cover-wrap:hover {
-      transform: translateY(-6px) scale(1.01);
-      box-shadow: 0 22px 48px rgba(68, 52, 36, 0.28);
-    }
-    .album-cover-wrap img {
+    .discog-cover img {
       width: 100%; height: 100%;
       object-fit: cover;
-      filter: contrast(1.02);
+      pointer-events: none;
+      display: block;
     }
-    .album-juana-title {
-      font-family: var(--font-juana);
-      font-weight: 600;
-      font-size: clamp(30px, 4.5vw, 56px);
+
+    /* Card name (inside each card) */
+    .discog-card-name {
+      padding: 16px 6px 0;
+      font-family: var(--font-zh);
+      font-weight: 700;
+      font-size: clamp(16px, 2vw, 24px);
       color: #443424;
-      letter-spacing: 0;
-      line-height: 1.05;
-      margin: 10px 0 0;
+      text-align: center;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .album-year-tag {
+
+
+    /* Side arrows */
+    .discog-arrow {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 52px; height: 68px;
+      background: #2C2420;
+      border: none; border-radius: 5px;
+      color: rgba(239,236,229,0.88);
+      font-size: 28px; cursor: pointer; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.18s; line-height: 1;
+    }
+    .discog-arrow:hover { background: #C77B4A; }
+    .discog-arrow-prev { left: 16px; }
+    .discog-arrow-next { right: 16px; }
+
+    /* ─── STREAMING OVERLAY ─── */
+    #stream-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(11,9,7,0.82);
+      z-index: 8888;
+      align-items: flex-end;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    #stream-overlay.open { display: flex; }
+    #stream-panel {
+      background: #F2EEE5;
+      width: 100%;
+      max-width: 560px;
+      border-radius: 12px 12px 0 0;
+      padding: 36px 36px 52px;
+      transform: translateY(100%);
+      transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+      position: relative;
+    }
+    #stream-overlay.open #stream-panel { transform: translateY(0); }
+    #stream-close {
+      position: absolute;
+      top: 20px; right: 24px;
+      background: none; border: none;
       font-family: var(--font-juana);
-      font-weight: 400;
-      font-size: 16px;
-      letter-spacing: 0.18em;
-      color: #443424;
-      opacity: 0.78;
+      font-size: 10px; letter-spacing: 0.28em;
+      color: rgba(44,36,32,0.44);
+      cursor: pointer;
       text-transform: uppercase;
-      margin-top: 14px;
+    }
+    .stream-top {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 28px;
+    }
+    #stream-cover {
+      width: 80px; height: 80px;
+      object-fit: cover;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.16);
+      flex-shrink: 0;
+    }
+    .stream-info { flex: 1; }
+    #stream-album-zh {
+      font-family: var(--font-zh);
+      font-weight: 600;
+      font-size: 20px;
+      color: #2C2420;
+      margin: 0 0 2px;
+    }
+    #stream-album-en {
+      font-family: var(--font-juana);
+      font-size: 14px;
+      color: rgba(44,36,32,0.55);
+      margin: 0 0 6px;
+    }
+    #stream-album-year {
+      font-family: var(--font-juana);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: rgba(44,36,32,0.40);
+    }
+    #stream-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .stream-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border: 1px solid rgba(44,36,32,0.12);
+      border-radius: 4px;
+      text-decoration: none;
+      color: #2C2420;
+      font-family: var(--font-juana);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.50);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .stream-link:hover { background: rgba(255,255,255,0.85); border-color: rgba(44,36,32,0.28); }
+    .stream-link .arrow { opacity: 0.36; font-size: 14px; }
+
+    @media (max-width: 720px) {
+      .discog-header { padding: 0 24px 32px; }
+      .discog-stage { height: clamp(280px, 82vw, 480px); }
+      .discog-card { width: clamp(220px, 74vw, 360px); }
+      #stream-panel { padding: 28px 24px 44px; }
     }
 
     /* ─── NEXT ON (collage / paper-cut block style) ─── */
@@ -448,10 +552,6 @@
       section.hero { height: 100svh; }
       .hero-scroll { bottom: calc(44px + env(safe-area-inset-bottom, 0px)); }
 
-      /* Album section */
-      .album-section { padding: 80px 24px 80px; }
-      .album-cover-wrap { max-width: 320px; }
-
       /* Next On section */
       .next-section { padding: 60px 20px 80px; }
       .next-head { margin-bottom: 24px; }
@@ -593,8 +693,7 @@
 
     /* ─── FOOTER ─── */
     body.home footer { background: #1A130B; }
-    /* logo + socials styling comes from style.css */
-  </style>
+    /* logo + socials styling comes from style.css */</style>
 </head>
 <body class="home">
 
@@ -612,6 +711,7 @@
     <li><a href="tour.html">Tour</a></li>
     <li><a href="merch.html">Merch</a></li>
     <li><a href="about.html">About</a></li>
+    <li id="nav-soulfam" style="display:none"><a href="members.html">SoulFam</a></li>
   </ul>
 </nav>
 
@@ -630,53 +730,44 @@
 <div class="poster-bg-wrap">
 
 <!-- ─── 失望的山巡迴 2026 ─── -->
+<!-- ─── DISCOGRAPHY CAROUSEL ─── -->
+<section class="discog-section fade-in">
+  <div class="discog-stage" id="discog-stage"></div>
+
+</section>
+
 <section class="tour-reveal fade-in">
   <h2 class="tour-reveal-title">
-    最新活動
-    <span class="accent">Latest Event</span>
+    最新消息
+    <span class="accent">Latest</span>
   </h2>
   <a href="tour-review.html" aria-label="失望的山巡迴 精彩回顧">
     <picture>
-      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_mobile.webp" type="image/webp">
-      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.webp" type="image/webp">
+      <source media="(max-width: 720px)" srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_mobile.webp" type="image/webp">
+      <source srcset="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_web.webp" type="image/webp">
       <img class="tour-reveal-poster"
-           src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列裁切_web.jpg"
+           src="圖片/2026-SoulFa-靈魂沙發-失望的山-巡迴系列_web.jpg"
            alt="2026 失望的山巡迴系列 Tour Poster"/>
     </picture>
   </a>
-  <div class="tour-tickets">
-    <a class="tour-ticket-btn" href="tour-review.html">
-      <span class="t-weather">☀️</span>
-      <span class="t-date">08.28</span>
-      <span class="t-city">高雄</span>
-    </a>
-    <a class="tour-ticket-btn" href="tour-review.html">
-      <span class="t-weather">💨</span>
-      <span class="t-date">09.04</span>
-      <span class="t-city">台中</span>
-    </a>
-    <a class="tour-ticket-btn" href="tour-review.html">
-      <span class="t-weather">🌧</span>
-      <span class="t-date">09.12</span>
-      <span class="t-city">台北</span>
-    </a>
-  </div>
+
 </section>
 
-<!-- ─── FEATURED ALBUM (each child fades in as it enters viewport) ─── -->
-<section class="album-section">
-  <h2 class="album-pretitle">
-    最新專輯
-    <span class="accent">Latest Album</span>
-  </h2>
-  <a class="album-cover-wrap"
-     href="https://umg.lnk.to/jThcD3WT?utm_source=ig&utm_medium=social&utm_content=link_in_bio"
-     target="_blank" rel="noopener" aria-label="La Montagna Delusa">
-    <img src="圖片/單曲封面/單曲、專輯封面/失望的山.png" alt="失望的山 · La Montagna Delusa"/>
-  </a>
-  <div class="album-zh-title">失望的山</div>
-  <h1 class="album-juana-title">La Montagna Delusa</h1>
-</section>
+<!-- ─── STREAMING OVERLAY ─── -->
+<div id="stream-overlay">
+  <div id="stream-panel">
+    <button id="stream-close">✕ close</button>
+    <div class="stream-top">
+      <img id="stream-cover" src="" alt="">
+      <div class="stream-info">
+        <div id="stream-album-zh"></div>
+        <div id="stream-album-en"></div>
+        <div id="stream-album-year"></div>
+      </div>
+    </div>
+    <div id="stream-links"></div>
+  </div>
+</div>
 
 </div><!-- /.poster-bg-wrap -->
 
@@ -684,6 +775,7 @@
 <footer>
   <div class="footer-inner">
     <a href="index.html" class="footer-logo-link" aria-label="SoulFa"><svg class="footer-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1199.57 787.9" role="img" aria-label="SoulFa"><path d="M1343,405.63q-72,29.17-144,58.22Q693,668.34,186.92,873c-13.75,5.55-22.56-15.66-8.9-21.2q40.3-16.37,80.63-32.57c-3.88.78-7.51,1.42-11,1.86a99.63,99.63,0,0,1-26.39.11c-23.48-3.22-45.64-12.82-66-28.58a13,13,0,1,1,15.92-20.55C188,785,205.92,792.89,224.86,795.39c13.87,2,44.89.42,97.21-31.15C393.24,721.38,454.33,640,453,590c-.3-9.69-2.27-23-10.5-30.91-10.48-10.25-32-12.43-62.13-6.28-7.85,1.65-15.85,3.59-23.76,5.52-20.4,5-41.42,10.17-61.83,9.89-27.67-.47-52.67-12.76-68.49-33.73-16.92-22.31-22-52.23-14-82.16,13.68-51.3,57.91-91.85,83-111.44,48.57-37.76,100-57.17,141.2-53.14,21.78,2.24,37.44,11,45,25.5,16.82,31.77-9.94,74.18-35.06,107.57a13,13,0,1,1-20.8-15.7c29.25-38.83,40.3-65.62,32.86-79.68-4.51-8.51-17.34-11-24.64-11.69-34.54-3.49-79.2,14-122.53,47.71-38.44,30-65.33,65.55-73.95,97.59-5.91,22.06-2.4,43.85,9.53,59.75,11.24,14.79,28.32,23.08,48.18,23.34,17.08.24,35.59-4.24,55.18-9,8.35-2.08,16.61-4.15,24.84-5.75,39.55-8.08,68.27-3.67,85.5,13a57.46,57.46,0,0,1,14.09,23.4l113.75-46a13,13,0,1,1,9.74,24.15L569,553.79l-29.15,73.93c-7.85,19.89-3.3,41.09,9.86,46.27,7.7,3,15.66-.69,19.71-3.15,8-5,14.92-13.76,18.91-24l51-129.42c4-10.23,4.89-21.28,2.44-30.42-1.32-4.55-4.49-12.68-12.29-15.76s-15.67.6-19.7,3.15c-8.08,5-14.94,13.66-19,23.91a13,13,0,1,1-24.18-9.53c6.08-15.59,16.57-28.51,29.45-36.54,13.91-8.62,29.61-10.52,43-5.27s23.61,17.39,27.83,33.15a36.37,36.37,0,0,1,1.16,5.51l95-38.38a13,13,0,0,1,9.74,24.15L748.85,481v.09l-28.22,71.77c-8.34,21.07-4.31,44.09,8.65,49.11s31.48-8.9,39.82-30.07l54.07-137.4a55.43,55.43,0,0,0,1.9-5.43,10.7,10.7,0,0,1,.69-1.85c0-.09.07-.19.15-.3a12.47,12.47,0,0,1,7.49-8.08l84.77-34.3a15.87,15.87,0,0,1,2-.62L972.25,251.5A13,13,0,1,1,996.43,261L874.78,570.16q43.35-17.6,86.79-35.11a13.06,13.06,0,0,1,.45-8.12l61.7-156.81L993.41,382.4a10.1,10.1,0,0,1-3.22.88,13,13,0,0,1-6.51-25l53.22-21.49,87.47-222.34c-107.55,13.19-259.83,51.34-266.58,108.34-.9,7.44.65,15.3,4.78,23.76,13.66,20,48.67,20,59.17,19.45A13,13,0,0,1,924,291.91l-1,.12c-18,.81-62.32-.51-82.71-31.92l-.81-1.29c-6.51-13.35-9-26.46-7.57-39.15,11.91-101,278.53-130.25,310.91-133.53l.64-.08a17.55,17.55,0,0,1,2.32.07l.19,0a13.23,13.23,0,0,1,2.08.38c.2.07.3.15.39.14.29.06.49.22.78.27a5,5,0,0,1,1.29.67,15.93,15.93,0,0,1,2,1.32,8.35,8.35,0,0,1,1.58,1.56,8.62,8.62,0,0,1,1.58,2.21,9.81,9.81,0,0,1,1,2.28,11.61,11.61,0,0,1,.6,2.51l.08.64a17.65,17.65,0,0,1-.08,2.33l0,.18a12.47,12.47,0,0,1-.39,2.09c-.13.38-.27.77-.4,1.16l-.57,1.37-85.79,218.05L1127,300.4a.09.09,0,0,1,.08-.1l4.23-1.65,32-13a13,13,0,0,1,9.74,24.15l-29.18,11.77-29.34,74.6c-4,10.23-4.89,21.28-2.43,30.42,1.32,4.55,4.57,12.66,12.28,15.76s15.66-.69,19.71-3.15c8.07-5,14.93-13.76,19-24L1214,285.83c7.86-19.8,3.32-41-9.85-46.18s-30.85,7.25-38.61,27.14a13.06,13.06,0,1,1-24.29-9.61c13.25-33.55,45.7-52.31,72.42-41.81s37.77,46.44,24.61,80l-22.54,57.43a8.68,8.68,0,0,1,0,2.22c-1.37,19.91,8.63,34.39,25.63,36.95,6.7,1,14.73,0,23.18-2.76a12.94,12.94,0,0,1,16.43,8.29,13.59,13.59,0,0,1,0,8.44l53.14-21.48C1347.8,378.89,1356.6,400.1,1343,405.63ZM551.37,700.83a41.75,41.75,0,0,1-11.27-2.64c-26.71-10.51-37.66-46.36-24.52-80l20-50.9L479.48,590c-.18,0-.26.13-.44.15,1.12,65-73.09,154-143.48,196.38-2.93,1.76-5.78,3.42-8.62,5.08Zm178.36-72a43,43,0,0,1-10-2.53c-26.72-10.5-37.19-47.71-23.33-83l19.19-48.76-46,18.63a15.13,15.13,0,0,1-2,.63,72.75,72.75,0,0,1-4,13.2L612.61,656.37a79.05,79.05,0,0,1-17.26,26.74Q662.49,656,729.73,628.8Zm116.36-56.94L907,417.19l-58.42,23.63a8.53,8.53,0,0,1-.62,1.65,12.68,12.68,0,0,1-.54,1.65L793.38,581.43a85,85,0,0,1-19.06,29.29c24-9.72,47.94-19.34,71.9-29.05A13.48,13.48,0,0,1,846.09,571.86Zm278.59-102.74a42,42,0,0,1-9.86-2.54c-13.36-5.26-23.51-17.31-27.83-33.06-4-14.69-2.86-31.32,3.31-46.93l20.32-51.5L1057,356.72,991.62,522.9Q1058.1,496,1124.68,469.12Zm126-50.93a59.52,59.52,0,0,1-13.22-.55,53.56,53.56,0,0,1-37.87-23.91l-12.26,31.12a81.37,81.37,0,0,1-16,25.38C1197.73,439.55,1224.26,428.86,1250.69,418.19Z" transform="translate(-150.22 -86.05)"/></svg></a>
+    <a href="auth.html#signup" class="footer-soulFam-btn">Sign up for SoulFam</a>
     <div class="footer-socials">
       <a href="https://www.instagram.com/soulfa_official/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg></a>
       <a href="https://www.youtube.com/results?search_query=SoulFa+%E9%9D%88%E9%AD%82%E6%B2%99%E7%99%BC" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l5 3-5 3z" fill="currentColor"/></svg></a>
@@ -691,8 +783,10 @@
       <a href="https://www.threads.net/@soulfa_official" target="_blank" rel="noopener" aria-label="Threads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c4 0 6.5 2 6.5 5.5 0 2.5-2 3.5-3.5 3.5-2 0-3-1.5-3-3 0-1.5 1-2.5 2.5-2.5 1 0 1.5.5 1.5 1.5"/><path d="M9 9c0-2 1.5-3 3-3M9 9c0 7 4 9.5 8 8.5"/></svg></a>
     </div>
   </div>
-  <div class="footer-legal">© 2026 SoulFa 靈魂沙發 · Taipei</div>
+  <div class="footer-legal">© 2026 SoulFaismusic co, Ltd. All rights reserved. We are not The Chair.</div>
 </footer>
+
+
 
 <script src="transitions.js"></script>
 <script>
@@ -709,20 +803,197 @@
     }, { threshold: 0.18 });
     fades.forEach((el) => obs.observe(el));
 
-    // Album section: observe each child individually so the fade only triggers
-    // when the element itself enters the viewport (not when section bottom touches)
-    const albumChildren = document.querySelectorAll(
-      '.album-section .album-pretitle, .album-section .album-cover-wrap, .album-section .album-zh-title, .album-section .album-juana-title'
-    );
-    const childObs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add('in');
-          childObs.unobserve(e.target);
-        }
+    // ─── DISCOGRAPHY INFINITE CENTER-STAGE CAROUSEL ───
+    (function () {
+      var releases = [
+        // ── 由舊到新 oldest → newest ──
+        { cover:'圖片/單曲封面/單曲、專輯封面/POLYDREAM.jpg',      name:'Polydream', links:[{name:'Spotify',url:'https://open.spotify.com/track/0WN1pMW1Pimvy5u7bbiyqV'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/44 Seconds Road Movie.png', name:'44 Seconds Road Movie', links:[{name:'Spotify',url:'https://open.spotify.com/album/2Yqy5m7BXFDPTnb3QKloFW'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/lover song.png',     name:'Lover Song', links:[{name:'Spotify',url:'https://open.spotify.com/track/6J23NwckI3WgaaWqJyQcI0'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/Rose & i.png',       name:'Rose and i.', links:[{name:'Spotify',url:'https://open.spotify.com/album/7ingM7kfWG7btVL74j3jOf'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/夏日午睡.jpg',       name:'夏日午睡',  links:[{name:'Spotify',url:'https://open.spotify.com/track/4rWHPMjUeyk5KFHeEZaWD3'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/hear hear.png',      name:'Hear Hear', links:[{name:'Spotify',url:'https://open.spotify.com/album/0YsmMOc98qht1ivzBTEp4G'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/SoulFa 一專cover.jpg', name:'SoulFa',  links:[{name:'Spotify',url:'https://open.spotify.com/album/7ingM7kfWG7btVL74j3jOf'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/留一盞燈給漫漫長夜.jpg', name:'留一盞燈給漫漫長夜', links:[{name:'Spotify',url:'https://open.spotify.com/album/00e4nHORgucdUArLsYhtWM'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/Slumber Days單曲.png', name:'Slumber Days (Single)', links:[{name:'Spotify',url:'https://open.spotify.com/track/5NwrgVZwoOTGmmlY3Ptw6i'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/Slumber Days (Album cover).png', name:'Slumber Days', links:[{name:'Spotify',url:'https://open.spotify.com/album/2mnD5h9xbjF5S9YYEMN0TQ'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/So Far cover.jpeg',  name:'So Far',    links:[{name:'Spotify',url:'https://open.spotify.com/track/5meEhwzqvqbhRytujnx2pi'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/We Talk to iphone But Not Our Best Friend.jpg', name:'We Talk to iPhone…', links:[{name:'Spotify',url:'https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/荒唐的盡頭.jpg',     name:'荒唐的盡頭', links:[{name:'Spotify',url:'https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/失望的山.png',      name:'失望的山',  links:[{name:'Spotify',url:'https://open.spotify.com/album/69vAcNdz9Kv8EhLdECqYSI'}] }  // index 13 ← opens centered
+      ];
+
+      var n   = releases.length;
+      var ext = releases.concat(releases).concat(releases);
+      var cur = n + 13; // open centered on 失望的山 (index 13)
+      var stage   = document.getElementById('discog-stage');
+      var overlay = document.getElementById('stream-overlay');
+      var cards   = [];
+
+      // Build cards
+      ext.forEach(function (r, i) {
+        var card = document.createElement('div');
+        card.className = 'discog-card';
+        var listenUrl = r.links[0].url;
+        card.innerHTML =
+          '<div class="discog-cover">' +
+            '<img src="' + r.cover + '" alt="' + r.name + '" loading="' + (i === n ? 'eager' : 'lazy') + '">' +
+            '<a class="discog-listen-btn" href="' + listenUrl + '" target="_blank" rel="noopener">listen</a>' +
+          '</div>' +
+          '<div class="discog-card-name">' + r.name + '</div>';
+        card.addEventListener('click', function (e) {
+          var pos = i - cur;
+          if (pos === 0) { /* listen btn handles it */ }
+          else if (Math.abs(pos) === 1) { e.preventDefault(); goTo(i); }
+        });
+        stage.appendChild(card);
+        cards.push(card);
+
+        // Canvas knockout: white fill with "listen" carved out
+        (function(btn) {
+          var cvs = document.createElement('canvas');
+          cvs.className = 'discog-listen-cvs';
+          cvs.width = 2; cvs.height = 2;
+          btn.appendChild(cvs);
+          function draw() {
+            var bw = btn.offsetWidth, bh = btn.offsetHeight;
+            if (!bw || !bh) return;
+            // offsetWidth/Height = border-box; position canvas at border outer edge
+            var border = parseFloat(getComputedStyle(btn).borderLeftWidth) || 1.5;
+            var dpr = window.devicePixelRatio || 1;
+            cvs.style.top    = -border + 'px';
+            cvs.style.left   = -border + 'px';
+            cvs.style.width  = bw + 'px';
+            cvs.style.height = bh + 'px';
+            cvs.width  = Math.round(bw * dpr);
+            cvs.height = Math.round(bh * dpr);
+            var w = bw, h = bh;
+            var ctx = cvs.getContext('2d');
+            ctx.scale(dpr, dpr);
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#fff';
+            var r = 8;
+            ctx.beginPath();
+            if (ctx.roundRect) { ctx.roundRect(0, 0, w, h, r); }
+            else {
+              ctx.moveTo(r,0); ctx.lineTo(w-r,0); ctx.quadraticCurveTo(w,0,w,r);
+              ctx.lineTo(w,h-r); ctx.quadraticCurveTo(w,h,w-r,h);
+              ctx.lineTo(r,h); ctx.quadraticCurveTo(0,h,0,h-r);
+              ctx.lineTo(0,r); ctx.quadraticCurveTo(0,0,r,0); ctx.closePath();
+            }
+            ctx.fill();
+            ctx.globalCompositeOperation = 'destination-out';
+            var fs = parseFloat(getComputedStyle(btn).fontSize);
+            ctx.font = '600 ' + fs + 'px "Juana Alt", serif';
+            if ('letterSpacing' in ctx) ctx.letterSpacing = (fs * 0.04) + 'px';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#000';
+            ctx.fillText('listen', w / 2, h / 2);
+          }
+          // Pre-draw once fonts settle, so mouseenter is instant
+          document.fonts.ready.then(function() {
+            requestAnimationFrame(function() { draw(); });
+          });
+          window.addEventListener('resize', function() {
+            requestAnimationFrame(function() { draw(); });
+          });
+          btn.addEventListener('mouseenter', function() { cvs.style.opacity = '1'; });
+          btn.addEventListener('mouseleave', function() { cvs.style.opacity = '0'; });
+        })(card.querySelector('.discog-listen-btn'));
       });
-    }, { threshold: 0.25 });
-    albumChildren.forEach((el) => childObs.observe(el));
+
+
+      var busy = false;
+
+      function place(animated) {
+        var cw  = cards[n].offsetWidth;
+        var gap = Math.round(cw * 1.06);
+        cards.forEach(function (card, i) {
+          var pos = i - cur;
+          var tx, scale, opacity, zi;
+          if      (pos === 0)           { tx = -cw/2;           scale = 1;    opacity = 1;    zi = 4; }
+          else if (Math.abs(pos) === 1) { tx = -cw/2 + pos*gap; scale = 0.75; opacity = 0.48; zi = 3; }
+          else if (Math.abs(pos) === 2) { tx = -cw/2 + pos*gap; scale = 0.56; opacity = 0.18; zi = 2; }
+          else                          { tx = -cw/2 + pos*gap; scale = 0.40; opacity = 0;    zi = 1; }
+          card.style.transition    = animated === false ? 'none' : '';
+          card.style.transform     = 'translateX(' + tx + 'px) translateY(-50%) scale(' + scale + ')';
+          card.style.opacity       = opacity;
+          card.style.zIndex        = zi;
+          card.style.pointerEvents = Math.abs(pos) <= 1 ? 'auto' : 'none';
+          if (pos === 0) card.classList.add('is-active');
+          else card.classList.remove('is-active');
+        });
+      }
+
+      function goTo(idx) {
+        if (busy) return;
+        busy = true;
+        cur = idx;
+        place();
+        setTimeout(function () {
+          busy = false;
+          if (cur < n || cur >= 2 * n) {
+            cur = ((cur % n) + n) % n + n;
+            cards.forEach(function (c) { c.style.transition = 'none'; });
+            place(false);
+            cards[0].offsetWidth;
+            cards.forEach(function (c) { c.style.transition = ''; });
+          }
+        }, 620);
+      }
+
+      // Arrows
+      var prevBtn = document.createElement('button');
+      prevBtn.className = 'discog-arrow discog-arrow-prev';
+      prevBtn.setAttribute('aria-label', '上一張');
+      prevBtn.innerHTML = '&#8249;';
+      stage.appendChild(prevBtn);
+
+      var nextBtn = document.createElement('button');
+      nextBtn.className = 'discog-arrow discog-arrow-next';
+      nextBtn.setAttribute('aria-label', '下一張');
+      nextBtn.innerHTML = '&#8250;';
+      stage.appendChild(nextBtn);
+
+      prevBtn.addEventListener('click', function () { goTo(cur - 1); });
+      nextBtn.addEventListener('click', function () { goTo(cur + 1); });
+
+      // Swipe
+      var tx0 = null;
+      stage.addEventListener('pointerdown', function (e) { if (e.target !== prevBtn && e.target !== nextBtn) tx0 = e.clientX; });
+      stage.addEventListener('pointerup',   function (e) {
+        if (tx0 === null) return;
+        var dx = e.clientX - tx0;
+        if (Math.abs(dx) > 50) goTo(dx < 0 ? cur + 1 : cur - 1);
+        tx0 = null;
+      });
+
+      requestAnimationFrame(function () { requestAnimationFrame(function () { place(false); }); });
+      window.addEventListener('resize', function () { place(false); });
+
+      // Streaming overlay
+      function openOverlay(r) {
+        document.getElementById('stream-cover').src = r.cover;
+        document.getElementById('stream-album-zh').textContent  = r.name;
+        document.getElementById('stream-album-en').textContent  = '';
+        document.getElementById('stream-album-year').textContent = '';
+        var linksEl = document.getElementById('stream-links');
+        linksEl.innerHTML = '';
+        r.links.forEach(function (l) {
+          var a = document.createElement('a');
+          a.className = 'stream-link'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener';
+          a.innerHTML = '<span>' + l.name + '</span><span class="arrow">→</span>';
+          linksEl.appendChild(a);
+        });
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function closeOverlay() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+      document.getElementById('stream-close').addEventListener('click', closeOverlay);
+      overlay.addEventListener('click', function (e) { if (e.target === overlay) closeOverlay(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeOverlay(); });
+    })();
   })();
 
   // ─── HERO FADE-OUT ON SCROLL ───
@@ -782,5 +1053,20 @@
   })();
 </script>
 
+<script>
+(function(){
+  var key="sb-gihuakujyczqlcsqbqqq-auth-token";
+  try{
+    var s=localStorage.getItem(key);
+    if(s){
+      var d=JSON.parse(s);
+      if(d && d.access_token){
+        var el=document.getElementById("nav-soulfam");
+        if(el) el.style.display="";
+      }
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>

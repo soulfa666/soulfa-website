@@ -19,6 +19,7 @@ window.PRODUCTS = {
       '圖片/周邊照片/內容物.jpg'  /* 最後一張，不裁切 */
     ],
     description: '',
+    concept: '撥接網路連接中⋯⋯',
     tracklist: [
       { no: 1,  title: '失望的山',                                  duration: '4:21' },
       { no: 2,  title: 'Best Life',                                 duration: '3:36' },
@@ -48,6 +49,7 @@ window.PRODUCTS = {
       '圖片/周邊照片/DSC00508.jpg'
     ],
     description: '',
+    concept: '當你穿著他去吃麻辣鍋，你那天一定會說：Ｏ！牙敗！',
     sizes: [
       { size: 'M', length: 69, chest: 56.5, shoulder: 51, sleeve: 19 },
       { size: 'L', length: 72, chest: 61,   shoulder: 56, sleeve: 21 }
@@ -74,11 +76,13 @@ window.PRODUCTS = {
       '圖片/周邊照片/DSC00508.jpg'
     ],
     description: '',
+    concept: '2026最潮的顏色，當你被別人挑釁，穿著他的你就可以嗆聲：你算什麼咖',
     sizes: [
       { size: 'M', length: 69, chest: 56.5, shoulder: 51, sleeve: 19 },
       { size: 'L', length: 72, chest: 61,   shoulder: 56, sleeve: 21 }
     ],
     sizeOptions: ['M', 'L'],
+    soldOutSizes: ['L'],
     washingTips: [
       '衣服反面套洗衣袋洗滌',
       '正常冷水洗 / 曬乾即可',
@@ -99,6 +103,7 @@ window.PRODUCTS = {
       '圖片/周邊照片/DSC00582.jpg'
     ],
     description: '',
+    concept: '這個中二的東西也可以很實用，手機支架、飾品架、筷架給我⋯⋯等等等',
     dimensions: { length: 8, width: 8, height: 6 }
   },
 
@@ -112,6 +117,7 @@ window.PRODUCTS = {
       '圖片/周邊照片/DSC00583.jpg'
     ],
     description: '',
+    concept: '一個很正經又好看的線香座',
     dimensions: { length: 18, width: 4.5, height: 6 }
   },
 
@@ -124,6 +130,7 @@ window.PRODUCTS = {
       '圖片/周邊照片/DSC00579.jpg'
     ],
     description: '',
+    concept: '絕對沒有無聊的諧音梗、他就是個可愛的紙鎮<3',
     dimensions: { length: 8, width: 6, height: 4 }
   },
 
@@ -136,6 +143,7 @@ window.PRODUCTS = {
       '圖片/周邊照片/DSC00580.jpg'
     ],
     description: '',
+    concept: '亨利跟網路迷因撞臉，故留此紀念',
     dimensions: { length: 5.5, width: 4, height: 3 }
   }
 };

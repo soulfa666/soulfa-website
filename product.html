@@ -176,7 +176,7 @@
     }
     .product-description.empty::before {
       content: '— 創作理念待補 —';
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 11px;
       color: rgba(26, 30, 31, 0.42);
       letter-spacing: 0.1em;
@@ -211,7 +211,7 @@
       padding: 2px 0;
     }
     .track-no {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       color: rgba(26, 30, 31, 0.5);
       letter-spacing: 0.04em;
       font-size: 9.5px;
@@ -225,7 +225,7 @@
     }
     .track-title.tbd { color: rgba(26, 30, 31, 0.4); font-style: italic; }
     .track-dur {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       color: rgba(26, 30, 31, 0.5);
       letter-spacing: 0.04em;
       font-size: 9.5px;
@@ -252,7 +252,7 @@
       color: rgba(26, 30, 31, 0.6);
     }
     .size-table td {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       color: #1a1e1f;
       font-size: 13px;
     }
@@ -264,7 +264,7 @@
       color: #1a1e1f;
     }
     .size-unit {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 10px;
       letter-spacing: 0.18em;
       color: rgba(26, 30, 31, 0.5);
@@ -298,7 +298,7 @@
 
     /* Dimensions */
     .dimensions {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 14px;
       letter-spacing: 0.08em;
       color: #1a1e1f;
@@ -329,6 +329,19 @@
     }
     .size-opt:hover { border-color: #d66528; color: #d66528; }
     .size-opt.active { background: #1a1e1f; color: #FFFFFF; border-color: #1a1e1f; }
+    .size-opt.sold-out {
+      opacity: 0.38;
+      cursor: pointer;
+      text-decoration: line-through;
+      border-style: dashed;
+    }
+    .size-opt.sold-out.active { background: rgba(0,0,0,0.12); color: #1a1e1f; border-color: rgba(0,0,0,0.25); }
+    .add-to-cart-btn.sold-out-state {
+      background: rgba(0,0,0,0.18);
+      cursor: not-allowed;
+      letter-spacing: 0.28em;
+    }
+    .add-to-cart-btn.sold-out-state:hover { background: rgba(0,0,0,0.18); }
 
     /* Quantity + add to cart */
     .buy-row {
@@ -423,7 +436,7 @@
     }
     .cart-empty {
       padding: 60px 0; text-align: center;
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 11px; letter-spacing: 0.25em;
       text-transform: uppercase; color: rgba(26,26,26,0.35);
     }
@@ -445,7 +458,7 @@
       margin-bottom: 4px; word-break: break-word;
     }
     .cart-item-price {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 11px; letter-spacing: 0.08em;
       color: rgba(26,26,26,0.55);
       margin-bottom: 10px;
@@ -465,7 +478,7 @@
     .cq-btn:hover { background: rgba(0,0,0,0.06); }
     .cq-val {
       min-width: 32px; text-align: center;
-      font-family: var(--font-mono); font-size: 13px;
+      font-family: var(--font-juana); font-size: 13px;
       color: #1a1e1f;
       border-left: 1px solid rgba(0,0,0,0.15);
       border-right: 1px solid rgba(0,0,0,0.15);
@@ -490,7 +503,7 @@
       align-items: baseline; margin-bottom: 18px;
     }
     .cart-total-label {
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 10px; letter-spacing: 0.4em;
       text-transform: uppercase; color: rgba(26,26,26,0.55);
     }
@@ -511,7 +524,7 @@
     .cart-checkout-btn:hover { background: #333333; }
     .cart-note {
       margin-top: 10px; text-align: center;
-      font-family: var(--font-mono);
+      font-family: var(--font-juana);
       font-size: 10px; letter-spacing: 0.15em;
       color: rgba(26,26,26,0.35);
       text-transform: uppercase;
@@ -539,6 +552,7 @@
     <li><a href="tour.html">Tour</a></li>
     <li><a href="merch.html" class="is-active">Merch</a></li>
     <li><a href="about.html">About</a></li>
+    <li id="nav-soulfam" style="display:none"><a href="members.html">SoulFam</a></li>
   </ul>
 </nav>
 
@@ -619,7 +633,7 @@
       <a href="https://www.threads.net/@soulfa_official" target="_blank" rel="noopener" aria-label="Threads"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3c4 0 6.5 2 6.5 5.5 0 2.5-2 3.5-3.5 3.5-2 0-3-1.5-3-3 0-1.5 1-2.5 2.5-2.5 1 0 1.5.5 1.5 1.5"/><path d="M9 9c0-2 1.5-3 3-3M9 9c0 7 4 9.5 8 8.5"/></svg></a>
     </div>
   </div>
-  <div class="footer-legal">© 2026 SoulFa 靈魂沙發 · Taipei</div>
+  <div class="footer-legal">© 2026 SoulFaismusic co, Ltd. All rights reserved. We are not The Chair.</div>
 </footer>
 
 <script src="transitions.js"></script>
@@ -715,7 +729,7 @@
 
   if (!product) {
     document.getElementById('product-layout').innerHTML =
-      '<p style="grid-column:1/-1;text-align:center;padding:80px 0;font-family:var(--font-mono);color:rgba(0,0,0,0.5);">商品不存在 — <a href="merch.html" style="color:#d66528;">回 Merch</a></p>';
+      '<p style="grid-column:1/-1;text-align:center;padding:80px 0;font-family:var(--font-juana);color:rgba(0,0,0,0.5);">商品不存在 — <a href="merch.html" style="color:#d66528;">回 Merch</a></p>';
     return;
   }
 
@@ -727,8 +741,9 @@
   document.getElementById('product-price').textContent = 'TWD $ ' + product.price.toLocaleString();
 
   var desc = document.getElementById('product-description');
-  if (product.description && product.description.trim()) {
-    desc.textContent = product.description;
+  var conceptText = (product.concept && product.concept.trim()) || (product.description && product.description.trim());
+  if (conceptText) {
+    desc.textContent = conceptText;
   } else {
     desc.classList.add('empty');
   }
@@ -812,23 +827,44 @@
 
   // ── Size picker (apparel) ──
   var selectedSize = null;
+  var soldOut = product.soldOutSizes || [];
+  var addBtn = document.getElementById('add-to-cart-btn');
+
+  function updateCartBtn(isSoldOut) {
+    if (isSoldOut) {
+      addBtn.textContent = 'SOLD OUT';
+      addBtn.classList.add('sold-out-state');
+      addBtn.disabled = true;
+    } else {
+      addBtn.textContent = 'Add to Cart';
+      addBtn.classList.remove('sold-out-state');
+      addBtn.disabled = false;
+    }
+  }
+
   if (product.sizeOptions && product.sizeOptions.length) {
     var wrap = document.getElementById('size-picker-wrap');
     var picker = document.createElement('div');
     picker.className = 'size-picker';
-    product.sizeOptions.forEach(function (sz, i) {
+    var firstAvail = null;
+    product.sizeOptions.forEach(function (sz) {
+      var isSoldOut = soldOut.indexOf(sz) !== -1;
       var b = document.createElement('button');
       b.type = 'button';
-      b.className = 'size-opt' + (i === 0 ? ' active' : '');
+      b.className = 'size-opt' + (isSoldOut ? ' sold-out' : '');
       b.textContent = sz;
+      if (!isSoldOut && !firstAvail) firstAvail = sz;
       b.addEventListener('click', function () {
-        Array.from(picker.children).forEach(function (c) { c.classList.remove('active'); });
+        Array.from(picker.querySelectorAll('.size-opt')).forEach(function (c) { c.classList.remove('active'); });
         b.classList.add('active');
         selectedSize = sz;
+        updateCartBtn(isSoldOut);
       });
       picker.appendChild(b);
     });
-    selectedSize = product.sizeOptions[0];
+    // auto-select first available size
+    var firstBtn = picker.querySelector('.size-opt:not(.sold-out)');
+    if (firstBtn) { firstBtn.classList.add('active'); selectedSize = firstAvail; }
     wrap.appendChild(picker);
   }
 
@@ -843,7 +879,6 @@
   });
 
   // ── Add to cart ──
-  var addBtn = document.getElementById('add-to-cart-btn');
   addBtn.addEventListener('click', function () {
     // Refresh from storage in case another tab/page added items
     cart = loadCart();
@@ -873,5 +908,20 @@
 })();
 </script>
 
+<script>
+(function(){
+  var key="sb-gihuakujyczqlcsqbqqq-auth-token";
+  try{
+    var s=localStorage.getItem(key);
+    if(s){
+      var d=JSON.parse(s);
+      if(d && d.access_token){
+        var el=document.getElementById("nav-soulfam");
+        if(el) el.style.display="";
+      }
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>

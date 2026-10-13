@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZD5T4V35R5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ZD5T4V35R5');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoulFam · SoulFa 靈魂沙發</title>
+  <link rel="icon" type="image/png" href="網頁分頁logo.png" />
+  <link rel="stylesheet" href="https://use.typekit.net/wdm8jyp.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body.orange {
+      background:
+        linear-gradient(rgba(239,236,229,0.52), rgba(239,236,229,0.52)),
+        url('圖片/海報底.png') center / cover no-repeat fixed;
+      color: #2C2420;
+    }
+    body.orange::before { display: none; }
+
+    body.orange nav.top .brand,
+    body.orange nav.top ul a,
+    body.orange nav.top .nav-toggle { color: #2C2420; }
+    body.orange nav.top ul a:hover {
+      color: #7A3A1C;
+      font-variation-settings: 'wdth' 125, 'SEED' 12;
+      letter-spacing: 0.24em;
+    }
+    body.orange nav.top ul a.is-active {
+      color: #C77B4A;
+      font-variation-settings: 'wdth' 125, 'SEED' 12;
+      letter-spacing: 0.24em;
+    }
+    body.orange nav.top.scrolled {
+      background: rgba(228,222,210,0.90);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(44,36,32,0.14);
+    }
+
+    /* ── Loading screen ── */
+    #auth-loading {
+      position: fixed; inset: 0;
+      background: rgba(239,236,229,0.96);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 9999;
+      font-family: var(--font-juana);
+      font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+      color: rgba(44,36,32,0.42);
+    }
+
+    /* ── Hero ── */
+    .members-hero {
+      padding: 160px 32px 60px;
+      text-align: center;
+    }
+    .members-tag {
+      font-family: var(--font-juana);
+      font-size: 10px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.42);
+      margin: 0 0 14px;
+    }
+    .members-title {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(40px, 7vw, 72px);
+      line-height: 1;
+      color: #2C2420;
+      margin: 0 0 16px;
+    }
+    .members-sub {
+      font-family: var(--font-juana);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.38);
+      margin: 0;
+    }
+    .member-email-bar {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .member-email-label {
+      font-family: var(--font-juana);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: rgba(44,36,32,0.42);
+    }
+    #user-email-display {
+      font-family: var(--font-juana);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: #2C2420;
+    }
+    .logout-btn {
+      font-family: var(--font-juana);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.42);
+      background: none;
+      border: 1px solid rgba(44,36,32,0.18);
+      border-radius: 2px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .logout-btn:hover { color: #7A3A1C; border-color: #7A3A1C; }
+
+    /* ── Content sections ── */
+    .members-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px 120px;
+    }
+    .section-label {
+      font-family: var(--font-juana);
+      font-size: 9px;
+      letter-spacing: 0.40em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.36);
+      margin: 0 0 28px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(44,36,32,0.10);
+    }
+    .members-section {
+      margin-bottom: 72px;
+    }
+
+    /* ── Cards grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .content-card {
+      background: rgba(239,236,229,0.70);
+      border: 1px solid rgba(44,36,32,0.10);
+      border-radius: 2px;
+      padding: 28px 24px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .content-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(44,36,32,0.10);
+    }
+    .card-tag {
+      font-family: var(--font-juana);
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: #C77B4A;
+      margin: 0 0 10px;
+    }
+    .card-title {
+      font-family: var(--font-juana);
+      font-size: 20px;
+      font-weight: 600;
+      color: #2C2420;
+      margin: 0 0 10px;
+    }
+    .card-desc {
+      font-family: var(--font-body, 'Inter', sans-serif);
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(44,36,32,0.62);
+      margin: 0 0 20px;
+    }
+    .card-link {
+      font-family: var(--font-juana);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #2C2420;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(44,36,32,0.28);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .card-link:hover { color: #C77B4A; border-color: #C77B4A; }
+
+    /* ── Coming soon badge ── */
+    .coming-soon {
+      display: inline-block;
+      font-family: var(--font-juana);
+      font-size: 8px;
+      letter-spacing: 0.30em;
+      text-transform: uppercase;
+      color: rgba(44,36,32,0.36);
+      border: 1px solid rgba(44,36,32,0.18);
+      border-radius: 2px;
+      padding: 4px 10px;
+    }
+
+    @media (max-width: 640px) {
+      .members-hero { padding: 140px 20px 48px; }
+      .members-content { padding: 0 20px 80px; }
+    }
+  </style>
+</head>
+<body class="orange">
+
+<div id="auth-loading">驗證中…</div>
+<div class="page-transition"></div>
+
+<nav class="top" id="topnav">
+  <a class="brand" href="index.html">SOULFA</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="選單" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <ul>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="tour.html">Tour</a></li>
+    <li><a href="merch.html">Merch</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="members.html" class="is-active">SoulFam</a></li>
+  </ul>
+</nav>
+
+<div class="members-hero">
+  <p class="members-tag">SoulFam · 會員專屬</p>
+  <h1 class="members-title">歡迎回來</h1>
+  <p class="members-sub">感謝你成為 SoulFa 的一部分</p>
+  <div class="member-email-bar">
+    <span class="member-email-label">登入為</span>
+    <span id="user-email-display">—</span>
+    <button class="logout-btn" onclick="handleLogout()">登出</button>
+  </div>
+</div>
+
+<div class="members-content">
+
+  <!-- 獨家音樂 -->
+  <div class="members-section">
+    <p class="section-label">獨家音樂 · Exclusive Music</p>
+    <div class="cards-grid">
+      <div class="content-card">
+        <p class="card-tag">Demo · 2026</p>
+        <h2 class="card-title">失望的山 — Demo Version</h2>
+        <p class="card-desc">正式發行前的原始 Demo，保留了第一次錄音的粗糙質感。</p>
+        <span class="coming-soon">即將上線</span>
+      </div>
+      <div class="content-card">
+        <p class="card-tag">Acoustic · 2026</p>
+        <h2 class="card-title">不插電版本</h2>
+        <p class="card-desc">巡迴結束後的聲學版本，只有一把吉他和人聲。</p>
+        <span class="coming-soon">即將上線</span>
+      </div>
+      <div class="content-card">
+        <p class="card-tag">Live · 台北</p>
+        <h2 class="card-title">現場錄音 — 台北場</h2>
+        <p class="card-desc">2026 巡演台北場完整現場錄音，未剪輯版本。</p>
+        <span class="coming-soon">即將上線</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 幕後內容 -->
+  <div class="members-section">
+    <p class="section-label">幕後 · Behind the Scenes</p>
+    <div class="cards-grid">
+      <div class="content-card">
+        <p class="card-tag">影片 · 巡迴</p>
+        <h2 class="card-title">失望的山巡迴紀錄片</h2>
+        <p class="card-desc">跟著我們從台北到高雄，完整記錄這次巡演的每一個瞬間。</p>
+        <span class="coming-soon">即將上線</span>
+      </div>
+      <div class="content-card">
+        <p class="card-tag">日記 · 文字</p>
+        <h2 class="card-title">巡演日記</h2>
+        <p class="card-desc">每個城市結束後，我們寫下的文字。關於這首歌，關於那些觀眾。</p>
+        <span class="coming-soon">即將上線</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 早鳥資訊 -->
+  <div class="members-section">
+    <p class="section-label">早鳥 · Early Access</p>
+    <div class="cards-grid">
+      <div class="content-card">
+        <p class="card-tag">下一場演出</p>
+        <h2 class="card-title">會員優先購票</h2>
+        <p class="card-desc">下一次巡演開賣前 48 小時，會員可以優先選位購票。</p>
+        <span class="coming-soon">演出公告後開放</span>
+      </div>
+      <div class="content-card">
+        <p class="card-tag">新品</p>
+        <h2 class="card-title">會員限定周邊</h2>
+        <p class="card-desc">部分周邊只對會員開放，數量有限。</p>
+        <span class="coming-soon">即將推出</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="transitions.js"></script>
+<script>
+(function () {
+  var SUPA_URL = 'https://gihuakujyczqlcsqbqqq.supabase.co';
+  var SUPA_KEY = 'sb_publishable_6YO5EV6oCaTkGWdBA9MZDQ_0rzEPSv8';
+  var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
+
+  /* Auth guard */
+  sb.auth.getSession().then(function (res) {
+    document.getElementById('auth-loading').style.display = 'none';
+    if (!res.data.session) {
+      window.location.href = 'auth.html';
+    } else {
+      var email = res.data.session.user.email;
+      document.getElementById('user-email-display').textContent = email;
+    }
+  });
+
+  window.handleLogout = function () {
+    sb.auth.signOut().then(function () {
+      window.location.href = 'auth.html';
+    });
+  };
+
+  /* Nav */
+  var nav = document.getElementById('topnav');
+  function navTick() { nav.classList.toggle('scrolled', window.scrollY > 60); }
+  window.addEventListener('scroll', navTick, { passive: true });
+  navTick();
+
+  /* Hamburger */
+  var btn = document.getElementById('nav-toggle');
+  if (btn) btn.addEventListener('click', function () { btn.setAttribute('aria-expanded', nav.classList.toggle('open')); });
+})();
+</script>
+</body>
+</html>
