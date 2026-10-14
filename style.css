@@ -308,7 +308,17 @@ nav.top.open .nav-toggle span:nth-child(3) { transform: translateY(-6.5px) rotat
   /* ── Shared section / footer ── */
   section.scene { padding: 90px 20px 60px; }
   footer        { padding: 48px 20px 32px; }
-  .footer-inner { gap: 24px; }
+  /* 手機頁尾：全部置中直排，順序 Sign up → logo → 社群圖示 */
+  footer .footer-inner {   /* 加 footer 提高權重，蓋過檔案後面的桌機設定 */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 28px;
+    text-align: center;
+  }
+  footer .footer-soulFam-btn { order: 1; font-size: 14px; padding: 10px 26px; }
+  footer .footer-logo-link   { order: 2; }
+  footer .footer-socials     { order: 3; justify-content: center; }
   .footer-logo  { height: 60px; }
 }
 
