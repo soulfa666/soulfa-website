@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
+
     /* ─── HOMEPAGE OVERRIDES ─── */
     body.home {
       background: #E8E8E8;
@@ -57,7 +58,7 @@
                   padding 0.3s;
     }
     body.home nav.top.scrolled {
-      background: rgba(26, 19, 11, 0.82);
+      background: #1A130B;   /* 跟頁尾同一個黑，不透明 */
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom-color: rgba(255, 255, 255, 0.14);
@@ -104,7 +105,9 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background: #D8D9C8;
+      /* 首頁圖往下捲淡出時露出的底色 = 專輯區目前的橫條顏色，跟著一起變 */
+      background: var(--band-color, #D8D9C8);
+      transition: background-color 0.9s ease;
     }
     section.hero .bg {
       position: absolute;
@@ -151,7 +154,11 @@
 
     /* ─── DISCOGRAPHY CAROUSEL (center-stage) ─── */
     .discog-section {
-      padding: 80px 0 100px;
+      /* 橫條底色：跟著中間那張封面變色（顏色由 JS 設定 --band） */
+      background: var(--band, transparent);
+      transition: background-color 0.9s ease;
+      --band-ink: #443424;
+      padding: 72px 0;   /* 上下等距：標題＋輪播整組置中 */
       overflow: hidden;
       text-align: center;
     }
@@ -179,6 +186,20 @@
       color: #443424;
       opacity: 0.6;
     }
+
+    /* 專輯區標題 */
+    .listen-title {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(30px, 3.4vw, 50px);
+      line-height: 1;
+      letter-spacing: 0.01em;
+      color: var(--band-ink, #FFFFFF);
+      text-align: center;
+      margin: 0 0 40px;
+      transition: color 0.9s ease;
+    }
+    @media (max-width: 720px) { .listen-title { margin-bottom: 24px; } .discog-section { padding: 56px 0; } }
 
     /* Stage: overflow visible so cards bleed to viewport edges */
     .discog-stage {
@@ -218,11 +239,11 @@
 
     /* Card name (inside each card) */
     .discog-card-name {
-      padding: 16px 6px 0;
+      padding: 26px 6px 0;
       font-family: var(--font-zh);
       font-weight: 700;
       font-size: clamp(16px, 2vw, 24px);
-      color: #443424;
+      color: var(--band-ink, #443424);
       text-align: center;
       line-height: 1.25;
       white-space: nowrap;
@@ -237,22 +258,23 @@
     .discog-card.is-active .discog-card-name { opacity: 1; }
 
 
-    /* Side arrows */
+    /* Side arrows — 參考 blur 官網：方形、細線箭頭；平常半透明深色，滑上去變黑 */
     .discog-arrow {
       position: absolute;
-      top: 50%; transform: translateY(-50%);
-      width: 52px; height: 68px;
-      background: #2C2420;
-      border: none; border-radius: 5px;
-      color: rgba(239,236,229,0.88);
-      font-size: 28px; cursor: pointer; z-index: 10;
+      width: 56px; height: 56px;
+      padding: 0;
+      background: rgba(0, 0, 0, 0.22);
+      border: none; border-radius: 4px;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer; z-index: 10;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.18s, opacity 0.18s; line-height: 1;
-      opacity: 0.8;
+      transition: background 0.25s, color 0.25s;
+      line-height: 1;
     }
-    .discog-arrow:hover { background: #C77B4A; opacity: 1; } /* 滑上去的橘色維持原樣 */
-    .discog-arrow-prev { left: 16px; }
-    .discog-arrow-next { right: 16px; }
+    .discog-arrow svg { width: 22px; height: 22px; display: block; }
+    .discog-arrow:hover { background: #C77B4A; color: #fff; }   /* 滑上去變橘 */
+    .discog-section.band-dark .discog-arrow { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.6); }
+    .discog-section.band-dark .discog-arrow:hover { box-shadow: none; }
 
     /* ─── STREAMING OVERLAY ─── */
     #stream-overlay {
@@ -347,9 +369,10 @@
     @media (max-width: 720px) {
       .discog-header { padding: 0 24px 32px; }
       .discog-stage { height: clamp(240px, 58vw, 380px); }
-      .discog-card { width: 32vw; }
-      .discog-card-name { font-size: 12px; padding-top: 10px; }
-      .discog-arrow { display: none; } /* 手機用滑動 / 點旁邊封面切換 */
+      /* 手機：一次只顯示一張滿版封面，歌名夾在左右箭頭中間（同 blur 手機版） */
+      .discog-card { width: calc(100vw - 48px); }
+      .discog-card-name { font-size: 18px; line-height: 48px; padding: 16px 60px 0; }
+      .discog-arrow { width: 48px; height: 48px; }
       #stream-panel { padding: 28px 24px 44px; }
     }
 
@@ -744,6 +767,7 @@
 <!-- ─── 失望的山巡迴 2026 ─── -->
 <!-- ─── DISCOGRAPHY CAROUSEL ─── -->
 <section class="discog-section fade-in">
+  <h2 class="listen-title">Listen</h2>
   <div class="discog-stage" id="discog-stage"></div>
 
 </section>
@@ -819,23 +843,23 @@
     (function () {
       var releases = [
         // ── 由舊到新 oldest → newest ──
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/POLYDREAM.jpg',      name:'Polydream', links:[{name:'Spotify',url:'https://open.spotify.com/album/70SfyYQgUSvQqJkXPi6bdc'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/44 Seconds Road Movie.jpg', name:'44 Seconds Road Movie', links:[{name:'Spotify',url:'https://open.spotify.com/album/2Yqy5m7BXFDPTnb3QKloFW'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/lover song.jpg',     name:'Lover Song', links:[{name:'Spotify',url:'https://open.spotify.com/album/56W5X2mnit4XbNgmhKwq2x'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/Rose & i.jpg',       name:'Rose and i.', links:[{name:'Spotify',url:'https://open.spotify.com/album/423gQHASzIUaRSCiTaGZZX'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/夏日午睡.jpg',       name:'夏日午睡',  links:[{name:'Spotify',url:'https://open.spotify.com/track/4rWHPMjUeyk5KFHeEZaWD3'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/hear hear.jpg',      name:'Hear Hear', links:[{name:'Spotify',url:'https://open.spotify.com/album/0YsmMOc98qht1ivzBTEp4G'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/SoulFa 一專cover.jpg', name:'SoulFa',  links:[{name:'Listen',url:'https://lnkfi.re/SoulFa1stAlbum'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/留一盞燈給漫漫長夜.jpg', name:'留一盞燈給漫漫長夜', links:[{name:'Spotify',url:'https://open.spotify.com/album/00e4nHORgucdUArLsYhtWM'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/Slumber Days單曲.jpg', name:'Slumber Days (Single)', links:[{name:'Spotify',url:'https://open.spotify.com/track/5NwrgVZwoOTGmmlY3Ptw6i'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/Slumber Days (Album cover).jpg', name:'Slumber Days', links:[{name:'Listen',url:'https://lnkfi.re/TeX6CGhr'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/So Far cover.jpg',  name:'So Far',    links:[{name:'Spotify',url:'https://open.spotify.com/track/5meEhwzqvqbhRytujnx2pi'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/I did it again.jpg', name:'I did it again', links:[{name:'Listen',url:'https://legacy.soundscape.net/a/43937'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/午夜宣言.jpg',      name:'午夜宣言',  links:[{name:'Spotify',url:'https://open.spotify.com/album/3HMXwCbQ0zuRbjXuQ3Kdmf'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/躺在床上.jpg',      name:'躺在床上',  links:[{name:'Spotify',url:'https://open.spotify.com/album/4gtYvHdvoqY9OdOCtAXqjl'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/We Talk to iphone But Not Our Best Friend.jpg', name:'We Talk to iPhone…', links:[{name:'Spotify',url:'https://open.spotify.com/album/62b1b9z2OELU2sH8hwxIrj'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/荒唐的盡頭.jpg',     name:'荒唐的盡頭', links:[{name:'Spotify',url:'https://open.spotify.com/album/4EeV6PLkovXhliJXzAZfba'}] },
-        { cover:'圖片/單曲封面/單曲、專輯封面/web/失望的山.jpg',      name:'失望的山',  links:[{name:'Listen',url:'https://umg.lnk.to/jthcd3wt'}] }  // index 16 ← opens centered
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/POLYDREAM.jpg', bg:'#E9E4C6',      name:'Polydream', links:[{name:'Spotify',url:'https://open.spotify.com/album/70SfyYQgUSvQqJkXPi6bdc'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/44 Seconds Road Movie.jpg', bg:'#BB6C6F', name:'44 Seconds Road Movie', links:[{name:'Spotify',url:'https://open.spotify.com/album/2Yqy5m7BXFDPTnb3QKloFW'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/lover song.jpg', bg:'#3D7541',     name:'Lover Song', links:[{name:'Spotify',url:'https://open.spotify.com/album/56W5X2mnit4XbNgmhKwq2x'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/Rose & i.jpg', bg:'#172C37',       name:'Rose and i.', links:[{name:'Spotify',url:'https://open.spotify.com/album/423gQHASzIUaRSCiTaGZZX'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/夏日午睡.jpg', bg:'#CF8D94',       name:'夏日午睡',  links:[{name:'Spotify',url:'https://open.spotify.com/track/4rWHPMjUeyk5KFHeEZaWD3'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/hear hear.jpg', bg:'#DFC244',      name:'Hear Hear', links:[{name:'Spotify',url:'https://open.spotify.com/album/0YsmMOc98qht1ivzBTEp4G'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/SoulFa 一專cover.jpg', bg:'#E95B3D', name:'SoulFa',  links:[{name:'Listen',url:'https://lnkfi.re/SoulFa1stAlbum'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/留一盞燈給漫漫長夜.jpg', bg:'#05010F', name:'留一盞燈給漫漫長夜', links:[{name:'Spotify',url:'https://open.spotify.com/album/00e4nHORgucdUArLsYhtWM'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/Slumber Days單曲.jpg', bg:'#770F61', name:'Slumber Days (Single)', links:[{name:'Spotify',url:'https://open.spotify.com/track/5NwrgVZwoOTGmmlY3Ptw6i'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/Slumber Days (Album cover).jpg', bg:'#F4BB46', name:'Slumber Days', links:[{name:'Listen',url:'https://lnkfi.re/TeX6CGhr'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/So Far cover.jpg', bg:'#50E0B8',  name:'So Far',    links:[{name:'Spotify',url:'https://open.spotify.com/track/5meEhwzqvqbhRytujnx2pi'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/I did it again.jpg', bg:'#A5ACA5', name:'I did it again', links:[{name:'Listen',url:'https://legacy.soundscape.net/a/43937'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/午夜宣言.jpg', bg:'#120400',      name:'午夜宣言',  links:[{name:'Spotify',url:'https://open.spotify.com/album/3HMXwCbQ0zuRbjXuQ3Kdmf'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/躺在床上.jpg', bg:'#F5D159',      name:'躺在床上',  links:[{name:'Spotify',url:'https://open.spotify.com/album/4gtYvHdvoqY9OdOCtAXqjl'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/We Talk to iphone But Not Our Best Friend.jpg', bg:'#5E5311', name:'We Talk to iPhone…', links:[{name:'Spotify',url:'https://open.spotify.com/album/62b1b9z2OELU2sH8hwxIrj'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/荒唐的盡頭.jpg', bg:'#C084A8',     name:'荒唐的盡頭', links:[{name:'Spotify',url:'https://open.spotify.com/album/4EeV6PLkovXhliJXzAZfba'}] },
+        { cover:'圖片/單曲封面/單曲、專輯封面/web/失望的山.jpg', bg:'#63968C',      name:'失望的山',  links:[{name:'Listen',url:'https://umg.lnk.to/jthcd3wt'}] }  // index 16 ← opens centered
       ];
 
       var n   = releases.length;
@@ -937,11 +961,26 @@
         var d1 = cw * (0.5 + 0.375) + g;          // ±1 中心距
         var d2 = d1 + cw * (0.375 + 0.28) + g;    // ±2 中心距
         var d3 = d2 + cw * (0.28 + 0.2) + g;      // 畫面外
-        stepPx = d1;
-        stage.style.setProperty('--discog-cw', cw + 'px');
+        var mobile = window.innerWidth <= 720;
         var D = [0, d1, d2, d3, d3 + cw * 0.5];
         var S = [1, 0.75, 0.56, 0.40, 0.40];
         var O = [1, 0.72, 0.6, 0, 0];
+        if (mobile) {
+          // 手機：一張滿版，左右張排在畫面外，滑動時整張平移進來
+          var gm = 24;
+          d1 = cw + gm;
+          D = [0, d1, 2 * d1, 3 * d1, 4 * d1];
+          S = [1, 1, 1, 1, 1];
+          O = [1, 0, 0, 0, 0];
+        }
+        stepPx = d1;
+        // 封面＋歌名＋下方箭頭 整組上下置中：卡片往上移半個「箭頭區」高度
+        var arrowH = prevBtn ? prevBtn.offsetHeight : 56;
+        var offY = mobile ? 0 : (16 + arrowH) / 2;   // 手機箭頭和歌名同一排，不另外佔高度
+        // 輪播區高度剛好包住整組，標題和輪播合起來才能在橫條裡置中
+        var cardH0 = cards[cur] ? cards[cur].offsetHeight : cw;
+        stage.style.height = (mobile ? cardH0 : cardH0 + 16 + arrowH) + 'px';
+        stage.style.setProperty('--discog-cw', cw + 'px');
         cards.forEach(function (card, i) {
           var p  = i - cur + dragFrac;
           var ap = Math.abs(p), sg = p < 0 ? -1 : 1;
@@ -950,21 +989,44 @@
           var opacity = lerpAt(O, Math.min(ap, 4));
           var tx = -cw / 2 + sg * dist;
           card.style.transition    = animated === false ? 'none' : '';
-          card.style.transform     = 'translateX(' + tx + 'px) translateY(-50%) scale(' + scale + ')';
+          card.style.transform     = 'translateX(' + tx + 'px) translateY(-50%) translateY(' + (-offY) + 'px) scale(' + scale + ')';
           card.style.opacity       = opacity;
           card.style.zIndex        = 10 - Math.round(ap);
           card.style.pointerEvents = ap <= 2.5 ? 'auto' : 'none';
           if (Math.round(p) === 0) card.classList.add('is-active');
           else card.classList.remove('is-active');
         });
-        // 箭頭放在 ±1 與 ±2 兩張之間的間隔
+        setBand();
+        // 箭頭放在中間那張的下方（歌名下面），左右切齊封面邊緣
         if (prevBtn && nextBtn) {
-          var mid = (d1 + cw * 0.375 + d2 - cw * 0.28) / 2;
-          var half = stage.offsetWidth / 2, aw = prevBtn.offsetWidth;
-          prevBtn.style.left  = (half - mid - aw / 2) + 'px';
-          nextBtn.style.left  = (half + mid - aw / 2) + 'px';
+          var half = stage.offsetWidth / 2;
+          var cardH = cards[cur] ? cards[cur].offsetHeight : cw;
+          var top = mobile
+            ? (stage.offsetHeight - cardH) / 2 + cw + 16      // 手機：和歌名同一排
+            : stage.offsetHeight / 2 - offY + cardH / 2 + 16;
+          prevBtn.style.top   = top + 'px';
+          nextBtn.style.top   = top + 'px';
+          prevBtn.style.left  = (half - cw / 2) + 'px';
+          nextBtn.style.left  = (half + cw / 2 - nextBtn.offsetWidth) + 'px';
           nextBtn.style.right = 'auto';
         }
+      }
+
+      // 橫條底色：取中間那張封面的代表色；深色底時歌名改白字（BAND_COLORS 是黑橘藍輪流的備用方案）
+      var BAND_COLORS = ['#141414', '#D66528', '#1AC0FF'];
+      var section = stage.closest('.discog-section');
+      var lastBand = null;
+      function setBand() {
+        var idx = ((Math.round(cur - dragFrac) % n) + n) % n;
+        var c = releases[idx].bg;   // 封面代表色（太接近封面邊緣顏色時已改用第二大的顏色）
+        if (!c || c === lastBand || !section) return;
+        lastBand = c;
+        var r = parseInt(c.substr(1,2),16), g = parseInt(c.substr(3,2),16), b = parseInt(c.substr(5,2),16);
+        var lum = (0.299*r + 0.587*g + 0.114*b) / 255;
+        section.style.backgroundColor = c;
+        document.documentElement.style.setProperty('--band-color', c);
+        section.style.setProperty('--band-ink', '#FFFFFF');   // 歌名一律白色
+        section.classList.toggle('band-dark', lum < 0.18);   // 接近黑的底：箭頭加白細框
       }
 
       // 無限循環：停下來後，若跑出中段就無痕跳回中段
@@ -993,13 +1055,13 @@
       prevBtn = document.createElement('button');
       prevBtn.className = 'discog-arrow discog-arrow-prev';
       prevBtn.setAttribute('aria-label', '上一張');
-      prevBtn.innerHTML = '&#8249;';
+      prevBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';
       stage.appendChild(prevBtn);
 
       nextBtn = document.createElement('button');
       nextBtn.className = 'discog-arrow discog-arrow-next';
       nextBtn.setAttribute('aria-label', '下一張');
-      nextBtn.innerHTML = '&#8250;';
+      nextBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>';
       stage.appendChild(nextBtn);
 
       prevBtn.addEventListener('click', function () { goTo(cur - 1); });
@@ -1008,7 +1070,7 @@
       // 拖曳：封面即時跟著手指 / 滑鼠走，放開後吸附到最近的一張
       var drag = null, dragged = false;
       stage.addEventListener('pointerdown', function (e) {
-        if (e.target === prevBtn || e.target === nextBtn) return;
+        if (e.target.closest && e.target.closest('.discog-arrow')) return;   // 點箭頭（含裡面的 svg）不算拖曳
         if (e.pointerType === 'mouse' && e.button !== 0) return;
         drag = { x0: e.clientX, y0: e.clientY, lastX: e.clientX, lastT: performance.now(), v: 0, active: false };
         dragged = false;
