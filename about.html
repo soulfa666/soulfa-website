@@ -162,7 +162,7 @@
       cursor: pointer;
       font: inherit;
       text-transform: uppercase;
-      color: rgba(26, 192, 255, 0.55);
+      color: #1AC0FF;   /* 沒選到的也維持全亮，只用底線區分 */
       padding: 10px 20px;
       border-bottom: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
@@ -173,7 +173,7 @@
       border-bottom-color: #1AC0FF;
     }
     .lang-divider {
-      color: rgba(26, 192, 255, 0.4);
+      color: #1AC0FF;
       padding: 0 4px;
     }
 
@@ -193,7 +193,7 @@
     .bio-zh p {
       font-family: var(--font-zh);
       font-weight: 400;      /* 由 500 改細，和英文 400 的份量接近 */
-      font-size: 18px;
+      font-size: 16px;
       line-height: 2.3;      /* 中文字塊較滿，行距要比英文大，視覺上才一樣鬆 */
       letter-spacing: 0.04em;
     }
@@ -201,7 +201,7 @@
     .bio-en p {
       font-family: var(--font-gopher);
       font-weight: 400;
-      font-size: 20px;   /* 英文字面較小，20px 視覺上才和 18px 中文差不多 */
+      font-size: 17.5px;   /* 英文字面較小，略大於中文 16px 視覺上才一致 */
       line-height: 1.9;
     }
     .bio em {
@@ -212,6 +212,47 @@
     }
 
     /* Members (centered) */
+    /* 聯絡方式 */
+    .contact {
+      max-width: 720px;
+      margin: 72px auto 0;
+      padding-top: 48px;
+      border-top: 1px solid rgba(26, 192, 255, 0.4);
+      text-align: center;
+    }
+    .contact-head {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: clamp(28px, 4vw, 40px);
+      color: #1AC0FF;
+      margin: 0 0 24px;
+    }
+    .contact-row {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .contact-label {
+      font-family: var(--font-juana);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #1AC0FF;
+    }
+    .contact-link {
+      font-family: var(--font-juana);
+      font-size: 20px;
+      color: #FFFFFF;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      padding-bottom: 2px;
+      transition: color 0.25s, border-color 0.25s;
+    }
+    .contact-link:hover { color: #1AC0FF; border-color: #1AC0FF; }
+
     .members {
       max-width: 720px;
       margin: 80px auto 0;
@@ -349,6 +390,15 @@
       <p>
         Through their songwriting, SoulFa celebrates the intricacies of human connection. Their dreamy lyrics and smooth-sailing melodies, reminiscent of classic road movies, offer an escape from daily clutters, inviting audiences to pause, breathe, and find spiritual solace within the music's embrace.
       </p>
+    </div>
+
+    <!-- 聯絡方式 -->
+    <div class="contact">
+      <h2 class="contact-head">Contact</h2>
+      <div class="contact-row">
+        <span class="contact-label">Email</span>
+        <a class="contact-link" href="mailto:soulfa666@gmail.com">soulfa666@gmail.com</a>
+      </div>
     </div>
 
   </div>

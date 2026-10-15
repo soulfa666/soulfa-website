@@ -141,7 +141,8 @@
       pointer-events: none;
     }
     .mv-card:hover .mv-meta { opacity: 1; }
-    @media (hover: none) { .mv-meta { opacity: 1; background: rgba(0,0,0,0.3); } }   /* 手機沒有滑鼠，歌名常駐 */
+    /* 手機：平常只有原圖；手指點第一下才出現歌名，再點一下才播放 */
+    .mv-card.touched .mv-meta { opacity: 1; }
     .mv-card iframe ~ .mv-meta { display: none; }   /* 播放中不蓋住影片 */
     .mv-play { display: none !important; }          /* 不用 YouTube 紅色播放鍵 */
     .mv-card .mv-title { font-size: clamp(18px, 1.7vw, 24px) !important; }
@@ -370,27 +371,49 @@
       transition: transform 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.22s;
       transform-origin: bottom left;
     }
-    .gallery-yt-link:hover { transform: scale(1.05); opacity: 0.9; }
+    .gallery-yt-link:hover { transform: scale(1.03); }
+    /* 參考排版：封面 → 文字 → 外框按鈕
+       所有尺寸都依參考圖比例、以封面寬度 --yt-w 換算：
+       文字 5.7%、行高 7.3%、封面→文字 13%、文字→按鈕 13%、
+       按鈕高 18.3%、按鈕字 6.8%、圓角 2.1%、邊框 1px */
+    .gallery-yt-link { --yt-w: 200px; gap: 0; width: var(--yt-w); }
     .gallery-yt-link img {
-      width: 192px;
-      height: 192px;
+      width: var(--yt-w);
+      height: var(--yt-w);
       object-fit: cover;
-      object-position: center;
       display: block;
     }
-    .gallery-yt-link span {
+    .gallery-yt-link .yt-title {
+      margin: calc(var(--yt-w) * 0.13) 0 calc(var(--yt-w) * 0.13);
       font-family: var(--font-juana);
-      font-size: 8.5px;
-      letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.65);
+      font-weight: 400;
+      font-size: calc(var(--yt-w) * 0.057);
+      line-height: calc(var(--yt-w) * 0.095);   /* 行距加大 */
+      letter-spacing: 0;
+      color: #FFFFFF;
       text-align: center;
-      max-width: 192px;
-      line-height: 1.55;
     }
+    .gallery-yt-link .yt-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: calc(var(--yt-w) * 0.183);
+      box-sizing: border-box;
+      padding: 0;
+      border: 0.5px solid #FFFFFF;   /* 更細的邊框（Retina 螢幕上是一條髮絲線） */
+      border-radius: calc(var(--yt-w) * 0.021);
+      font-family: var(--font-juana);
+      font-weight: 400;
+      font-size: calc(var(--yt-w) * 0.057);   /* 和上方文字一樣大 */
+      letter-spacing: 0;
+      color: #FFFFFF;
+      transition: background 0.25s, color 0.25s;
+    }
+    .gallery-yt-link .yt-line { white-space: nowrap; }   /* 第一行不斷行，同參考圖 */
+    .gallery-yt-link:hover .yt-btn { background: #FFFFFF; color: #2C2420; }
     @media (max-width: 720px) {
-      .gallery-yt-link { left: 16px; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
-      .gallery-yt-link img { width: 110px; height: 110px; }
-      .gallery-yt-link span { font-size: 7.5px; max-width: 110px; }
+      .gallery-yt-link { --yt-w: 150px; left: 16px; bottom: calc(70px + env(safe-area-inset-bottom, 0px)); }
     }
     /* Nav 白字：影片可見時 */
     body.orange nav.top.over-video .brand,
@@ -483,8 +506,9 @@
      href="https://www.youtube.com/watch?v=-_fzYbJcKTo"
      target="_blank" rel="noopener"
      aria-label="Watch 失望的山 Official Music Video on YouTube">
-    <img src="https://img.youtube.com/vi/-_fzYbJcKTo/mqdefault.jpg" alt="失望的山" />
-    <span>Watch "失望的山"<br>Official Music Video</span>
+    <img src="https://img.youtube.com/vi/-_fzYbJcKTo/mqdefault.jpg" alt="失望的山 MV" />
+    <span class="yt-title"><span class="yt-line">"失望的山" Official Music Video</span><br>Out Now</span>
+    <span class="yt-btn">Watch</span>
   </a>
 </section>
 
@@ -961,8 +985,21 @@
 
   // ─── MV: CLICK TO PLAY ───
   (function () {
+    // 點到 MV 以外的地方，收起已顯示的歌名
+    document.addEventListener('touchstart', function (e) {
+      if (!e.target.closest('.mv-card')) {
+        document.querySelectorAll('.mv-card.touched').forEach(function (c) { c.classList.remove('touched'); });
+      }
+    }, { passive: true });
     document.querySelectorAll('.mv-thumb').forEach(function (thumb) {
-      thumb.addEventListener('click', function () {
+      thumb.addEventListener('click', function (e) {
+        // 觸控裝置：第一下先顯示歌名，第二下才播放
+        var card = this.closest('.mv-card');
+        if (window.matchMedia('(hover: none)').matches && card && !card.classList.contains('touched')) {
+          document.querySelectorAll('.mv-card.touched').forEach(function (c) { c.classList.remove('touched'); });
+          card.classList.add('touched');
+          return;
+        }
         var vid = this.dataset.vid;
         var iframe = document.createElement('iframe');
         iframe.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0';
